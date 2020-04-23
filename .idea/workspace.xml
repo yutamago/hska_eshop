@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a32050ec-73e1-4dd3-a500-a8c34e51bc71" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UML/UML.di" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UML/UML.notation" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UML/UML.uml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/tomcat-users.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose-local.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/DockerfileMySQL" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/create-tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/initial.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/AddCategoryAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/AddProductAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/DeleteCategoryAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/DeleteProductAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/InitCategorySiteAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/ListAllProductsAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/LoginAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/LogoutAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/ProductDetailsAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/RegisterAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/controller/SearchAction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/businessLogic/manager/CategoryManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/businessLogic/manager/ProductManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/businessLogic/manager/UserManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/businessLogic/manager/impl/CategoryManagerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/businessLogic/manager/impl/ProductManagerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/businessLogic/manager/impl/UserManagerImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/GenericHibernateDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataAccessObjects/CategoryDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataAccessObjects/IGenericDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataAccessObjects/ProductDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataAccessObjects/RoleDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataAccessObjects/UserDAO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataobjects/Category.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataobjects/Product.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataobjects/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/database/dataobjects/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hska/iwi/eShopMaster/model/sessionFactory/util/HibernateUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ApplicationResources.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ApplicationResources_de.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/log4j.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/struts.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/css/bootstrap-theme.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/css/bootstrap-theme.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/css/bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/fonts/glyphicons-halflings-regular.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/fonts/glyphicons-halflings-regular.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/fonts/glyphicons-halflings-regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/fonts/glyphicons-halflings-regular.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/fonts/glyphicons-halflings-regular.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/js/bootstrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/bootstrap/js/bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/img/delBtn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/img/detBtn.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/jquery/jquery-1.11.3.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/META-INF/context.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/categories.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/product_add.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/product_details.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/register.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/start.jsp" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1awZH3pcVW6sq4jluUdlq3AS2XO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a32050ec-73e1-4dd3-a500-a8c34e51bc71" name="Default Changelist" comment="" />
+      <created>1587648525127</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587648525127</updated>
+      <workItem from="1587648526561" duration="11000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+</project>
