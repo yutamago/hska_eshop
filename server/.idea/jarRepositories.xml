@@ -12,6 +12,11 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="jcenter-releases" />
+      <option name="name" value="jcenter" />
+      <option name="url" value="http://jcenter.bintray.com" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="all" />
       <option name="name" value="all" />
       <option name="url" value="https://nexus.apps.ktc.local/repository/ktc-maven-all/" />
