@@ -1,16 +1,17 @@
-package de.hska.eshopapi.model;
+package de.hska.eshopapi.viewmodels;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.hska.eshopapi.model.Role;
 
 import java.util.UUID;
 
-public class User {
+public class UserView {
     @JsonProperty private UUID userId;
     @JsonProperty private String username;
     @JsonProperty private String firstname;
     @JsonProperty private String lastname;
     @JsonProperty private String password;
-    @JsonProperty private UUID roleId;
+    @JsonProperty private Role role;
 
     public UUID getUserId() {
         return userId;
@@ -52,11 +53,11 @@ public class User {
         this.password = password;
     }
 
-    public UUID getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
