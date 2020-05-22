@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Product {
     @JsonProperty private UUID productId;
-    @JsonProperty private Category category;
+    @JsonProperty private UUID categoryId;
     @JsonProperty private String name;
     @JsonProperty private String price;
     @JsonProperty private String details;
@@ -19,12 +19,12 @@ public class Product {
         this.productId = productId;
     }
 
-    public Category getCategory() {
-        return category;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {

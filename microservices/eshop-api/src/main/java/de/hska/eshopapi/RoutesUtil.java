@@ -1,67 +1,18 @@
 package de.hska.eshopapi;
 
 public class RoutesUtil {
-    private String compositeCategory;
-    private String compositeProduct;
-    private String compositeUser;
-    private String coreCategory;
-    private String coreProduct;
-    private String coreUser;
-    private String coreRole;
+    public static final String APICompositeUser = "composite-user";
+    public static final String APICompositeCategory = "composite-category";
+    public static final String APICompositeProduct = "composite-product";
+    
+    public static final String APICoreUser = "core-user";
+    public static final String APICoreCategory = "core-category";
+    public static final String APICoreProduct = "core-product";
 
-    public String getCompositeCategory() {
-        return compositeCategory;
-    }
+    public static final String APIUser = "user";
+    public static final String APIRole = "role";
+    public static final String APIProduct = "product";
+    public static final String APICategory = "category";
 
-    public void setCompositeCategory(String compositeCategory) {
-        this.compositeCategory = compositeCategory;
-    }
-
-    public String getCompositeProduct() {
-        return compositeProduct;
-    }
-
-    public void setCompositeProduct(String compositeProduct) {
-        this.compositeProduct = compositeProduct;
-    }
-
-    public String getCompositeUser() {
-        return compositeUser;
-    }
-
-    public void setCompositeUser(String compositeUser) {
-        this.compositeUser = compositeUser;
-    }
-
-    public String getCoreCategory() {
-        return coreCategory;
-    }
-
-    public void setCoreCategory(String coreCategory) {
-        this.coreCategory = coreCategory;
-    }
-
-    public String getCoreProduct() {
-        return coreProduct;
-    }
-
-    public void setCoreProduct(String coreProduct) {
-        this.coreProduct = coreProduct;
-    }
-
-    public String getCoreUser() {
-        return coreUser;
-    }
-
-    public void setCoreUser(String coreUser) {
-        this.coreUser = coreUser;
-    }
-
-    public String getCoreRole() {
-        return coreRole;
-    }
-
-    public void setCoreRole(String coreRole) {
-        this.coreRole = coreRole;
-    }
+    public static final String Localhost = "http://localhost:8080";
 }

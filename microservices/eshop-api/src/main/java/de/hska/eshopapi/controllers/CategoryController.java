@@ -1,15 +1,28 @@
 package de.hska.eshopapi.controllers;
 
+import de.hska.eshopapi.RoutesUtil;
 import de.hska.eshopapi.model.Category;
+import de.hska.eshopapi.model.Product;
+import de.hska.eshopapi.model.Role;
+import de.hska.eshopapi.viewmodels.CategoryView;
+import de.hska.eshopapi.viewmodels.ProductView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,31 +31,59 @@ import java.util.UUID;
 @Api(tags = "Category")
 public class CategoryController {
 
+    private final RestTemplate restTemplate;
+
+    private static final ParameterizedTypeReference<List<CategoryView>> CategoryListTypeRef = new ParameterizedTypeReference<List<CategoryView>>() {
+    };
+
+    @Autowired
+    public CategoryController(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplate = restTemplateBuilder.build();
+    }
+
+    private static URIBuilder makeURI(String... path) throws URISyntaxException {
+        List<String> segments = new ArrayList<>();
+        segments.add(RoutesUtil.APICompositeCategory);
+        segments.add(RoutesUtil.APICategory);
+        segments.addAll(Arrays.asList(path));
+        return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Category>> getCategories() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<CategoryView>> getCategories() throws URISyntaxException {
+        URI uri = makeURI().build();
+
+        return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryListTypeRef);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Category> addCategory() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<CategoryView> addCategory(
+            @ApiParam(value = "Category", required = true)
+            @RequestBody(required = true)
+                    Category category) throws URISyntaxException {
+        URI uri = makeURI().build();
+        HttpEntity<Category> body = new HttpEntity<>(category);
+
+        return this.restTemplate.postForEntity(uri, body, CategoryView.class);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{categoryId}")
-    public ResponseEntity<Category> getCategory(
+    public ResponseEntity<CategoryView> getCategoryById(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
                     UUID categoryId
-    ) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    ) throws URISyntaxException {
+        URI uri = makeURI("id", categoryId.toString()).build();
+        return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryView.class);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
-    public ResponseEntity<Category> deleteCategory(
+    public ResponseEntity<CategoryView> deleteCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
                     UUID categoryId
-    ) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    ) throws URISyntaxException {
+        URI uri = makeURI(categoryId.toString()).build();
+        return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, CategoryView.class);
     }
 }

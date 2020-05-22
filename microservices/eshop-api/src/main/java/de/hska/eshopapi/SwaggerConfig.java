@@ -1,8 +1,6 @@
 package de.hska.eshopapi;
 
 
-import static springfox.documentation.builders.PathSelectors.regex;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -15,18 +13,10 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.ApiKeyVehicle;
-import springfox.documentation.swagger.web.SecurityConfiguration;
-import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @SpringBootApplication
 @EnableZuulProxy
@@ -89,20 +79,4 @@ public class SwaggerConfig {
                 .version("0.1")
                 .build();
     }
-
-    @Bean
-    public RoutesUtil routesUtil() {
-        final RoutesUtil ret = new RoutesUtil();
-
-        ret.setCompositeCategory(this.compositeCategory);
-        ret.setCompositeProduct(this.compositeProduct);
-        ret.setCompositeUser(this.compositeUser);
-        ret.setCoreCategory(this.coreCategory);
-        ret.setCoreProduct(this.coreProduct);
-        ret.setCoreUser(this.coreUser);
-        ret.setCoreRole(this.coreRole);
-
-        return ret;
-    }
-
 }
