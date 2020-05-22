@@ -6,29 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="composite-category" />
-        <module name="core-product" />
-        <module name="core-user" />
         <module name="eshop-api" />
-        <module name="composite-product" />
-        <module name="core-category" />
+        <module name="core-user" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="composite-category" target="1.8" />
-      <module name="composite-product" target="1.8" />
-      <module name="core-category" target="9" />
-      <module name="core-product" target="9" />
       <module name="core-user" target="9" />
       <module name="eshop-api" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="composite-category" options="-parameters" />
-      <module name="composite-product" options="-parameters" />
-      <module name="core-category" options="-parameters" />
-      <module name="core-product" options="-parameters" />
       <module name="core-user" options="-parameters" />
       <module name="eshop-api" options="-parameters" />
     </option>
