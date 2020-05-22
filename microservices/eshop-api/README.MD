@@ -1,8 +1,5 @@
 #Readme
 
-## How to create an edge service
-Siehe link: https://spring.io/guides/gs/routing-and-filtering/#Create%20an%20Edge%20Service
-
 ## Dienst-Routen
 - http://localhost:8080/swagger-ui.html
 - http://localhost:8080/composite-category/swagger-ui.html 
