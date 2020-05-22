@@ -1,4 +1,4 @@
-#Readme
+#eShop API
 
 ## Dienst-Routen
 - http://localhost:8080/swagger-ui.html
