@@ -1,29 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5c47673-9f54-4b04-9a9d-04581701973f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/controllers/DevController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/DevController.java" afterDir="false" />
+    <list default="true" id="a5c47673-9f54-4b04-9a9d-04581701973f" name="Default Changelist" comment="done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/RoutesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/RoutesUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/DevController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/RoutesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/RoutesUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/controllers/DevController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/controllers/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/controllers/CategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/dao/CategoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/dao/CategoryDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/model/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/viewmodels/CategoryView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/dao/ProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/dao/ProductDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/model/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/viewmodels/ProductView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-user/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafile.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/datafile.mv.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/RoutesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/RoutesUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/DevController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/README.MD" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/README.MD" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +117,7 @@
       <option name="presentableId" value="Default" />
       <updated>1590159168021</updated>
       <workItem from="1590159169553" duration="566000" />
-      <workItem from="1590159756620" duration="6908000" />
+      <workItem from="1590159756620" duration="7811000" />
     </task>
     <task id="LOCAL-00001" summary="stuff happened">
       <created>1590159991495</created>
@@ -146,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590159991495</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="done">
+      <created>1590166940737</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1590166940737</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,7 +141,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="stuff happened" />
-    <option name="LAST_COMMIT_MESSAGE" value="stuff happened" />
+    <MESSAGE value="done" />
+    <option name="LAST_COMMIT_MESSAGE" value="done" />
   </component>
   <component name="WindowStateProjectService">
     <state x="304" y="63" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590159355968">
@@ -169,46 +157,46 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="397" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590163879942" />
-    <state x="459" y="2" key="CommitChangelistDialog2" timestamp="1590159989131">
+    <state x="135" y="4" width="1599" height="1036" key="CommitChangelistDialog2" timestamp="1590167483155">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="459" y="2" key="CommitChangelistDialog2/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590159989131" />
-    <state width="1293" height="442" key="GridCell.Tab.0.bottom" timestamp="1590166166499">
+    <state x="135" y="4" width="1599" height="1036" key="CommitChangelistDialog2/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590167483155" />
+    <state width="1293" height="442" key="GridCell.Tab.0.bottom" timestamp="1590166917819">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.0.bottom/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166499" />
-    <state width="1293" height="442" key="GridCell.Tab.0.center" timestamp="1590166166499">
+    <state width="1293" height="442" key="GridCell.Tab.0.bottom/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917819" />
+    <state width="1293" height="442" key="GridCell.Tab.0.center" timestamp="1590166917819">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.0.center/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166499" />
-    <state width="1293" height="442" key="GridCell.Tab.0.left" timestamp="1590166166499">
+    <state width="1293" height="442" key="GridCell.Tab.0.center/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917819" />
+    <state width="1293" height="442" key="GridCell.Tab.0.left" timestamp="1590166917819">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.0.left/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166499" />
-    <state width="1293" height="442" key="GridCell.Tab.0.right" timestamp="1590166166499">
+    <state width="1293" height="442" key="GridCell.Tab.0.left/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917819" />
+    <state width="1293" height="442" key="GridCell.Tab.0.right" timestamp="1590166917819">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.0.right/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166499" />
-    <state width="1293" height="442" key="GridCell.Tab.1.bottom" timestamp="1590166166500">
+    <state width="1293" height="442" key="GridCell.Tab.0.right/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917819" />
+    <state width="1293" height="442" key="GridCell.Tab.1.bottom" timestamp="1590166917820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.1.bottom/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166500" />
-    <state width="1293" height="442" key="GridCell.Tab.1.center" timestamp="1590166166499">
+    <state width="1293" height="442" key="GridCell.Tab.1.bottom/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917820" />
+    <state width="1293" height="442" key="GridCell.Tab.1.center" timestamp="1590166917820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.1.center/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166499" />
-    <state width="1293" height="442" key="GridCell.Tab.1.left" timestamp="1590166166499">
+    <state width="1293" height="442" key="GridCell.Tab.1.center/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917820" />
+    <state width="1293" height="442" key="GridCell.Tab.1.left" timestamp="1590166917819">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.1.left/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166499" />
-    <state width="1293" height="442" key="GridCell.Tab.1.right" timestamp="1590166166499">
+    <state width="1293" height="442" key="GridCell.Tab.1.left/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917819" />
+    <state width="1293" height="442" key="GridCell.Tab.1.right" timestamp="1590166917820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="442" key="GridCell.Tab.1.right/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166166499" />
-    <state x="552" y="248" key="Vcs.Push.Dialog.v2" timestamp="1590159994969">
+    <state width="1293" height="442" key="GridCell.Tab.1.right/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166917820" />
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2" timestamp="1590166943485">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="248" key="Vcs.Push.Dialog.v2/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590159994969" />
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2/-1920.283.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1590166943485" />
     <state width="742" height="447" key="javadoc.popup.new" timestamp="1590164663606">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
