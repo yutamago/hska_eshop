@@ -3,46 +3,51 @@ package de.hska.eshopapi.core.category.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table
 @NamedQueries({
-        @NamedQuery(name = "Role.findByType", query = "select r from Category r where r.type = :type"),
+        @NamedQuery(name = "Category.findByName", query = "select c from Category c where c.name = :name"),
+        @NamedQuery(name = "Category.findByProductId", query = "select c from Category c where :productId in(c.productIds)"),
 })
 public class Category {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    @JsonProperty private UUID roleId;
+    @JsonProperty private UUID categoryId;
 
     @Column(nullable = false)
-    @JsonProperty private String type;
+    @JsonProperty private String name;
 
     @Column(nullable = false)
-    @JsonProperty private int level;
+    @JsonProperty
+    @ElementCollection
+    private Set<UUID> productIds;
 
-    public UUID getRoleId() {
-        return roleId;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getLevel() {
-        return level;
+    public Set<UUID> getProductIds() {
+        return productIds;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setProductIds(Set<UUID> productIds) {
+        this.productIds = productIds;
     }
 }

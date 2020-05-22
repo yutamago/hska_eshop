@@ -9,5 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface ProductDAO extends JpaRepository<Product, UUID> {
-    List<Product> findByType(String type);
+    List<Product> findByName(String name);
+    List<Product> findByCategoryId(UUID categoryId);
 }

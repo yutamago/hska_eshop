@@ -45,7 +45,7 @@ public class CategoryController {
                     Category category
     ) {
 
-        List<Category> categories = categoryDAO.findByType(category.getType());
+        List<Category> categories = categoryDAO.findByName(category.getName());
         if(categories.size() > 0) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -56,7 +56,7 @@ public class CategoryController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/id/{categoryId}")
-    public ResponseEntity<Category> getCategory(
+    public ResponseEntity<Category> getCategoryById(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
                     UUID categoryId
@@ -67,17 +67,15 @@ public class CategoryController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/type/{categoryType}")
-    public ResponseEntity<Category> getCategory(
-            @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryType")
-                    String categoryType
+    @RequestMapping(method = RequestMethod.GET, path = "/productid/{productId}")
+    public ResponseEntity<List<Category>> getCategoriesByProductId(
+            @ApiParam(value = "product Id", required = true)
+            @PathVariable("productId")
+                    UUID productId
     ) {
-        List<Category> categories = this.categoryDAO.findByType(categoryType);
-        if(!categories.isEmpty())
-            return new ResponseEntity<>(categories.get(0), HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Category> categories = this.categoryDAO.findByProductId(productId);
+
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")

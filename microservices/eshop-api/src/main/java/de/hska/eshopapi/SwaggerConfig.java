@@ -28,13 +28,8 @@ public class SwaggerConfig {
     @Value("${info.build.name}") private String infoBuildName;
     @Value("${host.full.dns.auth.link}") private String authLink;
 
-    @Value("${zuul.routes.composite-category.url}") private String compositeCategory;
-    @Value("${zuul.routes.composite-product.url}") private String compositeProduct;
-    @Value("${zuul.routes.composite-user.url}") private String compositeUser;
     @Value("${zuul.routes.core-category.url}") private String coreCategory;
     @Value("${zuul.routes.core-product.url}") private String coreProduct;
-    @Value("${zuul.routes.core-user.url}") private String coreUser;
-    @Value("${zuul.routes.core-role.url}") private String coreRole;
 
 
     public static void main(String[] args) {

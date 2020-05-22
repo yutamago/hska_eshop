@@ -3,46 +3,70 @@ package de.hska.eshopapi.core.product.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.UUID;
 
 @Entity
-@Table
 @NamedQueries({
-        @NamedQuery(name = "Role.findByType", query = "select r from Product r where r.type = :type"),
+        @NamedQuery(name = "findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
+        @NamedQuery(name = "findByCategoryId", query = "SELECT p FROM Product p WHERE p.categoryId = :categoryId"),
 })
 public class Product {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    @JsonProperty private UUID roleId;
+    @JsonProperty private UUID productId;
 
     @Column(nullable = false)
-    @JsonProperty private String type;
+    @JsonProperty private UUID categoryId;
 
     @Column(nullable = false)
-    @JsonProperty private int level;
+    @JsonProperty private String name;
 
-    public UUID getRoleId() {
-        return roleId;
+    @Column(nullable = false)
+    @JsonProperty private BigDecimal price;
+
+    @Column(nullable = false)
+    @JsonProperty private String details;
+
+    public UUID getProductId() {
+        return productId;
     }
 
-    public void setRoleId(UUID roleId) {
-        this.roleId = roleId;
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
-    public String getType() {
-        return type;
+    public UUID getCategoryId() {
+        return categoryId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public int getLevel() {
-        return level;
+    public String getName() {
+        return name;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 }

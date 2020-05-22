@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Product>> getProducts() {
-        List<Product> products = StreamSupport.stream(this.productDAO.findAll().spliterator(), false).collect(Collectors.toList());
+        List<Product> products = new ArrayList<>(this.productDAO.findAll());
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -45,7 +46,7 @@ public class ProductController {
                     Product product
     ) {
 
-        List<Product> products = productDAO.findByType(product.getType());
+        List<Product> products = productDAO.findByName(product.getName());
         if(products.size() > 0) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -67,17 +68,14 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/type/{productType}")
-    public ResponseEntity<Product> getProduct(
-            @ApiParam(value = "product Id", required = true)
-            @PathVariable("productType")
-                    String productType
+    @RequestMapping(method = RequestMethod.GET, path = "/categoryId/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsByCategoryId(
+            @ApiParam(value = "category Id", required = true)
+            @PathVariable("categoryId")
+                    UUID categoryId
     ) {
-        List<Product> products = this.productDAO.findByType(productType);
-        if(!products.isEmpty())
-            return new ResponseEntity<>(products.get(0), HttpStatus.OK);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Product> products = this.productDAO.findByCategoryId(categoryId);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
