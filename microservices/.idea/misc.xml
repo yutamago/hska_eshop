@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/eshop-api/pom.xml" />
         <option value="$PROJECT_DIR$/core-product/pom.xml" />
         <option value="$PROJECT_DIR$/core-category/pom.xml" />
+        <option value="$PROJECT_DIR$/eshop-discovery/pom.xml" />
         <option value="$PROJECT_DIR$/composite-product/pom.xml" />
         <option value="$PROJECT_DIR$/composite-category/pom.xml" />
       </list>

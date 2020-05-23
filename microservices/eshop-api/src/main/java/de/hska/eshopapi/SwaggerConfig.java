@@ -5,6 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 
@@ -17,20 +22,15 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
+import java.util.List;
 
-@SpringBootApplication
+@EnableDiscoveryClient
+@EnableEurekaClient
 @EnableZuulProxy
 @EnableSwagger2
+@EnableCircuitBreaker
+@SpringBootApplication
 public class SwaggerConfig {
-
-    @Value("${app.client.id}") private String clientId;
-    @Value("${app.client.secret}") private String clientSecret;
-    @Value("${info.build.name}") private String infoBuildName;
-    @Value("${host.full.dns.auth.link}") private String authLink;
-
-    @Value("${zuul.routes.core-category.url}") private String coreCategory;
-    @Value("${zuul.routes.core-product.url}") private String coreProduct;
-
 
     public static void main(String[] args) {
         SpringApplication.run(SwaggerConfig.class, args);

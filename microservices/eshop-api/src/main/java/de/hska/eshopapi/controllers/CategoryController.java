@@ -1,5 +1,6 @@
 package de.hska.eshopapi.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.RoutesUtil;
 import de.hska.eshopapi.model.Category;
 import de.hska.eshopapi.model.Product;
@@ -49,13 +50,20 @@ public class CategoryController {
         return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
     }
 
+    @HystrixCommand(fallbackMethod = "getCategoriesFallback")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<CategoryView>> getCategories() throws URISyntaxException {
         URI uri = makeURI().build();
 
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryListTypeRef);
     }
+    @SuppressWarnings("unused")
+    public ResponseEntity<List<CategoryView>> getCategoriesFallback() throws URISyntaxException {
+        URI uri = makeURI().build();
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+    }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CategoryView> addCategory(
             @ApiParam(value = "Category", required = true)
@@ -67,6 +75,7 @@ public class CategoryController {
         return this.restTemplate.postForEntity(uri, body, CategoryView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/{categoryId}")
     public ResponseEntity<CategoryView> getCategoryById(
             @ApiParam(value = "category Id", required = true)
@@ -77,6 +86,7 @@ public class CategoryController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
     public ResponseEntity<CategoryView> deleteCategory(
             @ApiParam(value = "category Id", required = true)

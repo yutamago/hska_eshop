@@ -1,5 +1,6 @@
 package de.hska.eshopapi.composite.product.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.composite.product.RoutesUtil;
 import de.hska.eshopapi.composite.product.model.Category;
 import de.hska.eshopapi.composite.product.viewmodels.CategoryView;
@@ -45,6 +46,7 @@ public class CategoryController {
         return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<CategoryView>> getCategories() throws URISyntaxException {
         URI uri = makeURI().build();
@@ -52,6 +54,7 @@ public class CategoryController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryListTypeRef);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CategoryView> addCategory(
             @ApiParam(value = "Category", required = true)
@@ -63,6 +66,7 @@ public class CategoryController {
         return this.restTemplate.postForEntity(uri, body, CategoryView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/{categoryId}")
     public ResponseEntity<CategoryView> getCategoryById(
             @ApiParam(value = "category Id", required = true)
@@ -73,6 +77,7 @@ public class CategoryController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
     public ResponseEntity<CategoryView> deleteCategory(
             @ApiParam(value = "category Id", required = true)

@@ -1,0 +1,1 @@
+{"_links":{"self":{"href":"http://localhost:8080/actuator","templated":false},"hystrix.stream":{"href":"http://localhost:8080/actuator/hystrix.stream","templated":false}}}

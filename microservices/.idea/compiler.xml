@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="composite-category" />
+        <module name="eshop-discovery" />
         <module name="core-product" />
         <module name="core-user" />
         <module name="eshop-api" />
@@ -21,6 +22,7 @@
       <module name="core-product" target="9" />
       <module name="core-user" target="9" />
       <module name="eshop-api" target="1.8" />
+      <module name="eshop-discovery" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -31,6 +33,7 @@
       <module name="core-product" options="-parameters" />
       <module name="core-user" options="-parameters" />
       <module name="eshop-api" options="-parameters" />
+      <module name="eshop-discovery" options="-parameters" />
     </option>
   </component>
 </project>
