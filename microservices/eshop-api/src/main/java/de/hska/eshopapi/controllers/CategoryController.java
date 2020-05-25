@@ -62,6 +62,24 @@ public class CategoryController {
         URI uri = makeURI().build();
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
     }
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)

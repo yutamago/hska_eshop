@@ -1,5 +1,6 @@
 package de.hska.eshopapi.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.RoutesUtil;
 import de.hska.eshopapi.model.Product;
 import de.hska.eshopapi.model.ProductSearchOptions;
@@ -50,6 +51,7 @@ public class ProductController {
         return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ProductView>> getProducts() throws URISyntaxException {
         URI uri = makeURI().build();
@@ -57,6 +59,26 @@ public class ProductController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, ProductListTypeRef);
     }
 
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/search")
     public ResponseEntity<List<ProductView>> searchProducts(
             @ApiParam(value = "search options", required = true)
@@ -68,6 +90,26 @@ public class ProductController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductListTypeRef);
     }
 
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProductView> addProduct(
             @ApiParam(value = "Product", required = true)
@@ -79,6 +121,7 @@ public class ProductController {
         return this.restTemplate.postForEntity(uri, body, ProductView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/{productId}")
     public ResponseEntity<ProductView> getProductById(
             @ApiParam(value = "product Id", required = true)
@@ -89,6 +132,7 @@ public class ProductController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, ProductView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
     public ResponseEntity<ProductView> deleteProduct(
             @ApiParam(value = "product Id", required = true)

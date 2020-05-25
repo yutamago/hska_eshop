@@ -1,5 +1,6 @@
 package de.hska.eshopapi.core.user.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.core.user.dao.RoleDAO;
 import de.hska.eshopapi.core.user.model.Role;
 import io.swagger.annotations.Api;
@@ -37,6 +38,25 @@ public class RoleController {
         List<Role> roles = StreamSupport.stream(this.roleDAO.findAll().spliterator(), false).collect(Collectors.toList());
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
+
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Role> addRole(

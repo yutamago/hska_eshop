@@ -1,5 +1,6 @@
 package de.hska.eshopapi.core.category.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.core.category.dao.CategoryDAO;
 import de.hska.eshopapi.core.category.model.Category;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,12 +34,14 @@ public class CategoryController {
     }
 
 
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getCategories() {
         List<Category> categories = StreamSupport.stream(this.categoryDAO.findAll().spliterator(), false).collect(Collectors.toList());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Category> addCategory(
             @ApiParam(value = "Category", required = true)
@@ -55,6 +59,7 @@ public class CategoryController {
         return new ResponseEntity<>(newCategory, HttpStatus.OK);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{categoryId}")
     public ResponseEntity<Category> getCategoryById(
             @ApiParam(value = "category Id", required = true)
@@ -67,6 +72,18 @@ public class CategoryController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.POST, path = "/multiple-id")
+    public ResponseEntity<ArrayList<Category>> getCategoryByIds(
+            @ApiParam(value = "category Ids", required = true)
+            @RequestBody(required = true)
+                    ArrayList<UUID> categoryIds
+    ) {
+        List<Category> categories = this.categoryDAO.findAllById(categoryIds);
+        return new ResponseEntity<>(new ArrayList<>(categories), HttpStatus.OK);
+    }
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/productid/{productId}")
     public ResponseEntity<List<Category>> getCategoriesByProductId(
             @ApiParam(value = "product Id", required = true)
@@ -78,6 +95,7 @@ public class CategoryController {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
     public ResponseEntity<Category> deleteCategory(
             @ApiParam(value = "category Id", required = true)

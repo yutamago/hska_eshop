@@ -1,5 +1,6 @@
 package de.hska.eshopapi.core.product.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.core.product.dao.ProductDAO;
 import de.hska.eshopapi.core.product.model.Product;
 import io.swagger.annotations.Api;
@@ -32,13 +33,33 @@ public class ProductController {
         this.productDAO = productDAO;
     }
 
-
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Product>> getProducts() {
         List<Product> products = new ArrayList<>(this.productDAO.findAll());
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Product> addProduct(
             @ApiParam(value = "Product", required = true)
@@ -56,6 +77,7 @@ public class ProductController {
         return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{productId}")
     public ResponseEntity<Product> getProduct(
             @ApiParam(value = "product Id", required = true)
@@ -68,6 +90,7 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/categoryId/{categoryId}")
     public ResponseEntity<List<Product>> getProductsByCategoryId(
             @ApiParam(value = "category Id", required = true)
@@ -78,6 +101,26 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
     public ResponseEntity<Product> deleteProduct(
             @ApiParam(value = "product Id", required = true)

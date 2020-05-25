@@ -2,13 +2,15 @@ package de.hska.eshopapi.composite.category.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 public class Product {
     @JsonProperty private UUID productId;
     @JsonProperty private UUID categoryId;
     @JsonProperty private String name;
-    @JsonProperty private String price;
+    @JsonProperty private BigDecimal price;
     @JsonProperty private String details;
 
     public UUID getProductId() {
@@ -35,11 +37,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

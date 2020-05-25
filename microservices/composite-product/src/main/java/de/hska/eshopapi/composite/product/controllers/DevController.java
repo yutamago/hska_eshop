@@ -37,8 +37,8 @@ public class DevController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> setup() throws URISyntaxException {
-        this.restTemplate.exchange(makeURI(RoutesUtil.APICoreCategory, RoutesUtil.APIDev).build(),
-                HttpMethod.POST, null, Void.TYPE);
+//        this.restTemplate.exchange(makeURI(RoutesUtil.APICoreCategory, RoutesUtil.APIDev).build(),
+//                HttpMethod.POST, null, Void.TYPE);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

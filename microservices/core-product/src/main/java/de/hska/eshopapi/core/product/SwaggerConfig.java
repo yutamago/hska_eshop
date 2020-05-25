@@ -4,6 +4,7 @@ package de.hska.eshopapi.core.product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -17,6 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import javax.servlet.ServletContext;
 
 @EnableEurekaClient
+@EnableCircuitBreaker
 @SpringBootApplication
 @EnableSwagger2
 public class SwaggerConfig {

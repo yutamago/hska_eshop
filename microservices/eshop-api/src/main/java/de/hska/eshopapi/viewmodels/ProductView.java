@@ -3,13 +3,14 @@ package de.hska.eshopapi.viewmodels;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.hska.eshopapi.model.Category;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ProductView {
     @JsonProperty private UUID productId;
     @JsonProperty private Category category;
     @JsonProperty private String name;
-    @JsonProperty private String price;
+    @JsonProperty private BigDecimal price;
     @JsonProperty private String details;
 
     public UUID getProductId() {
@@ -36,11 +37,11 @@ public class ProductView {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

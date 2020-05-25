@@ -1,5 +1,6 @@
 package de.hska.eshopapi.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.RoutesUtil;
 import io.swagger.annotations.Api;
 import org.apache.http.client.utils.URIBuilder;
@@ -34,6 +35,7 @@ public class DevController {
         return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> setup() throws URISyntaxException {
         this.restTemplate.exchange(makeURI(RoutesUtil.APICoreUser, RoutesUtil.APIDev).build(),

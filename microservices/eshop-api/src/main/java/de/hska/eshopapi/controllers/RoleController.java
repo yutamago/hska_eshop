@@ -1,5 +1,6 @@
 package de.hska.eshopapi.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.RoutesUtil;
 import de.hska.eshopapi.model.Role;
 import io.swagger.annotations.Api;
@@ -44,6 +45,7 @@ public class RoleController {
         this.restTemplate = restTemplateBuilder.build();
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Role>> getRoles() throws URISyntaxException {
         URI uri = makeURI().build();
@@ -51,6 +53,26 @@ public class RoleController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, RoleController.RoleListTypeRef);
     }
 
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Role> addRole(
             @ApiParam(value = "Role", required = true)
@@ -63,6 +85,7 @@ public class RoleController {
         return this.restTemplate.postForEntity(uri, body, Role.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{roleId}")
     public ResponseEntity<Role> getRoleById(
             @ApiParam(value = "role Id", required = true)
@@ -73,6 +96,7 @@ public class RoleController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, Role.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/type/{type}")
     public ResponseEntity<Role> getRoleByType(
             @ApiParam(value = "role type", required = true)
@@ -91,6 +115,7 @@ public class RoleController {
 
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{roleId}")
     public ResponseEntity<Role> deleteRole(
             @ApiParam(value = "role Id", required = true)

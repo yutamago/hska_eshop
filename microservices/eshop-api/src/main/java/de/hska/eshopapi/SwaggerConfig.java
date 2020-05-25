@@ -2,33 +2,33 @@ package de.hska.eshopapi;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
-
+import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.*;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
-import java.util.List;
 
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EnableZuulProxy
-@EnableSwagger2
 @EnableCircuitBreaker
+//@RibbonClient
+//@EnableHystrixDashboard
+@EnableSwagger2
 @SpringBootApplication
 public class SwaggerConfig {
 
@@ -42,6 +42,13 @@ public class SwaggerConfig {
     public SwaggerConfig(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
+
+//
+//    @LoadBalanced
+//    @Bean
+//    RestTemplate restTemplate(){
+//        return new RestTemplate();
+//    }
 
     @Bean
     public Docket api() {

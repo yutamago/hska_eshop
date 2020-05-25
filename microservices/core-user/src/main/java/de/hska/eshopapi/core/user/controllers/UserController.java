@@ -1,5 +1,6 @@
 package de.hska.eshopapi.core.user.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.core.user.dao.RoleDAO;
 import de.hska.eshopapi.core.user.dao.UserDAO;
 import de.hska.eshopapi.core.user.model.User;
@@ -16,6 +17,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,16 +40,20 @@ public class UserController {
         this.roleDAO = roleDAO;
     }
 
-
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserView>> getUsers() {
-        List<UserView> users = StreamSupport.stream(this.userDAO.findAll().spliterator(), false)
-                .map(user -> {
-                    Role role = roleDAO.getOne(user.getRoleId());
-                    UserView newUserView = UserView.FromUser(user, role);
-                    return newUserView;
-                }).collect(Collectors.toList());
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>();
+
+        users.forEach(user -> {
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.add(UserView.FromUser(user, role));
+        });
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

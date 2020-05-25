@@ -2,15 +2,28 @@ package de.hska.eshopapi.composite.product.viewmodels;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.hska.eshopapi.composite.product.model.Category;
+import de.hska.eshopapi.composite.product.model.Product;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ProductView {
     @JsonProperty private UUID productId;
     @JsonProperty private Category category;
     @JsonProperty private String name;
-    @JsonProperty private String price;
+    @JsonProperty private BigDecimal price;
     @JsonProperty private String details;
+
+    public static ProductView FromProduct(Product product, Category category) {
+        ProductView pv = new ProductView();
+        pv.category = category;
+        pv.details = product.getDetails();
+        pv.name = product.getName();
+        pv.price = product.getPrice();
+        pv.productId = product.getProductId();
+
+        return pv;
+    }
 
     public UUID getProductId() {
         return productId;
@@ -36,11 +49,11 @@ public class ProductView {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

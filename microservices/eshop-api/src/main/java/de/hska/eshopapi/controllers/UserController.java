@@ -1,5 +1,6 @@
 package de.hska.eshopapi.controllers;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.RoutesUtil;
 import de.hska.eshopapi.model.User;
 import de.hska.eshopapi.viewmodels.UserView;
@@ -42,6 +43,7 @@ public class UserController {
         this.restTemplate = restTemplateBuilder.build();
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserView>> getUsers() throws URISyntaxException {
         URI uri = makeURI().build();
@@ -49,6 +51,26 @@ public class UserController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, UserController.UserListTypeRef);
     }
 
+    /*
+    * @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserView>> getUsers() {
+        List<User> users = this.userDAO.findAll();
+        List<UserView> userViews = new ArrayList<>(users.size());
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            Role role = null;
+            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
+                role = roleDAO.getOne(user.getRoleId());
+            }
+            userViews.set(i, UserView.FromUser(user, role));
+        }
+
+        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+    * */
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserView> addUser(
             @ApiParam(value = "User", required = true)
@@ -61,6 +83,7 @@ public class UserController {
         return this.restTemplate.postForEntity(uri, body, UserView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{userId}")
     public ResponseEntity<UserView> getUserById(
             @ApiParam(value = "user Id", required = true)
@@ -71,6 +94,7 @@ public class UserController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, UserView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/username/{username}")
     public ResponseEntity<UserView> getUserByUsername(
             @ApiParam(value = "username", required = true)
@@ -81,6 +105,7 @@ public class UserController {
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, UserView.class);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{userId}")
     public ResponseEntity<UserView> deleteUser(
             @ApiParam(value = "user Id", required = true)

@@ -3,12 +3,13 @@ package de.hska.eshopapi.composite.category.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class Category {
     @JsonProperty private UUID categoryId;
     @JsonProperty private String name;
-    @JsonProperty private List<UUID> productIds;
+    @JsonProperty private Set<UUID> productIds;
 
     public UUID getCategoryId() {
         return categoryId;
@@ -26,11 +27,11 @@ public class Category {
         this.name = name;
     }
 
-    public List<UUID> getProductIds() {
+    public Set<UUID> getProductIds() {
         return productIds;
     }
 
-    public void setProductIds(List<UUID> productIds) {
+    public void setProductIds(Set<UUID> productIds) {
         this.productIds = productIds;
     }
 }
