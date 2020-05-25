@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
@@ -26,8 +27,8 @@ import javax.servlet.ServletContext;
 @EnableEurekaClient
 @EnableZuulProxy
 @EnableCircuitBreaker
-//@RibbonClient
-//@EnableHystrixDashboard
+@RibbonClient(name = "eshop-api")
+@EnableHystrixDashboard
 @EnableSwagger2
 @SpringBootApplication
 public class SwaggerConfig {
@@ -43,12 +44,11 @@ public class SwaggerConfig {
         this.servletContext = servletContext;
     }
 
-//
-//    @LoadBalanced
-//    @Bean
-//    RestTemplate restTemplate(){
-//        return new RestTemplate();
-//    }
+    @LoadBalanced
+    @Bean
+    RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
 
     @Bean
     public Docket api() {

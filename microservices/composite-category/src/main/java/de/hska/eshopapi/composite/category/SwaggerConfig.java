@@ -7,10 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 
+import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -25,6 +28,7 @@ import javax.servlet.ServletContext;
 @EnableEurekaClient
 @EnableZuulProxy
 @EnableCircuitBreaker
+@RibbonClient(name = "composite-category")
 @EnableSwagger2
 @SpringBootApplication
 public class SwaggerConfig {
@@ -38,6 +42,12 @@ public class SwaggerConfig {
     @Autowired
     public SwaggerConfig(ServletContext servletContext) {
         this.servletContext = servletContext;
+    }
+
+    @LoadBalanced
+    @Bean
+    RestTemplate restTemplate(){
+        return new RestTemplate();
     }
 
     @Bean
