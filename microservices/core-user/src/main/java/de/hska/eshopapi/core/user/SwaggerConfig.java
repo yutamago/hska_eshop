@@ -43,11 +43,6 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo());
     }
 
-    @Bean
-    public RequestLogFilter requestLogFilter() {
-        return new RequestLogFilter();
-    }
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("User CoreService API")

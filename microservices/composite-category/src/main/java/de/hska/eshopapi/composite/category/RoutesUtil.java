@@ -15,5 +15,5 @@ public class RoutesUtil {
     public static final String APICategory = "category";
     public static final String APIDev = "dev";
 
-    public static final String Localhost = "http://localhost:8080";
+    public static final String Localhost = "http://localhost:9001";
 }

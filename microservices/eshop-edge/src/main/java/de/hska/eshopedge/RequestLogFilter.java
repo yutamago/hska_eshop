@@ -1,4 +1,4 @@
-package de.hska.eshopapi.composite.category;
+package de.hska.eshopedge;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;

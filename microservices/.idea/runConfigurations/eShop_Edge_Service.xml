@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="eShop Edge Service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="eshop-edge" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="de.hska.eshopedge.EdgeServerConfig" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -26,7 +26,6 @@ import javax.servlet.ServletContext;
 
 @EnableDiscoveryClient
 @EnableEurekaClient
-@EnableZuulProxy
 @EnableCircuitBreaker
 @RibbonClient(name = "composite-product")
 @EnableSwagger2
@@ -67,11 +66,6 @@ public class SwaggerConfig {
 //                .securitySchemes(Collections.singletonList(securitySchema()));
 
 
-    }
-
-    @Bean
-    public RequestLogFilter requestLogFilter() {
-        return new RequestLogFilter();
     }
 
     private ApiInfo apiInfo() {

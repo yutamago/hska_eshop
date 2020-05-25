@@ -8,6 +8,7 @@
       <list>
         <option value="$PROJECT_DIR$/core-user/pom.xml" />
         <option value="$PROJECT_DIR$/eshop-api/pom.xml" />
+        <option value="$PROJECT_DIR$/eshop-edge/pom.xml" />
         <option value="$PROJECT_DIR$/core-product/pom.xml" />
         <option value="$PROJECT_DIR$/core-category/pom.xml" />
         <option value="$PROJECT_DIR$/eshop-discovery/pom.xml" />
@@ -16,5 +17,5 @@
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" project-jdk-name="12" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_14" project-jdk-name="14" project-jdk-type="JavaSDK" />
 </project>
