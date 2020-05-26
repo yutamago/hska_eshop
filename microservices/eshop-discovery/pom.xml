@@ -11,6 +11,7 @@
     <groupId>de.hska</groupId>
     <artifactId>eshop-discovery</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>eshop-discovery</name>
     <description>Eureka Discovery Service for eShop API</description>
 

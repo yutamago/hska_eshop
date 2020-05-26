@@ -13,6 +13,7 @@
     <groupId>de.hska</groupId>
     <artifactId>eshop-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>eshop-api</name>
     <description>Fassade für eShop-API</description>
 

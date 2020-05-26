@@ -13,6 +13,7 @@
     <groupId>de.hska</groupId>
     <artifactId>composite-product</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>composite-product</name>
     <description>Product Composite für eShop-API</description>
 

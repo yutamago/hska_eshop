@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/composite-category" />
+    <file type="web" url="file://$PROJECT_DIR$/composite-product" />
+    <file type="web" url="file://$PROJECT_DIR$/core-category" />
+    <file type="web" url="file://$PROJECT_DIR$/core-product" />
+    <file type="web" url="file://$PROJECT_DIR$/eshop-api" />
+    <file type="web" url="file://$PROJECT_DIR$/eshop-discovery" />
+    <file type="web" url="file://$PROJECT_DIR$/eshop-edge" />
+  </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>

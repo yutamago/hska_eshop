@@ -11,6 +11,7 @@
     <groupId>de.hska</groupId>
     <artifactId>eshop-edge</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>eshop-edge</name>
     <description>Zuul Edge Server for eShop-API</description>
 
