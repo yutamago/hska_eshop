@@ -19,6 +19,7 @@ import javax.servlet.ServletContext;
 
 @EnableEurekaClient
 @SpringBootApplication
+@EnableCircuitBreaker
 @EnableSwagger2
 public class SwaggerConfig {
 

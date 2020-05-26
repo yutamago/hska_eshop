@@ -19,50 +19,61 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="409942b9-ae08-414f-aec0-1f6b5c4be7d9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Rügenwalder.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop_API.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop_Discovery_Service.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop_Edge_Service.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop___Composite_Category.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop___Composite_Product.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop___Core_Category.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop___Core_Product.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/eShop___Core_User.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/$CACHE_FILE$" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2020-05-23T042045.200.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2020-05-23T042228.200.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2020-05-23T042419.200.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2020-05-23T042516.200.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-client.cookies" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="409942b9-ae08-414f-aec0-1f6b5c4be7d9" name="Default Changelist" comment="edgy">
+      <change afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/RestConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/ProductUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/RestConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/RestConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eshop-edge/src/main/java/de/hska/eshopedge/RestConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/RequestLogFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-edge/src/main/java/de/hska/eshopedge/RequestLogFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/RoutesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/RoutesUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/RequestLogFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/DevController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/viewmodels/CategoryView.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/viewmodels/CategoryView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-category/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/RoutesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/RoutesUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/RequestLogFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/RequestLogFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/RequestLogFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/controllers/DevController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/controllers/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-product/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/controllers/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/controllers/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/controllers/DevController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/java/de/hska/eshopapi/core/category/model/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-category/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/DevController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/dao/ProductDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/dao/ProductDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-product/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/RequestLogFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/controllers/DevController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/controllers/RoleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/controllers/RoleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-user/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/README.MD" beforeDir="false" afterPath="$PROJECT_DIR$/README.MD" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/RoutesUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/RoutesUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/DevController.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/DevController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/RoleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/RoleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-edge/src/main/java/de/hska/eshopedge/EdgeServerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-edge/src/main/java/de/hska/eshopedge/EdgeServerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-edge/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-edge/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -85,6 +96,22 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="de.hska.eshopapi.controllers" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="de.hska.eshopedge" />
+      <recent name="de.hska.eshopapi.composite.category" />
+      <recent name="de.hska.eshopapi.composite.product" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\_workspaces\_hska\java_ws\hska-vis-legacy\microservices" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -92,7 +119,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.eShop Discovery Service">
+  <component name="RunManager" selected="Spring Boot.eShop - Composite Category">
     <configuration default="true" type="CompoundRunConfigurationType">
       <toRun name="eShop - Composite Category" type="SpringBootApplicationConfigurationType" />
       <toRun name="eShop - Composite Product" type="SpringBootApplicationConfigurationType" />
@@ -126,8 +153,26 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1590427402521</updated>
-      <workItem from="1590427403619" duration="3111000" />
+      <workItem from="1590427403619" duration="4725000" />
+      <workItem from="1590497340389" duration="8649000" />
+      <workItem from="1590506033265" duration="10440000" />
+      <workItem from="1590516497110" duration="6780000" />
     </task>
+    <task id="LOCAL-00001" summary="extra edge service">
+      <created>1590432689431</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1590432689431</updated>
+    </task>
+    <task id="LOCAL-00002" summary="edgy">
+      <created>1590433789225</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1590433789226</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,12 +188,22 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="extra edge service" />
+    <MESSAGE value="edgy" />
+    <option name="LAST_COMMIT_MESSAGE" value="edgy" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590427692203">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590427692203" />
+    <state x="765" y="235" key="#com.intellij.ide.util.MemberChooser" timestamp="1590520740941">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="235" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590520740941" />
     <state x="681" y="264" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1590430640203">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -157,37 +212,117 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431692085" />
-    <state width="1293" height="399" key="GridCell.Tab.0.bottom" timestamp="1590431877783">
+    <state x="175" y="486" width="1479" height="455" key="#xdebugger.evaluate" timestamp="1590518824874">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
-    <state width="1293" height="399" key="GridCell.Tab.0.center" timestamp="1590431877783">
+    <state x="175" y="486" width="1479" height="455" key="#xdebugger.evaluate/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590518824874" />
+    <state width="893" height="466" key="DebuggerActiveHint" timestamp="1590522243490">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
-    <state width="1293" height="399" key="GridCell.Tab.0.left" timestamp="1590431877783">
+    <state width="893" height="466" key="DebuggerActiveHint/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522243490" />
+    <state width="1568" height="200" key="GridCell.Tab.0.bottom" timestamp="1590522919144">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
-    <state width="1293" height="399" key="GridCell.Tab.0.right" timestamp="1590431877783">
+    <state width="1568" height="200" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919144" />
+    <state width="1568" height="200" key="GridCell.Tab.0.center" timestamp="1590522919143">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
-    <state width="1293" height="399" key="GridCell.Tab.1.bottom" timestamp="1590431877783">
+    <state width="1568" height="200" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919143" />
+    <state width="1568" height="200" key="GridCell.Tab.0.left" timestamp="1590522919143">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.1.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
-    <state width="1293" height="399" key="GridCell.Tab.1.center" timestamp="1590431877783">
+    <state width="1568" height="200" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919143" />
+    <state width="1568" height="200" key="GridCell.Tab.0.right" timestamp="1590522919144">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.1.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
-    <state width="1293" height="399" key="GridCell.Tab.1.left" timestamp="1590431877783">
+    <state width="1568" height="200" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919144" />
+    <state width="1568" height="200" key="GridCell.Tab.1.bottom" timestamp="1590522919008">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.1.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
-    <state width="1293" height="399" key="GridCell.Tab.1.right" timestamp="1590431877783">
+    <state width="1568" height="200" key="GridCell.Tab.1.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state width="1568" height="200" key="GridCell.Tab.1.center" timestamp="1590522919008">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1293" height="399" key="GridCell.Tab.1.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431877783" />
+    <state width="1568" height="200" key="GridCell.Tab.1.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state width="1568" height="200" key="GridCell.Tab.1.left" timestamp="1590522919008">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1568" height="200" key="GridCell.Tab.1.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state width="1568" height="200" key="GridCell.Tab.1.right" timestamp="1590522919008">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1568" height="200" key="GridCell.Tab.1.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state width="1568" height="200" key="GridCell.Tab.2.bottom" timestamp="1590522919008">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1568" height="200" key="GridCell.Tab.2.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state width="1568" height="200" key="GridCell.Tab.2.center" timestamp="1590522919008">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1568" height="200" key="GridCell.Tab.2.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state width="1568" height="200" key="GridCell.Tab.2.left" timestamp="1590522919008">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1568" height="200" key="GridCell.Tab.2.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state width="1568" height="200" key="GridCell.Tab.2.right" timestamp="1590522919008">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1568" height="200" key="GridCell.Tab.2.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522919008" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1590508248059">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590508248059" />
+    <state x="769" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1590514140695">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="769" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590514140695" />
+    <state x="485" y="91" width="1052" height="772" key="find.popup" timestamp="1590521491167">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="485" y="91" width="1052" height="772" key="find.popup/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590521491167" />
+    <state width="831" height="500" key="javadoc.popup.new" timestamp="1590520812693">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="831" height="500" key="javadoc.popup.new/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590520812693" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1590522540169">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522540169" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/CategoryController.java</url>
+          <line>92</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/composite-product/src/main/java/de/hska/eshopapi/composite/product/controllers/ProductController.java</url>
+          <line>117</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core-product/src/main/java/de/hska/eshopapi/core/product/controllers/ProductController.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/eshop-api/src/main/java/de/hska/eshopapi/controllers/ProductController.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/CategoryController.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/composite-category/src/main/java/de/hska/eshopapi/composite/category/controllers/CategoryController.java</url>
+          <line>88</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

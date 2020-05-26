@@ -40,6 +40,7 @@ public class UserController {
         this.roleDAO = roleDAO;
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserView>> getUsers() {
         List<User> users = this.userDAO.findAll();
@@ -56,6 +57,7 @@ public class UserController {
         return new ResponseEntity<>(userViews, HttpStatus.OK);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserView> addUser(
             @ApiParam(value = "User", required = true)
@@ -82,6 +84,7 @@ public class UserController {
         return new ResponseEntity<>(newUserView, HttpStatus.OK);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{userId}")
     public ResponseEntity<UserView> getUser(
             @ApiParam(value = "user Id", required = true)
@@ -98,6 +101,7 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/username/{username}")
     public ResponseEntity<UserView> getUserByUsername(
             @ApiParam(value = "user Id", required = true)
@@ -128,15 +132,15 @@ public class UserController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //    }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{userId}")
     public ResponseEntity<UserView> deleteUser(
             @ApiParam(value = "user Id", required = true)
             @PathVariable("userId")
                     UUID userId
     ) {
-        Optional<User> userOptional = this.userDAO.findById(userId);
-        if(userOptional.isPresent()) {
-            userDAO.delete(userOptional.get());
+        if(this.userDAO.existsById(userId)) {
+            userDAO.deleteById(userId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

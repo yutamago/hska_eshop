@@ -1,13 +1,13 @@
 package de.hska.eshopapi;
 
 public class RoutesUtil {
-    public static final String APICompositeUser = "composite-user";
-    public static final String APICompositeCategory = "composite-category";
-    public static final String APICompositeProduct = "composite-product";
+    public static final String APICompositeUser = "http://composite-user";
+    public static final String APICompositeCategory = "http://composite-category";
+    public static final String APICompositeProduct = "http://composite-product";
     
-    public static final String APICoreUser = "core-user";
-    public static final String APICoreCategory = "core-category";
-    public static final String APICoreProduct = "core-product";
+    public static final String APICoreUser = "http://core-user";
+    public static final String APICoreCategory = "http://core-category";
+    public static final String APICoreProduct = "http://core-product";
 
     public static final String APIUser = "user";
     public static final String APIRole = "role";

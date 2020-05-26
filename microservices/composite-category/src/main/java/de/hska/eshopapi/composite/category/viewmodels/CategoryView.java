@@ -1,6 +1,7 @@
 package de.hska.eshopapi.composite.category.viewmodels;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.hska.eshopapi.composite.category.model.Category;
 import de.hska.eshopapi.composite.category.model.Product;
 
 import java.util.List;
@@ -10,6 +11,14 @@ public class CategoryView {
     @JsonProperty private UUID categoryId;
     @JsonProperty private String name;
     @JsonProperty private List<Product> products;
+
+    public static CategoryView FromCategory(Category c, List<Product> productsCategory) {
+        CategoryView cv = new CategoryView();
+        cv.categoryId = c.getCategoryId();
+        cv.name = c.getName();
+        cv.products = productsCategory;
+        return cv;
+    }
 
     public UUID getCategoryId() {
         return categoryId;

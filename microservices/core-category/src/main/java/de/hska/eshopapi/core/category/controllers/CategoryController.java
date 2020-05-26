@@ -34,10 +34,10 @@ public class CategoryController {
     }
 
 
-
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getCategories() {
-        List<Category> categories = StreamSupport.stream(this.categoryDAO.findAll().spliterator(), false).collect(Collectors.toList());
+        List<Category> categories = new ArrayList<>(this.categoryDAO.findAll());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
@@ -97,14 +97,13 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
-    public ResponseEntity<Category> deleteCategory(
+    public ResponseEntity<String> deleteCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
                     UUID categoryId
     ) {
-        Optional<Category> categoryOptional = this.categoryDAO.findById(categoryId);
-        if(categoryOptional.isPresent()) {
-            categoryDAO.delete(categoryOptional.get());
+        if(this.categoryDAO.existsById(categoryId)) {
+            categoryDAO.deleteById(categoryId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

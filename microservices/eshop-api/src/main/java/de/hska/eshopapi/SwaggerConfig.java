@@ -4,6 +4,7 @@ package de.hska.eshopapi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -12,6 +13,10 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -22,6 +27,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
+
+import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
+import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @EnableDiscoveryClient
 @EnableEurekaClient
@@ -30,23 +39,15 @@ import javax.servlet.ServletContext;
 @EnableHystrixDashboard
 @EnableSwagger2
 @SpringBootApplication
+@Configuration
 public class SwaggerConfig {
 
     public static void main(String[] args) {
         SpringApplication.run(SwaggerConfig.class, args);
     }
 
-    private final ServletContext servletContext;
-
     @Autowired
-    public SwaggerConfig(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
-
-    @LoadBalanced
-    @Bean
-    RestTemplate restTemplate(){
-        return new RestTemplate();
+    public SwaggerConfig() {
     }
 
     @Bean
@@ -57,15 +58,6 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
-//                .pathProvider(new RelativePathProvider(servletContext) {
-//                                  @Override
-//                                  public String getApplicationBasePath() {
-//                                      return "/api";
-//                                  }
-//                              });
-//                .securitySchemes(Collections.singletonList(securitySchema()));
-
-
     }
 
     private ApiInfo apiInfo() {
@@ -75,4 +67,5 @@ public class SwaggerConfig {
                 .version("0.1")
                 .build();
     }
+
 }

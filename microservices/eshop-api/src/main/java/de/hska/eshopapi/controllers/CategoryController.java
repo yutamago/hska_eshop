@@ -32,54 +32,42 @@ import java.util.UUID;
 @Api(tags = "Category")
 public class CategoryController {
 
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     private static final ParameterizedTypeReference<List<CategoryView>> CategoryListTypeRef = new ParameterizedTypeReference<List<CategoryView>>() {
     };
 
-    @Autowired
-    public CategoryController(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+
+    public CategoryController(@Autowired RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     private static URIBuilder makeURI(String... path) throws URISyntaxException {
         List<String> segments = new ArrayList<>();
-        segments.add(RoutesUtil.APICompositeCategory);
         segments.add(RoutesUtil.APICategory);
         segments.addAll(Arrays.asList(path));
-        return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
+        return new URIBuilder(RoutesUtil.APICompositeCategory).setPathSegments(segments);
     }
 
-    @HystrixCommand(fallbackMethod = "getCategoriesFallback")
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<CategoryView>> getCategories() throws URISyntaxException {
         URI uri = makeURI().build();
+        ResponseEntity<List<CategoryView>> categories = this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryListTypeRef);
 
-        return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryListTypeRef);
+        return new ResponseEntity<>(categories.getBody(), HttpStatus.OK);
     }
-    @SuppressWarnings("unused")
-    public ResponseEntity<List<CategoryView>> getCategoriesFallback() throws URISyntaxException {
-        URI uri = makeURI().build();
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
-    }
-    /*
-    * @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserView>> getUsers() {
-        List<User> users = this.userDAO.findAll();
-        List<UserView> userViews = new ArrayList<>(users.size());
 
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            Role role = null;
-            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = roleDAO.getOne(user.getRoleId());
-            }
-            userViews.set(i, UserView.FromUser(user, role));
-        }
-
-        return new ResponseEntity<>(userViews, HttpStatus.OK);
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.GET, path = "/id/{categoryId}")
+    public ResponseEntity<CategoryView> getCategoryById(
+            @ApiParam(value = "category Id", required = true)
+            @PathVariable("categoryId")
+                    UUID categoryId
+    ) throws URISyntaxException {
+        URI uri = makeURI("id", categoryId.toString()).build();
+        return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryView.class);
     }
-    * */
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
@@ -94,24 +82,14 @@ public class CategoryController {
     }
 
     @HystrixCommand
-    @RequestMapping(method = RequestMethod.GET, path = "/{categoryId}")
-    public ResponseEntity<CategoryView> getCategoryById(
-            @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryId")
-                    UUID categoryId
-    ) throws URISyntaxException {
-        URI uri = makeURI("id", categoryId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryView.class);
-    }
-
-    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
-    public ResponseEntity<CategoryView> deleteCategory(
+    public ResponseEntity<String> deleteCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
                     UUID categoryId
     ) throws URISyntaxException {
         URI uri = makeURI(categoryId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, CategoryView.class);
+        ResponseEntity<String> response = this.restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class);
+        return response;
     }
 }

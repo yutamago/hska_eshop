@@ -39,16 +39,15 @@ public class ProductController {
     };
 
     @Autowired
-    public ProductController(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    public ProductController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     private static URIBuilder makeURI(String... path) throws URISyntaxException {
         List<String> segments = new ArrayList<>();
-        segments.add(RoutesUtil.APICompositeProduct);
         segments.add(RoutesUtil.APIProduct);
         segments.addAll(Arrays.asList(path));
-        return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
+        return new URIBuilder(RoutesUtil.APICompositeProduct).setPathSegments(segments);
     }
 
     @HystrixCommand
@@ -57,68 +56,6 @@ public class ProductController {
         URI uri = makeURI().build();
 
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, ProductListTypeRef);
-    }
-
-    /*
-    * @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserView>> getUsers() {
-        List<User> users = this.userDAO.findAll();
-        List<UserView> userViews = new ArrayList<>(users.size());
-
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            Role role = null;
-            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = roleDAO.getOne(user.getRoleId());
-            }
-            userViews.set(i, UserView.FromUser(user, role));
-        }
-
-        return new ResponseEntity<>(userViews, HttpStatus.OK);
-    }
-    * */
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.GET, path = "/search")
-    public ResponseEntity<List<ProductView>> searchProducts(
-            @ApiParam(value = "search options", required = true)
-            @Valid @RequestBody ProductSearchOptions searchOptions
-    ) throws URISyntaxException {
-        URI uri = makeURI().build();
-        HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions);
-
-        return this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductListTypeRef);
-    }
-
-    /*
-    * @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserView>> getUsers() {
-        List<User> users = this.userDAO.findAll();
-        List<UserView> userViews = new ArrayList<>(users.size());
-
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            Role role = null;
-            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = roleDAO.getOne(user.getRoleId());
-            }
-            userViews.set(i, UserView.FromUser(user, role));
-        }
-
-        return new ResponseEntity<>(userViews, HttpStatus.OK);
-    }
-    * */
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<ProductView> addProduct(
-            @ApiParam(value = "Product", required = true)
-            @RequestBody(required = true)
-                    Product product) throws URISyntaxException {
-        URI uri = makeURI().build();
-        HttpEntity<Product> body = new HttpEntity<>(product);
-
-        return this.restTemplate.postForEntity(uri, body, ProductView.class);
     }
 
     @HystrixCommand
@@ -133,6 +70,30 @@ public class ProductController {
     }
 
     @HystrixCommand
+    @RequestMapping(method = RequestMethod.GET, path = "/search")
+    public ResponseEntity<List<ProductView>> searchProducts(
+            @ApiParam(value = "search options", required = true)
+            @Valid @RequestBody ProductSearchOptions searchOptions
+    ) throws URISyntaxException {
+        URI uri = makeURI().build();
+        HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions);
+
+        return this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductListTypeRef);
+    }
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<ProductView> addProduct(
+            @ApiParam(value = "Product", required = true)
+            @RequestBody(required = true)
+                    Product product) throws URISyntaxException {
+        URI uri = makeURI().build();
+        HttpEntity<Product> body = new HttpEntity<>(product);
+
+        return this.restTemplate.postForEntity(uri, body, ProductView.class);
+    }
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
     public ResponseEntity<ProductView> deleteProduct(
             @ApiParam(value = "product Id", required = true)
@@ -142,5 +103,4 @@ public class ProductController {
         URI uri = makeURI(productId.toString()).build();
         return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, ProductView.class);
     }
-
 }

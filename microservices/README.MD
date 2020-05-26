@@ -2,9 +2,10 @@
 Authoren: Johanna Bräuning, Joan-Angelo Douvere
 ## TODO
 ### Prio
-- 3.2 b) Ribbon Clients / Client-side Load-Balancing testen
-- 3.2 c) Edge Server (Zuul) auslagern in echten Service
+- bugs..
 - 3.3 Docker-Compose
+- 4. Update (PUT)
+  
 - 3 Skizze der implementierten Systemarchitektur
 - 3 Präsentation vorbereiten (Routing, Monitoring, Load-Balancing, Circuit Breaking)
 

@@ -11,6 +11,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.context.annotation.Bean;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -21,6 +24,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
+
+import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
+import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 @EnableDiscoveryClient
 @EnableEurekaClient
@@ -34,17 +41,9 @@ public class SwaggerConfig {
         SpringApplication.run(SwaggerConfig.class, args);
     }
 
-    private final ServletContext servletContext;
-
     @Autowired
     public SwaggerConfig(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
 
-    @LoadBalanced
-    @Bean
-    RestTemplate restTemplate(){
-        return new RestTemplate();
     }
 
     @Bean
@@ -55,15 +54,6 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
-//                .pathProvider(new RelativePathProvider(servletContext) {
-//                                  @Override
-//                                  public String getApplicationBasePath() {
-//                                      return "/api";
-//                                  }
-//                              });
-//                .securitySchemes(Collections.singletonList(securitySchema()));
-
-
     }
 
     private ApiInfo apiInfo() {

@@ -32,32 +32,14 @@ public class RoleController {
         this.roleDAO = roleDAO;
     }
 
-
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Role>> getRoles() {
         List<Role> roles = StreamSupport.stream(this.roleDAO.findAll().spliterator(), false).collect(Collectors.toList());
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
-    /*
-    * @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserView>> getUsers() {
-        List<User> users = this.userDAO.findAll();
-        List<UserView> userViews = new ArrayList<>(users.size());
-
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            Role role = null;
-            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = roleDAO.getOne(user.getRoleId());
-            }
-            userViews.set(i, UserView.FromUser(user, role));
-        }
-
-        return new ResponseEntity<>(userViews, HttpStatus.OK);
-    }
-    * */
-
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Role> addRole(
             @ApiParam(value = "Role", required = true)
@@ -75,6 +57,7 @@ public class RoleController {
         return new ResponseEntity<>(newRole, HttpStatus.OK);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{roleId}")
     public ResponseEntity<Role> getRole(
             @ApiParam(value = "role Id", required = true)
@@ -87,6 +70,7 @@ public class RoleController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/type/{roleType}")
     public ResponseEntity<Role> getRole(
             @ApiParam(value = "role Id", required = true)
@@ -100,15 +84,15 @@ public class RoleController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{roleId}")
     public ResponseEntity<Role> deleteRole(
             @ApiParam(value = "role Id", required = true)
             @PathVariable("roleId")
                     UUID roleId
     ) {
-        Optional<Role> roleOptional = this.roleDAO.findById(roleId);
-        if(roleOptional.isPresent()) {
-            roleDAO.delete(roleOptional.get());
+        if(this.roleDAO.existsById(roleId)) {
+            roleDAO.deleteById(roleId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

@@ -24,8 +24,8 @@ public class Category {
 
     @Column(nullable = false)
     @JsonProperty
-    @ElementCollection
-    private Set<UUID> productIds;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<UUID> productIds;
 
     public UUID getCategoryId() {
         return categoryId;
@@ -43,11 +43,11 @@ public class Category {
         this.name = name;
     }
 
-    public Set<UUID> getProductIds() {
+    public List<UUID> getProductIds() {
         return productIds;
     }
 
-    public void setProductIds(Set<UUID> productIds) {
+    public void setProductIds(List<UUID> productIds) {
         this.productIds = productIds;
     }
 }

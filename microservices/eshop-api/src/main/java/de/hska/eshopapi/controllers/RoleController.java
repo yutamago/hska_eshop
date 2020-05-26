@@ -34,15 +34,14 @@ public class RoleController {
 
     private static URIBuilder makeURI(String... path) throws URISyntaxException {
         List<String> segments = new ArrayList<>();
-        segments.add(RoutesUtil.APICoreUser);
         segments.add(RoutesUtil.APIRole);
         segments.addAll(Arrays.asList(path));
-        return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
+        return new URIBuilder(RoutesUtil.APICoreUser).setPathSegments(segments);
     }
 
     @Autowired
-    public RoleController(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    public RoleController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     @HystrixCommand
@@ -51,38 +50,6 @@ public class RoleController {
         URI uri = makeURI().build();
 
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, RoleController.RoleListTypeRef);
-    }
-
-    /*
-    * @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserView>> getUsers() {
-        List<User> users = this.userDAO.findAll();
-        List<UserView> userViews = new ArrayList<>(users.size());
-
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            Role role = null;
-            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = roleDAO.getOne(user.getRoleId());
-            }
-            userViews.set(i, UserView.FromUser(user, role));
-        }
-
-        return new ResponseEntity<>(userViews, HttpStatus.OK);
-    }
-    * */
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Role> addRole(
-            @ApiParam(value = "Role", required = true)
-            @RequestBody(required = true)
-                    Role role
-    ) throws URISyntaxException {
-        URI uri = makeURI().build();
-        HttpEntity<Role> body = new HttpEntity<>(role);
-
-        return this.restTemplate.postForEntity(uri, body, Role.class);
     }
 
     @HystrixCommand
@@ -112,7 +79,19 @@ public class RoleController {
         } catch (HttpClientErrorException exception) {
             return new ResponseEntity<>(exception.getStatusCode());
         }
+    }
 
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Role> addRole(
+            @ApiParam(value = "Role", required = true)
+            @RequestBody(required = true)
+                    Role role
+    ) throws URISyntaxException {
+        URI uri = makeURI().build();
+        HttpEntity<Role> body = new HttpEntity<>(role);
+
+        return this.restTemplate.postForEntity(uri, body, Role.class);
     }
 
     @HystrixCommand

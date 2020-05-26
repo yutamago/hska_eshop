@@ -32,15 +32,14 @@ public class UserController {
 
     private static URIBuilder makeURI(String... path) throws URISyntaxException {
         List<String> segments = new ArrayList<>();
-        segments.add(RoutesUtil.APICoreUser);
         segments.add(RoutesUtil.APIUser);
         segments.addAll(Arrays.asList(path));
-        return new URIBuilder(RoutesUtil.Localhost).setPathSegments(segments);
+        return new URIBuilder(RoutesUtil.APICoreUser).setPathSegments(segments);
     }
 
     @Autowired
-    public UserController(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    public UserController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     @HystrixCommand
@@ -49,38 +48,6 @@ public class UserController {
         URI uri = makeURI().build();
 
         return this.restTemplate.exchange(uri, HttpMethod.GET, null, UserController.UserListTypeRef);
-    }
-
-    /*
-    * @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserView>> getUsers() {
-        List<User> users = this.userDAO.findAll();
-        List<UserView> userViews = new ArrayList<>(users.size());
-
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            Role role = null;
-            if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = roleDAO.getOne(user.getRoleId());
-            }
-            userViews.set(i, UserView.FromUser(user, role));
-        }
-
-        return new ResponseEntity<>(userViews, HttpStatus.OK);
-    }
-    * */
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UserView> addUser(
-            @ApiParam(value = "User", required = true)
-            @RequestBody(required = true)
-                    User user
-    ) throws URISyntaxException {
-        URI uri = makeURI().build();
-        HttpEntity<User> body = new HttpEntity<>(user);
-
-        return this.restTemplate.postForEntity(uri, body, UserView.class);
     }
 
     @HystrixCommand
@@ -106,6 +73,19 @@ public class UserController {
     }
 
     @HystrixCommand
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<UserView> addUser(
+            @ApiParam(value = "User", required = true)
+            @RequestBody(required = true)
+                    User user
+    ) throws URISyntaxException {
+        URI uri = makeURI().build();
+        HttpEntity<User> body = new HttpEntity<>(user);
+
+        return this.restTemplate.postForEntity(uri, body, UserView.class);
+    }
+
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{userId}")
     public ResponseEntity<UserView> deleteUser(
             @ApiParam(value = "user Id", required = true)
@@ -115,5 +95,4 @@ public class UserController {
         URI uri = makeURI(userId.toString()).build();
         return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, UserView.class);
     }
-
 }

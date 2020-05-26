@@ -8,7 +8,6 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 
 @EnableZuulProxy
-@RibbonClient(name = "eshop-edge")
 @EnableEurekaClient
 @SpringBootApplication
 public class EdgeServerConfig {
