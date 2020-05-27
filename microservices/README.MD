@@ -2,15 +2,23 @@
 Authoren: Johanna Bräuning, Joan-Angelo Douvere
 ## TODO
 ### Prio
-- bugs..
-- 3.3 Docker-Compose
-- 4. Update (PUT)
-  
-- 3 Skizze der implementierten Systemarchitektur
-- 3 Präsentation vorbereiten (Routing, Monitoring, Load-Balancing, Circuit Breaking)
+- 1 Docker-Compose
+  - auf HOST Ebene builden
+  - jars in Container kopieren
+  - depends on einfügen für Abhängigkeiten -> Eureka zuerst
+- 2 Zuul
+  - Nur eShop API sollte exposed sein, 
+  - andere nicht als Zuul-Clients
+- 3 Integrität absichern
+  - Wenn man Kategorien löscht, sollten Produkte auch geändert/gelöscht werden
+  - Produkte, User, Roles genauso
+- 4 Hystrix Fallbacks für Get-Methoden / Cache
 
 ### Nice to have
-- 3.1 c) Geteilte Komponenten können in einem eigenständigen Projekt realisiert werden, dass dann als Abhängigkeit in die Microservices eingebunden wird.
+- Geteilte Komponenten in einem eigenständigen Projekt auslagern und als Abhängigkeit in die Microservices einbinden
+- Update-Methoden (PUT)
+- bugs fixen..
+
 
 ## Links
 

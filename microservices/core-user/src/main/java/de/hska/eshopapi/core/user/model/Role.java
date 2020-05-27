@@ -1,6 +1,7 @@
 package de.hska.eshopapi.core.user.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.UUID;

@@ -13,7 +13,7 @@
     <groupId>de.hska</groupId>
     <artifactId>core-user</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>core-user</name>
     <description>User CoreService für eShop-API</description>
 

@@ -22,7 +22,7 @@ public class UserView implements Serializable {
         uv.firstname = user.getFirstname();
         uv.lastname = user.getLastname();
         uv.password = user.getPassword();
-        uv.role = RoleView.FromRole(role);
+//        uv.role = RoleView.FromRole(role);
         return uv;
     }
 

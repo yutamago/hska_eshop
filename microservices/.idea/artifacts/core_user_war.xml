@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="core-user:war">
+    <output-path>$PROJECT_DIR$/core-user/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>core-user</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="core-user-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="core-user:war exploded" />
+    </root>
+  </artifact>
+</component>

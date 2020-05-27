@@ -13,7 +13,7 @@
     <groupId>de.hska</groupId>
     <artifactId>composite-category</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>composite-category</name>
     <description>Category Composite für eShop-API</description>
 

@@ -1,50 +1,34 @@
 version: '3.2'
 services:
   eshop-api:
-    build:
-      context: ./eshop-api
-      dockerfile: ./Dockerfile
+    build: ./eshop-api
     ports:
-      - "8080:8080"
+      - 8080:8080
   eshop-discovery:
-    build:
-      context: ./eshop-discovery
-      dockerfile: ./Dockerfile
+    build: ./eshop-discovery
     ports:
-      - "9002:9002"
+      - 9002:9002
   eshop-edge:
-    build:
-      context: ./eshop-edge
-      dockerfile: ./Dockerfile
+    build: ./eshop-edge
     ports:
-      - "9001:9001"
+      - 9001:9001
   core-user:
-    build:
-      context: ./core-user
-      dockerfile: ./Dockerfile
+    build: ./core-user
     ports:
-      - "8086:8086"
+      - 8086:8086
   core-product:
-    build:
-      context: ./core-user
-      dockerfile: ./Dockerfile
+    build: ./core-product
     ports:
-      - "8085:8085"
+      - 8085:8085
   core-category:
-    build:
-      context: ./core-category
-      dockerfile: ./Dockerfile
+    build: ./core-category
     ports:
-      - "8084:8084"
+      - 8084:8084
   composite-product:
-    build:
-      context: ./composite-product
-      dockerfile: ./Dockerfile
+    build: ./composite-product
     ports:
-      - "8082:8082"
+      - 8082:8082
   composite-category:
-    build:
-      context: ./composite-category
-      dockerfile: ./Dockerfile
+    build: ./composite-category
     ports:
-      - "8081:8081"
+      - 8081:8081

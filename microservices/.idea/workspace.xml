@@ -19,56 +19,31 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="409942b9-ae08-414f-aec0-1f6b5c4be7d9" name="Default Changelist" comment="zeug">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/composite_category_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/composite_category_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/composite_product_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/composite_product_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_category_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_category_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_product_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_product_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/eshop_api_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/eshop_api_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/eshop_discovery_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/eshop_discovery_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/eshop_edge_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/eshop_edge_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composite-category/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composite-product/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composite-product/conf/tomcat-users.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core-category/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core-category/conf/tomcat-users.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core-product/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core-product/conf/tomcat-users.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core-user/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core-user/conf/tomcat-users.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eshop-api/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eshop-api/conf/tomcat-users.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eshop-discovery/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eshop-discovery/conf/tomcat-users.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eshop-edge/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eshop-edge/conf/tomcat-users.xml" afterDir="false" />
+    <list default="true" id="409942b9-ae08-414f-aec0-1f6b5c4be7d9" name="Default Changelist" comment="docker">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_user_war.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/core_user_war_exploded.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.MD" beforeDir="false" afterPath="$PROJECT_DIR$/README.MD" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-category/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composite-category/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-category/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/composite-category/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composite-product/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composite-product/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composite-product/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/composite-product/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-category/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core-category/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-category/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-category/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-product/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core-product/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-product/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-product/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-user/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core-user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-user/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/model/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/model/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/viewmodels/UserView.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-user/src/main/java/de/hska/eshopapi/core/user/viewmodels/UserView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-api/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eshop-api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-api/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-discovery/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-discovery/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eshop-discovery/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-discovery/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-discovery/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-discovery/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-edge/eshop-edge.iml" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-edge/eshop-edge.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eshop-edge/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-edge/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/eshop-edge/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-edge/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eshop-edge/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/eshop-edge/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +120,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Docker.compose">
+  <component name="RunManager" selected="Spring Boot.eShop - Composite Product">
     <configuration default="true" type="CompoundRunConfigurationType">
       <toRun name="eShop - Composite Category" type="SpringBootApplicationConfigurationType" />
       <toRun name="eShop - Composite Product" type="SpringBootApplicationConfigurationType" />
@@ -175,7 +150,6 @@
         <settings>
           <option name="imageTag" value="" />
           <option name="buildCliOptions" value="" />
-          <option name="buildOnly" value="true" />
           <option name="command" value="" />
           <option name="containerName" value="" />
           <option name="entrypoint" value="" />
@@ -194,6 +168,22 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="eshop-api/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="eshop-api/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Compound.Rügenwalder" />
       <item itemvalue="Docker.composite-category/Dockerfile" />
@@ -206,7 +196,15 @@
       <item itemvalue="Spring Boot.eShop API" />
       <item itemvalue="Spring Boot.eShop Discovery Service" />
       <item itemvalue="Spring Boot.eShop Edge Service" />
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="Docker.eshop-api/Dockerfile" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.eshop-api/Dockerfile" />
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -222,7 +220,8 @@
       <workItem from="1590497340389" duration="8649000" />
       <workItem from="1590506033265" duration="10440000" />
       <workItem from="1590516497110" duration="8728000" />
-      <workItem from="1590525559516" duration="6171000" />
+      <workItem from="1590525559516" duration="6305000" />
+      <workItem from="1590556525455" duration="11415000" />
     </task>
     <task id="LOCAL-00001" summary="extra edge service">
       <created>1590432689431</created>
@@ -245,7 +244,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590523326971</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="docker">
+      <created>1590531909792</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1590531909792</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +273,8 @@
     <MESSAGE value="extra edge service" />
     <MESSAGE value="edgy" />
     <MESSAGE value="zeug" />
-    <option name="LAST_COMMIT_MESSAGE" value="zeug" />
+    <MESSAGE value="docker" />
+    <option name="LAST_COMMIT_MESSAGE" value="docker" />
   </component>
   <component name="WindowStateProjectService">
     <state x="440" y="94" key="#Project_Structure" timestamp="1590524207980">
@@ -290,14 +297,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590431692085" />
-    <state x="175" y="486" width="1479" height="455" key="#xdebugger.evaluate" timestamp="1590518824874">
+    <state x="251" y="585" width="1479" height="455" key="#xdebugger.evaluate" timestamp="1590565081725">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="175" y="486" width="1479" height="455" key="#xdebugger.evaluate/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590518824874" />
-    <state width="893" height="466" key="DebuggerActiveHint" timestamp="1590522243490">
+    <state x="251" y="585" width="1479" height="455" key="#xdebugger.evaluate/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590565081725" />
+    <state width="893" height="466" key="DebuggerActiveHint" timestamp="1590564874428">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="893" height="466" key="DebuggerActiveHint/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590522243490" />
+    <state width="893" height="466" key="DebuggerActiveHint/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590564874428" />
     <state x="92" y="92" width="1736" height="856" maximized="true" key="DiffContextDialog" timestamp="1590529093251">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -310,62 +317,62 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590530483925" />
-    <state width="1877" height="170" key="GridCell.Tab.0.bottom" timestamp="1590525943898">
+    <state width="1454" height="433" key="GridCell.Tab.0.bottom" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="170" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590525943898" />
-    <state width="1877" height="170" key="GridCell.Tab.0.center" timestamp="1590525943898">
+    <state width="1454" height="433" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.0.center" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="170" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590525943898" />
-    <state width="1877" height="170" key="GridCell.Tab.0.left" timestamp="1590525943898">
+    <state width="1454" height="433" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.0.left" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="170" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590525943898" />
-    <state width="1877" height="170" key="GridCell.Tab.0.right" timestamp="1590525943898">
+    <state width="1454" height="433" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.0.right" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="170" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590525943898" />
-    <state width="1554" height="198" key="GridCell.Tab.1.bottom" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.1.bottom" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.1.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
-    <state width="1554" height="198" key="GridCell.Tab.1.center" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.1.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.1.center" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.1.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
-    <state width="1554" height="198" key="GridCell.Tab.1.left" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.1.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.1.left" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.1.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
-    <state width="1554" height="198" key="GridCell.Tab.1.right" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.1.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.1.right" timestamp="1590567278667">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.1.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
-    <state width="1554" height="198" key="GridCell.Tab.2.bottom" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.1.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567278667" />
+    <state width="1454" height="433" key="GridCell.Tab.2.bottom" timestamp="1590567275735">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.2.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
-    <state width="1554" height="198" key="GridCell.Tab.2.center" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.2.bottom/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567275735" />
+    <state width="1454" height="433" key="GridCell.Tab.2.center" timestamp="1590567275735">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.2.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
-    <state width="1554" height="198" key="GridCell.Tab.2.left" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.2.center/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567275735" />
+    <state width="1454" height="433" key="GridCell.Tab.2.left" timestamp="1590567275735">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.2.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
-    <state width="1554" height="198" key="GridCell.Tab.2.right" timestamp="1590524422478">
+    <state width="1454" height="433" key="GridCell.Tab.2.left/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567275735" />
+    <state width="1454" height="433" key="GridCell.Tab.2.right" timestamp="1590567275735">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1554" height="198" key="GridCell.Tab.2.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422478" />
+    <state width="1454" height="433" key="GridCell.Tab.2.right/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590567275735" />
     <state x="461" y="164" key="SettingsEditor" timestamp="1590525920442">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="164" key="SettingsEditor/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590525920442" />
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1590523332766">
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2" timestamp="1590531913149">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590523332766" />
+    <state x="552" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590531913149" />
     <state x="859" y="415" width="877" height="208" key="com.intellij.docker.deployment.ui.DockerPortBindingsField.v173.dialogSize" timestamp="1590526513373">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -374,10 +381,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="769" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590514140695" />
-    <state x="325" y="167" width="1052" height="772" key="find.popup" timestamp="1590531077934">
+    <state x="241" y="268" width="1052" height="772" key="find.popup" timestamp="1590565043663">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="325" y="167" width="1052" height="772" key="find.popup/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590531077934" />
+    <state x="241" y="268" width="1052" height="772" key="find.popup/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590565043663" />
     <state width="831" height="500" key="javadoc.popup.new" timestamp="1590531752758">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -386,10 +393,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="242" width="672" height="677" key="run.anything.popup/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590524422363" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1590527822251">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1590565039235">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590527822251" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/-1920.279.1920.1040@0.0.1920.1040" timestamp="1590565039235" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

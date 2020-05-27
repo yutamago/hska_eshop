@@ -1,11 +1,10 @@
 FROM maven:3.6.3-openjdk-14-slim
+VOLUME /root/.m2
 
-COPY ./pom.xml ./pom.xml
-COPY ./src ./src
-RUN mvn clean package
+COPY ./pom.xml /target/pom.xml
+COPY ./src /target/src
 
-FROM tomcat:9.0.35
-COPY --from=builder /target/eshop-api-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/
-COPY ./conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
+RUN mvn clean package -f /target/pom.xml
+CMD ["java", "-jar", "/target/eshop-api-0.0.1-SNAPSHOT.jar"]
 
 EXPOSE 8080
