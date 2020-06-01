@@ -9,8 +9,8 @@ import java.util.UUID;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
-        @NamedQuery(name = "findByCategoryId", query = "SELECT p FROM Product p WHERE p.categoryId = :categoryId"),
+        @NamedQuery(name = "findByName", query = "SELECT p FROM Product p WHERE p.name = :name and p.isDeleted = false"),
+        @NamedQuery(name = "findByCategoryId", query = "SELECT p FROM Product p WHERE p.categoryId = :categoryId and p.isDeleted = false"),
 })
 public class Product {
     @Id
@@ -29,6 +29,9 @@ public class Product {
 
     @Column(nullable = false)
     @JsonProperty private String details;
+
+    @Column(nullable = false)
+    @JsonProperty private boolean isDeleted;
 
     public UUID getProductId() {
         return productId;
@@ -68,5 +71,13 @@ public class Product {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

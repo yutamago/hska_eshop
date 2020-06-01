@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -26,10 +27,12 @@ public class RoleController {
     private RoleDAO roleDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private EntityManager entityManager;
 
     @Autowired
-    public RoleController(RoleDAO roleDAO) {
+    public RoleController(RoleDAO roleDAO, EntityManager entityManager) {
         this.roleDAO = roleDAO;
+        this.entityManager = entityManager;
     }
 
     @HystrixCommand
@@ -91,8 +94,13 @@ public class RoleController {
             @PathVariable("roleId")
                     UUID roleId
     ) {
-        if(this.roleDAO.existsById(roleId)) {
-            roleDAO.deleteById(roleId);
+        final Optional<Role> role = roleDAO.findById(roleId);
+
+        if(role.isPresent()) {
+            entityManager.getTransaction().begin();
+            role.get().setDeleted(true);
+            entityManager.getTransaction().commit();
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

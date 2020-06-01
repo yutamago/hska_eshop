@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -33,11 +34,13 @@ public class UserController {
     private final UserDAO userDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private EntityManager entityManager;
 
     @Autowired
-    public UserController(UserDAO userDAO, RoleDAO roleDAO) {
+    public UserController(UserDAO userDAO, RoleDAO roleDAO, EntityManager entityManager) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
+        this.entityManager = entityManager;
     }
 
     @HystrixCommand
@@ -139,8 +142,13 @@ public class UserController {
             @PathVariable("userId")
                     UUID userId
     ) {
-        if(this.userDAO.existsById(userId)) {
-            userDAO.deleteById(userId);
+        final Optional<User> user = userDAO.findById(userId);
+
+        if(user.isPresent()) {
+            entityManager.getTransaction().begin();
+            user.get().setDeleted(true);
+            entityManager.getTransaction().commit();
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,13 +26,15 @@ import java.util.stream.StreamSupport;
 @Api(tags = "Category")
 public class CategoryController {
 
+    private EntityManager entityManager;
     private CategoryDAO categoryDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
-    public CategoryController(CategoryDAO categoryDAO) {
+    public CategoryController(CategoryDAO categoryDAO, EntityManager entityManager) {
         this.categoryDAO = categoryDAO;
+        this.entityManager = entityManager;
     }
 
 
@@ -102,12 +106,37 @@ public class CategoryController {
             @PathVariable("categoryId")
                     UUID categoryId
     ) {
-        if(this.categoryDAO.existsById(categoryId)) {
-            categoryDAO.deleteById(categoryId);
+        final Optional<Category> category = categoryDAO.findById(categoryId);
+
+        if(category.isPresent()) {
+            entityManager.getTransaction().begin();
+            category.get().setDeleted(true);
+            entityManager.getTransaction().commit();
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.PUT, path = "/restore/{categoryId}")
+    public ResponseEntity<String> restoreCategory(
+            @ApiParam(value = "category Id", required = true)
+            @PathVariable("categoryId")
+                    UUID categoryId
+    ) {
+        final Optional<Category> category = categoryDAO.findDeletedById(categoryId);
+
+        if(category.isPresent()) {
+            entityManager.getTransaction().begin();
+            category.get().setDeleted(false);
+            entityManager.getTransaction().commit();
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }

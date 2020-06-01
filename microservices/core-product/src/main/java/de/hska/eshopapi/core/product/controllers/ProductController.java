@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,10 +23,12 @@ public class ProductController {
     private ProductDAO productDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private EntityManager entityManager;
 
     @Autowired
-    public ProductController(ProductDAO productDAO) {
+    public ProductController(ProductDAO productDAO, EntityManager entityManager) {
         this.productDAO = productDAO;
+        this.entityManager = entityManager;
     }
 
     @HystrixCommand
@@ -94,12 +97,37 @@ public class ProductController {
             @PathVariable("productId")
                     UUID productId
     ) {
-        if (this.productDAO.existsById(productId)) {
-            productDAO.deleteById(productId);
+        final Optional<Product> product = productDAO.findById(productId);
+
+        if(product.isPresent()) {
+            entityManager.getTransaction().begin();
+            product.get().setDeleted(true);
+            entityManager.getTransaction().commit();
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.PUT, path = "/restore/{productId}")
+    public ResponseEntity<String> restoreProduct(
+            @ApiParam(value = "product Id", required = true)
+            @PathVariable("productId")
+                    UUID productId
+    ) {
+        final Optional<Product> product = productDAO.findDeletedById(productId);
+
+        if(product.isPresent()) {
+            entityManager.getTransaction().begin();
+            product.get().setDeleted(false);
+            entityManager.getTransaction().commit();
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

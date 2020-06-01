@@ -1,6 +1,7 @@
 package de.hska.eshopapi.core.category.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,8 +11,8 @@ import java.util.UUID;
 @Entity
 @Table
 @NamedQueries({
-        @NamedQuery(name = "Category.findByName", query = "select c from Category c where c.name = :name"),
-        @NamedQuery(name = "Category.findByProductId", query = "select c from Category c where :productId in(c.productIds)"),
+        @NamedQuery(name = "Category.findByName", query = "select c from Category c where c.name = :name and c.isDeleted = false"),
+        @NamedQuery(name = "Category.findByProductId", query = "select c from Category c where :productId in(c.productIds) and c.isDeleted = false"),
 })
 public class Category {
     @Id
@@ -26,6 +27,9 @@ public class Category {
     @JsonProperty
     @ElementCollection(fetch = FetchType.EAGER)
     private List<UUID> productIds;
+
+    @Column(nullable = false)
+    @JsonProperty private boolean isDeleted;
 
     public UUID getCategoryId() {
         return categoryId;
@@ -49,5 +53,13 @@ public class Category {
 
     public void setProductIds(List<UUID> productIds) {
         this.productIds = productIds;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

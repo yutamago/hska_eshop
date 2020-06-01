@@ -8,9 +8,9 @@ import java.util.UUID;
 @Entity
 @Table
 @NamedQueries({
-        @NamedQuery(name = "User.findByUsername", query = "select u from User u where u.username = :username"),
+        @NamedQuery(name = "User.findByUsername", query = "select u from User u where u.username = :username and u.isDeleted = false"),
         // TODO: password -> SHA HASH
-        @NamedQuery(name = "User.findByUsernamePassword", query = "select u from User u where u.username = :username and u.password = :password")
+        @NamedQuery(name = "User.findByUsernamePassword", query = "select u from User u where u.username = :username and u.password = :password and u.isDeleted = false")
 })
 public class User {
     @Id
@@ -33,6 +33,9 @@ public class User {
 
     @Column(nullable = false)
     @JsonProperty private UUID roleId;
+
+    @Column(nullable = false)
+    @JsonProperty private boolean isDeleted;
 
     public UUID getUserId() {
         return userId;
@@ -84,5 +87,13 @@ public class User {
 
     private String makeHash(String something) {
         return something;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

@@ -1,6 +1,7 @@
 package de.hska.eshopapi.composite.category.controllers;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import de.hska.eshopapi.composite.category.ProductUtil;
 import de.hska.eshopapi.composite.category.RoutesUtil;
 import de.hska.eshopapi.composite.category.model.Category;
 import de.hska.eshopapi.composite.category.model.Product;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -71,14 +73,15 @@ public class CategoryController {
         List<UUID> uuids = categories.stream().map(Category::getCategoryId).collect(Collectors.toList());
         HttpEntity<List<UUID>> body = new HttpEntity<>(uuids);
 
-        List<Product> products = this.restTemplate.exchange(uri, HttpMethod.POST, body, new ParameterizedTypeReference<List<Product>>() {}).getBody();
+        List<Product> products = this.restTemplate.exchange(uri, HttpMethod.POST, body, new ParameterizedTypeReference<List<Product>>() {
+        }).getBody();
 
         if (products != null) {
             categories.forEach(c -> {
                 List<Product> productsCategory = new ArrayList<>();
                 for (int i = 0; i < products.size(); i++) {
                     Product p = products.get(i);
-                    if(p.getCategoryId().equals(c.getCategoryId())) {
+                    if (p.getCategoryId().equals(c.getCategoryId())) {
                         productsCategory.add(p);
                     }
                 }
@@ -107,7 +110,7 @@ public class CategoryController {
     ) throws URISyntaxException {
         URI uri = makeURI("id", categoryId.toString()).build();
         Category category = this.restTemplate.exchange(uri, HttpMethod.GET, null, Category.class).getBody();
-        if(category != null) {
+        if (category != null) {
             CategoryView categoryView = extendCategory(category);
             return new ResponseEntity<>(categoryView, HttpStatus.OK);
         } else {
@@ -136,8 +139,41 @@ public class CategoryController {
             @PathVariable("categoryId")
                     UUID categoryId
     ) throws URISyntaxException {
-        URI uri = makeURI(categoryId.toString()).build();
-        ResponseEntity<String> response = this.restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class);
+        URI getCategoryUrl = makeURI(categoryId.toString()).build();
+        URI deleteCategoryUrl = makeURI(categoryId.toString()).build();
+
+        URI getProductsByCategoryUrl = makeURI("http://core-product", "categoryId", categoryId.toString()).build();
+        URI deleteProductsByCategoryUrl = makeAbsoluteURI("http://core-product", "deleteByCategoryId", categoryId.toString()).build();
+
+        URI restoreCategoryUrl = makeURI("restore", categoryId.toString()).build();
+        URI restoreProductsByCategoryUrl = makeURI("http://core-product", "restoreByCategoryId", categoryId.toString()).build();
+
+        Category category = null;
+        List<Product> products = new ArrayList<>();
+
+        try {
+            category = this.restTemplate.getForEntity(getCategoryUrl, Category.class).getBody();
+            products = this.restTemplate.exchange(getProductsByCategoryUrl, HttpMethod.GET, null, ProductUtil.ProductListTypeRef).getBody();
+        } catch (Exception ex) {
+            ResponseEntity<String> response = new ResponseEntity<>("Category does not exist: " + categoryId, HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            this.restTemplate.delete(deleteCategoryUrl);
+            if (!products.isEmpty()) {
+                this.restTemplate.delete(deleteProductsByCategoryUrl);
+            }
+        } catch (Exception ex) {
+            this.restTemplate.put(restoreCategoryUrl, null);
+            if (!products.isEmpty()) {
+                this.restTemplate.put(restoreProductsByCategoryUrl, null);
+            }
+
+            ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.CONFLICT);
+            return response;
+        }
+
+        ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.OK);
         return response;
     }
 }

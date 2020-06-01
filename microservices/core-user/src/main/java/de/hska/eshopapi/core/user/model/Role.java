@@ -9,7 +9,7 @@ import java.util.UUID;
 @Entity
 @Table
 @NamedQueries({
-        @NamedQuery(name = "Role.findByType", query = "select r from Role r where r.type = :type"),
+        @NamedQuery(name = "Role.findByType", query = "select r from Role r where r.type = :type and r.isDeleted = false"),
 })
 public class Role {
     @Id
@@ -22,6 +22,9 @@ public class Role {
 
     @Column(nullable = false)
     @JsonProperty private int level;
+
+    @Column(nullable = false)
+    @JsonProperty private boolean isDeleted;
 
     public UUID getRoleId() {
         return roleId;
@@ -45,5 +48,13 @@ public class Role {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
