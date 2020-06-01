@@ -46,6 +46,12 @@ public class ProductController {
         return new URIBuilder(RoutesUtil.APICoreProduct).setPathSegments(segments);
     }
 
+    private static URIBuilder makeAbsoluteURI(String host, String... path) throws URISyntaxException {
+        List<String> segments = new ArrayList<>();
+        segments.addAll(Arrays.asList(path));
+        return new URIBuilder(host).setPathSegments(segments);
+    }
+
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ProductView>> getProducts() throws URISyntaxException {
@@ -95,6 +101,7 @@ public class ProductController {
 
         return new ResponseEntity<>(productViews, HttpStatus.OK);
     }
+
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/{productId}")
     public ResponseEntity<ProductView> getProductById(
@@ -112,21 +119,64 @@ public class ProductController {
             @ApiParam(value = "Product", required = true)
             @RequestBody(required = true)
                     Product product) throws URISyntaxException {
-        URI uri = makeURI().build();
-        HttpEntity<Product> body = new HttpEntity<>(product);
+        URI addProductUrl = makeURI().build();
+        URI addProductToCategoryUrl = makeAbsoluteURI("http://core-category", product.getCategoryId().toString(), "addProduct").build();
 
-        return this.restTemplate.postForEntity(uri, body, ProductView.class);
+        HttpEntity<Product> body = new HttpEntity<>(product);
+        ProductView productView = this.restTemplate.postForEntity(addProductUrl, body, ProductView.class).getBody();
+        this.restTemplate.put(addProductToCategoryUrl, body);
+
+        return new ResponseEntity<>(productView, HttpStatus.OK);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
-    public ResponseEntity<ProductView> deleteProduct(
+    public ResponseEntity<String> deleteProduct(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
                     UUID productId
     ) throws URISyntaxException {
-        URI uri = makeURI(productId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, ProductView.class);
-    }
+        URI getProductUrl = makeURI(productId.toString()).build();
+        URI getCategoryByProductIdUrl = makeAbsoluteURI("http://core-category", "category", "productid", productId.toString()).build();
+        URI deleteProductUrl = makeURI(productId.toString()).build();
+        URI restoreProductUrl = makeURI("restore", productId.toString()).build();
 
+        URI deleteProductInCategoryUrl = makeAbsoluteURI("http://core-category", "category", "deleteProductId", productId.toString()).build();
+
+
+        Category category = null;
+        Product product = null;
+
+        try {
+            product = this.restTemplate.getForEntity(getProductUrl, Product.class).getBody();
+            List<Category> categories = this.restTemplate.exchange(getCategoryByProductIdUrl, HttpMethod.GET, null, ProductUtil.CategoryListTypeRef).getBody();
+            if (categories.isEmpty()) {
+                ResponseEntity<String> response = new ResponseEntity<>("Category on Product does not exist! Product: " + productId + ", Category: " + product.getCategoryId().toString(), HttpStatus.NOT_FOUND);
+                return response;
+            }
+            category = categories.get(0);
+        } catch (Exception ex) {
+            ResponseEntity<String> response = new ResponseEntity<>("Product does not exist: " + productId, HttpStatus.NOT_FOUND);
+            return response;
+        }
+
+        URI restoreProductInCategoryUrl = makeAbsoluteURI("http://core-category",
+                "category",
+                "restoreProductId", productId.toString(),
+                "fromCategory", category.getCategoryId().toString()).build();
+
+        try {
+            this.restTemplate.delete(deleteProductUrl);
+            this.restTemplate.delete(deleteProductInCategoryUrl);
+        } catch (Exception ex) {
+            this.restTemplate.put(restoreProductUrl, null);
+            this.restTemplate.put(restoreProductInCategoryUrl, null);
+
+            ResponseEntity<String> failResponse = new ResponseEntity<>(HttpStatus.CONFLICT);
+            return failResponse;
+        }
+
+        ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.OK);
+        return response;
+    }
 }

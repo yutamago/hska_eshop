@@ -11,15 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping(path = "/category", name = "Category", produces = {"application/json"})
@@ -54,13 +51,39 @@ public class CategoryController {
     ) {
 
         List<Category> categories = categoryDAO.findByName(category.getName());
-        if(categories.size() > 0) {
+        if (categories.size() > 0) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         category.setCategoryId(null);
         Category newCategory = categoryDAO.save(category);
 
         return new ResponseEntity<>(newCategory, HttpStatus.OK);
+    }
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.PUT, path = "/{categoryId}/addProduct/{productId}")
+    public ResponseEntity<String> addProduct(
+            @ApiParam(value = "Category", required = true)
+            @PathVariable("categoryId")
+                    UUID categoryId,
+            @ApiParam(value = "Product", required = true)
+            @PathVariable("productId")
+                    UUID productId
+    ) {
+
+        List<Category> alreadyInCategories = categoryDAO.findByProductId(productId);
+        if(!alreadyInCategories.isEmpty())
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+
+        Optional<Category> category = categoryDAO.findById(categoryId);
+        if(!category.isPresent())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        entityManager.getTransaction().begin();
+        category.get().getProductIds().add(productId);
+        entityManager.getTransaction().commit();
+
+        return new ResponseEntity<>("Successfully added product to category", HttpStatus.OK);
     }
 
     @HystrixCommand
@@ -108,15 +131,19 @@ public class CategoryController {
     ) {
         final Optional<Category> category = categoryDAO.findById(categoryId);
 
-        if(category.isPresent()) {
-            entityManager.getTransaction().begin();
-            category.get().setDeleted(true);
-            entityManager.getTransaction().commit();
-
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (!category.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (!category.get().getProductIds().isEmpty()) {
+            return new ResponseEntity<>("Category still contains products. Must not be used by any products!", HttpStatus.LOCKED);
+        }
+
+        entityManager.getTransaction().begin();
+        category.get().setDeleted(true);
+        entityManager.getTransaction().commit();
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @HystrixCommand
@@ -128,7 +155,7 @@ public class CategoryController {
     ) {
         final Optional<Category> category = categoryDAO.findDeletedById(categoryId);
 
-        if(category.isPresent()) {
+        if (category.isPresent()) {
             entityManager.getTransaction().begin();
             category.get().setDeleted(false);
             entityManager.getTransaction().commit();
@@ -137,6 +164,47 @@ public class CategoryController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.DELETE, path = "/deleteProductId/{productId}")
+    public ResponseEntity<String> deleteProductId(
+            @ApiParam(value = "product Id", required = true)
+            @PathVariable("productId")
+                    UUID productId
+    ) {
+        List<Category> categories = this.categoryDAO.findByProductId(productId);
+        if (!categories.isEmpty()) {
+
+            for (Category category : categories) {
+                category.getProductIds().removeIf(x -> x.equals(productId));
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.DELETE, path = "/restoreProductId/{productId}/fromCategory/{categoryId}")
+    public ResponseEntity<String> restoreProductId(
+            @ApiParam(value = "product Id", required = true)
+            @PathVariable("productId")
+                    UUID productId,
+            @ApiParam(value = "category Id", required = true)
+            @PathVariable("categoryId")
+                    UUID categoryId
+    ) {
+        Optional<Category> category = this.categoryDAO.findById(categoryId);
+        if (!category.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        this.entityManager.getTransaction().begin();
+        category.get().getProductIds().add(productId);
+        this.entityManager.getTransaction().commit();
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

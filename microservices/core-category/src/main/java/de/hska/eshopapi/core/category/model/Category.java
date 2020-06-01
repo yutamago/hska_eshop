@@ -4,16 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table
-@NamedQueries({
-        @NamedQuery(name = "Category.findByName", query = "select c from Category c where c.name = :name and c.isDeleted = false"),
-        @NamedQuery(name = "Category.findByProductId", query = "select c from Category c where :productId in(c.productIds) and c.isDeleted = false"),
-})
 public class Category {
     @Id
     @GeneratedValue
@@ -26,10 +23,10 @@ public class Category {
     @Column(nullable = false)
     @JsonProperty
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<UUID> productIds;
+    private List<UUID> productIds = new ArrayList<>();
 
     @Column(nullable = false)
-    @JsonProperty private boolean isDeleted;
+    @JsonProperty private boolean isDeleted = false;
 
     public UUID getCategoryId() {
         return categoryId;

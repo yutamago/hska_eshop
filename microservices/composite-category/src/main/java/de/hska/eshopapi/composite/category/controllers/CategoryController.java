@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -142,11 +143,11 @@ public class CategoryController {
         URI getCategoryUrl = makeURI(categoryId.toString()).build();
         URI deleteCategoryUrl = makeURI(categoryId.toString()).build();
 
-        URI getProductsByCategoryUrl = makeURI("http://core-product", "categoryId", categoryId.toString()).build();
-        URI deleteProductsByCategoryUrl = makeAbsoluteURI("http://core-product", "deleteByCategoryId", categoryId.toString()).build();
+        URI getProductsByCategoryUrl = makeAbsoluteURI("http://core-product", "product", "categoryId", categoryId.toString()).build();
+        URI deleteProductsByCategoryUrl = makeAbsoluteURI("http://core-product","product", "deleteByCategoryId", categoryId.toString()).build();
 
         URI restoreCategoryUrl = makeURI("restore", categoryId.toString()).build();
-        URI restoreProductsByCategoryUrl = makeURI("http://core-product", "restoreByCategoryId", categoryId.toString()).build();
+        URI restoreProductsByCategoryUrl = makeAbsoluteURI("http://core-product", "restoreByCategoryId", categoryId.toString()).build();
 
         Category category = null;
         List<Product> products = new ArrayList<>();
