@@ -130,4 +130,42 @@ public class ProductController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.DELETE, path = "/deleteByCategoryId/{categoryId}")
+    public ResponseEntity<List<Product>> deleteByCategoryId(
+            @ApiParam(value = "category Id", required = true)
+            @PathVariable("categoryId")
+                    UUID categoryId
+    ) {
+        List<Product> products = this.productDAO.findByCategoryId(categoryId);
+        if(!products.isEmpty()){
+
+            for (Product product: products
+                 ) {
+                product.setDeleted(true);
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.PUT, path = "/restoreByCategoryId/{categoryId}")
+    public ResponseEntity<List<Product>> restoreByCategoryId(
+            @ApiParam(value = "category Id", required = true)
+            @PathVariable("categoryId")
+                    UUID categoryId
+    ) {
+        List<Product> products = this.productDAO.findByCategoryId(categoryId);
+        if(!products.isEmpty()){
+
+            for (Product product: products
+            ) {
+                product.setDeleted(false);
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
