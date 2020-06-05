@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -22,17 +23,16 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping(path = "/role", name = "Role", produces = {"application/json"})
 @Api(tags = "Role")
+@Transactional
 public class RoleController {
 
     private RoleDAO roleDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private EntityManager entityManager;
 
     @Autowired
-    public RoleController(RoleDAO roleDAO, EntityManager entityManager) {
+    public RoleController(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
-        this.entityManager = entityManager;
     }
 
     @HystrixCommand
@@ -54,8 +54,8 @@ public class RoleController {
         if(roles.size() > 0) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        role.setRoleId(null);
-        Role newRole = roleDAO.save(role);
+
+        Role newRole = roleDAO.saveAndFlush(Role.makeNew(role));
 
         return new ResponseEntity<>(newRole, HttpStatus.OK);
     }
@@ -89,6 +89,7 @@ public class RoleController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{roleId}")
+
     public ResponseEntity<Role> deleteRole(
             @ApiParam(value = "role Id", required = true)
             @PathVariable("roleId")
@@ -97,10 +98,8 @@ public class RoleController {
         final Optional<Role> role = roleDAO.findById(roleId);
 
         if(role.isPresent()) {
-            entityManager.getTransaction().begin();
             role.get().setDeleted(true);
-            entityManager.getTransaction().commit();
-
+            roleDAO.save(role.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

@@ -12,10 +12,18 @@ import java.util.UUID;
 @Entity
 @Table
 public class Category {
+
+    public static Category makeNew(Category category) {
+        Category newCategory = new Category();
+        newCategory.productIds = category.productIds == null ? new ArrayList<>() : new ArrayList<>(category.productIds);
+        newCategory.isDeleted = category.isDeleted;
+        newCategory.name = category.name;
+        return newCategory;
+    }
+
     @Id
-    @GeneratedValue
     @Column(nullable = false)
-    @JsonProperty private UUID categoryId;
+    @JsonProperty private UUID categoryId = UUID.randomUUID();
 
     @Column(nullable = false)
     @JsonProperty private String name;

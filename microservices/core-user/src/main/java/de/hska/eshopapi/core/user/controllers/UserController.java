@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -28,19 +29,18 @@ import java.util.stream.StreamSupport;
 @RestController
 @RequestMapping(path = "/user", name = "User", produces = {"application/json"})
 @Api(tags = "User")
+@Transactional
 public class UserController {
 
     private final RoleDAO roleDAO;
     private final UserDAO userDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private EntityManager entityManager;
 
     @Autowired
-    public UserController(UserDAO userDAO, RoleDAO roleDAO, EntityManager entityManager) {
+    public UserController(UserDAO userDAO, RoleDAO roleDAO) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
-        this.entityManager = entityManager;
     }
 
     @HystrixCommand
@@ -74,13 +74,11 @@ public class UserController {
         if(user.getRoleId() == null || !roleDAO.existsById(user.getRoleId()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        user.setUserId(null);
-
         String pwHash = new String(MessageDigest.getInstance("SHA-384").digest(user.getPassword().getBytes()));
         user.setPassword(pwHash);
 
         Role role = roleDAO.getOne(user.getRoleId());
-        User newUser = userDAO.save(user);
+        User newUser = userDAO.saveAndFlush(User.makeNew(user));
 
         UserView newUserView = UserView.FromUser(newUser, role);
 
@@ -137,6 +135,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{userId}")
+
     public ResponseEntity<UserView> deleteUser(
             @ApiParam(value = "user Id", required = true)
             @PathVariable("userId")
@@ -145,10 +144,8 @@ public class UserController {
         final Optional<User> user = userDAO.findById(userId);
 
         if(user.isPresent()) {
-            entityManager.getTransaction().begin();
             user.get().setDeleted(true);
-            entityManager.getTransaction().commit();
-
+            userDAO.save(user.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

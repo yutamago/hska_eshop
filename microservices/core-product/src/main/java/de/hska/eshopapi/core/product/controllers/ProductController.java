@@ -8,27 +8,28 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/product", name = "Product", produces = {"application/json"})
 @Api(tags = "Product")
+@Transactional
 public class ProductController {
 
     private ProductDAO productDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    private EntityManager entityManager;
 
     @Autowired
-    public ProductController(ProductDAO productDAO, EntityManager entityManager) {
+    public ProductController(ProductDAO productDAO) {
         this.productDAO = productDAO;
-        this.entityManager = entityManager;
     }
 
     @HystrixCommand
@@ -50,8 +51,7 @@ public class ProductController {
         if (product_ != null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        product.setProductId(null);
-        Product newProduct = productDAO.save(product);
+        Product newProduct = productDAO.saveAndFlush(Product.makeNew(product));
 
         return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
@@ -64,9 +64,11 @@ public class ProductController {
                     UUID productId
     ) {
         Optional<Product> productOptional = this.productDAO.findById(productId);
-        return productOptional
-                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        if (productOptional.isPresent()) {
+            return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @HystrixCommand
@@ -75,7 +77,8 @@ public class ProductController {
             @ApiParam(value = "category Ids", required = true)
             @RequestBody List<UUID> categories
     ) {
-        List<Product> products = this.productDAO.findByCategoryIds(categories);
+        List<Product> products = this.productDAO.findByCategoryIds(categories)
+                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -100,9 +103,8 @@ public class ProductController {
         final Optional<Product> product = productDAO.findById(productId);
 
         if(product.isPresent()) {
-            entityManager.getTransaction().begin();
             product.get().setDeleted(true);
-            entityManager.getTransaction().commit();
+            productDAO.save(product.get());
 
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -113,6 +115,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/restore/{productId}")
+
     public ResponseEntity<String> restoreProduct(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
@@ -121,10 +124,8 @@ public class ProductController {
         final Optional<Product> product = productDAO.findDeletedById(productId);
 
         if(product.isPresent()) {
-            entityManager.getTransaction().begin();
             product.get().setDeleted(false);
-            entityManager.getTransaction().commit();
-
+            productDAO.save(product.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
@@ -144,6 +145,7 @@ public class ProductController {
             for (Product product: products
                  ) {
                 product.setDeleted(true);
+                productDAO.save(product);
             }
         }
 
@@ -163,6 +165,7 @@ public class ProductController {
             for (Product product: products
             ) {
                 product.setDeleted(false);
+                productDAO.save(product);
             }
         }
 

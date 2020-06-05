@@ -13,9 +13,8 @@ import java.util.UUID;
 })
 public class Role {
     @Id
-    @GeneratedValue
     @Column(nullable = false)
-    @JsonProperty private UUID roleId;
+    @JsonProperty private UUID roleId = UUID.randomUUID();
 
     @Column(nullable = false)
     @JsonProperty private String type;
@@ -25,6 +24,14 @@ public class Role {
 
     @Column(nullable = false)
     @JsonProperty private boolean isDeleted;
+
+    public static Role makeNew(Role role) {
+        Role newRole = new Role();
+        newRole.isDeleted = role.isDeleted;
+        newRole.level = role.level;
+        newRole.type = role.type;
+        return newRole;
+    }
 
     public UUID getRoleId() {
         return roleId;

@@ -13,10 +13,22 @@ import java.util.UUID;
         @NamedQuery(name = "User.findByUsernamePassword", query = "select u from User u where u.username = :username and u.password = :password and u.isDeleted = false")
 })
 public class User {
+
+    public static User makeNew(User user) {
+        User newUser = new User();
+        newUser.firstname = user.firstname;
+        newUser.isDeleted = user.isDeleted;
+        newUser.lastname = user.lastname;
+        newUser.password = user.password;
+        newUser.roleId = user.roleId;
+        newUser.username = user.username;
+        return newUser;
+    }
+
+
     @Id
-    @GeneratedValue
     @Column(nullable = false)
-    @JsonProperty private UUID userId;
+    @JsonProperty private UUID userId = UUID.randomUUID();
 
     @Column(nullable = false)
     @JsonProperty private String username;

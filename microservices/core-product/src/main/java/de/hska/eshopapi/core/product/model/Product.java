@@ -8,15 +8,20 @@ import java.util.Currency;
 import java.util.UUID;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "findByName", query = "SELECT p FROM Product p WHERE p.name = :name and p.isDeleted = false"),
-        @NamedQuery(name = "findByCategoryId", query = "SELECT p FROM Product p WHERE p.categoryId = :categoryId and p.isDeleted = false"),
-})
 public class Product {
+    public static Product makeNew(Product product) {
+        Product newProduct = new Product();
+        newProduct.categoryId = product.categoryId;
+        newProduct.details = product.details;
+        newProduct.isDeleted = product.isDeleted;
+        newProduct.name = product.name;
+        newProduct.price = product.price;
+        return newProduct;
+    }
+
     @Id
-    @GeneratedValue
     @Column(nullable = false)
-    @JsonProperty private UUID productId;
+    @JsonProperty private UUID productId = UUID.randomUUID();
 
     @Column(nullable = false)
     @JsonProperty private UUID categoryId;

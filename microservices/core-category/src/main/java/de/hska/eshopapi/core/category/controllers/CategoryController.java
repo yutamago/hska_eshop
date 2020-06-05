@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -17,21 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/category", name = "Category", produces = {"application/json"})
 @Api(tags = "Category")
+@Transactional
 public class CategoryController {
 
-    private EntityManager entityManager;
     private CategoryDAO categoryDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
-    public CategoryController(CategoryDAO categoryDAO, EntityManager entityManager) {
+    public CategoryController(CategoryDAO categoryDAO) {
         this.categoryDAO = categoryDAO;
-        this.entityManager = entityManager;
     }
 
 
@@ -54,14 +55,14 @@ public class CategoryController {
         if (categories.size() > 0) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        category.setCategoryId(null);
-        Category newCategory = categoryDAO.save(category);
 
+        Category newCategory = categoryDAO.saveAndFlush(Category.makeNew(category));
         return new ResponseEntity<>(newCategory, HttpStatus.OK);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/{categoryId}/addProduct/{productId}")
+
     public ResponseEntity<String> addProduct(
             @ApiParam(value = "Category", required = true)
             @PathVariable("categoryId")
@@ -70,8 +71,8 @@ public class CategoryController {
             @PathVariable("productId")
                     UUID productId
     ) {
-
-        List<Category> alreadyInCategories = categoryDAO.findByProductId(productId);
+        List<Category> alreadyInCategories = categoryDAO.findByProductId(productId)
+                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
         if(!alreadyInCategories.isEmpty())
             return new ResponseEntity<>(HttpStatus.CONFLICT);
 
@@ -79,12 +80,12 @@ public class CategoryController {
         if(!category.isPresent())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        entityManager.getTransaction().begin();
         category.get().getProductIds().add(productId);
-        entityManager.getTransaction().commit();
+        categoryDAO.saveAndFlush(category.get());
 
         return new ResponseEntity<>("Successfully added product to category", HttpStatus.OK);
     }
+
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{categoryId}")
@@ -117,13 +118,15 @@ public class CategoryController {
             @PathVariable("productId")
                     UUID productId
     ) {
-        List<Category> categories = this.categoryDAO.findByProductId(productId);
+        List<Category> categories = this.categoryDAO.findByProductId(productId)
+                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
 
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
+
     public ResponseEntity<String> deleteCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
@@ -139,15 +142,15 @@ public class CategoryController {
             return new ResponseEntity<>("Category still contains products. Must not be used by any products!", HttpStatus.LOCKED);
         }
 
-        entityManager.getTransaction().begin();
         category.get().setDeleted(true);
-        entityManager.getTransaction().commit();
+        categoryDAO.save(category.get());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/restore/{categoryId}")
+
     public ResponseEntity<String> restoreCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
@@ -156,9 +159,8 @@ public class CategoryController {
         final Optional<Category> category = categoryDAO.findDeletedById(categoryId);
 
         if (category.isPresent()) {
-            entityManager.getTransaction().begin();
             category.get().setDeleted(false);
-            entityManager.getTransaction().commit();
+            categoryDAO.save(category.get());
 
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -174,11 +176,13 @@ public class CategoryController {
             @PathVariable("productId")
                     UUID productId
     ) {
-        List<Category> categories = this.categoryDAO.findByProductId(productId);
+        List<Category> categories = this.categoryDAO.findByProductId(productId)
+                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
         if (!categories.isEmpty()) {
 
             for (Category category : categories) {
                 category.getProductIds().removeIf(x -> x.equals(productId));
+                categoryDAO.save(category);
             }
         }
 
@@ -187,6 +191,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/restoreProductId/{productId}/fromCategory/{categoryId}")
+
     public ResponseEntity<String> restoreProductId(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
@@ -200,10 +205,8 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        this.entityManager.getTransaction().begin();
         category.get().getProductIds().add(productId);
-        this.entityManager.getTransaction().commit();
-
+        categoryDAO.save(category.get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

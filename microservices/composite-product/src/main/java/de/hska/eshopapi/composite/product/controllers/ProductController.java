@@ -117,13 +117,14 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProductView> addProduct(
             @ApiParam(value = "Product", required = true)
-            @RequestBody(required = true)
-                    Product product) throws URISyntaxException {
+            @RequestBody Product product) throws URISyntaxException {
         URI addProductUrl = makeURI().build();
-        URI addProductToCategoryUrl = makeAbsoluteURI("http://core-category", product.getCategoryId().toString(), "addProduct").build();
-
         HttpEntity<Product> body = new HttpEntity<>(product);
         ProductView productView = this.restTemplate.postForEntity(addProductUrl, body, ProductView.class).getBody();
+
+        URI addProductToCategoryUrl = makeAbsoluteURI(
+                RoutesUtil.APICoreCategory, RoutesUtil.APICategory, product.getCategoryId().toString(), "addProduct", productView.getProductId().toString())
+                .build();
         this.restTemplate.put(addProductToCategoryUrl, body);
 
         return new ResponseEntity<>(productView, HttpStatus.OK);
@@ -136,7 +137,7 @@ public class ProductController {
             @PathVariable("productId")
                     UUID productId
     ) throws URISyntaxException {
-        URI getProductUrl = makeURI(productId.toString()).build();
+        URI getProductUrl = makeURI("id", productId.toString()).build();
         URI getCategoryByProductIdUrl = makeAbsoluteURI("http://core-category", "category", "productid", productId.toString()).build();
         URI deleteProductUrl = makeURI(productId.toString()).build();
         URI restoreProductUrl = makeURI("restore", productId.toString()).build();
