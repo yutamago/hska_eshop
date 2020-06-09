@@ -18,6 +18,7 @@ Authoren: Johanna Bräuning, Joan-Angelo Douvere
 - Geteilte Komponenten in einem eigenständigen Projekt auslagern und als Abhängigkeit in die Microservices einbinden
 - Update-Methoden (PUT)
 - bugs fixen..
+- Cache aktualisieren nach Löschen/Ändern
 
 
 ## Links

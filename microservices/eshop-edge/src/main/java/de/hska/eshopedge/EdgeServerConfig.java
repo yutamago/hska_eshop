@@ -8,7 +8,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
 
 @EnableZuulProxy
-@EnableEurekaClient
+// @EnableEurekaClient
 @SpringBootApplication
 public class EdgeServerConfig {
 
