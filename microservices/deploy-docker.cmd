@@ -1,2 +1,2 @@
 CALL ./buildall.cmd
-docker-compose --build up
+docker-compose up --build

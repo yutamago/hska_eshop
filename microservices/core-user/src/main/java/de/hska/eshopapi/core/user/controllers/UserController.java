@@ -3,9 +3,9 @@ package de.hska.eshopapi.core.user.controllers;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.core.user.dao.RoleDAO;
 import de.hska.eshopapi.core.user.dao.UserDAO;
+import de.hska.eshopapi.core.user.model.Role;
 import de.hska.eshopapi.core.user.model.User;
 import de.hska.eshopapi.core.user.viewmodels.UserView;
-import de.hska.eshopapi.core.user.model.Role;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -23,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping(path = "/user", name = "User", produces = {"application/json"})

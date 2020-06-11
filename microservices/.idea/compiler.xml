@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="composite-category" />
         <module name="eshop-api" />
+        <module name="eshop-auth" />
         <module name="core-product" />
         <module name="eshop-edge" />
         <module name="core-user" />
@@ -23,6 +24,7 @@
       <module name="core-product" target="9" />
       <module name="core-user" target="9" />
       <module name="eshop-api" target="1.8" />
+      <module name="eshop-auth" target="1.8" />
       <module name="eshop-discovery" target="1.8" />
       <module name="eshop-edge" target="1.8" />
     </bytecodeTargetLevel>
@@ -35,6 +37,7 @@
       <module name="core-product" options="-parameters" />
       <module name="core-user" options="-parameters" />
       <module name="eshop-api" options="-parameters" />
+      <module name="eshop-auth" options="-parameters" />
       <module name="eshop-discovery" options="-parameters" />
       <module name="eshop-edge" options="-parameters" />
     </option>

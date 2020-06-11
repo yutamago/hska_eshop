@@ -5,6 +5,7 @@ services:
   eshop-api:
     build:
       context: ./eshop-api
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
     depends_on:
@@ -19,8 +20,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - 9002:9002
-    volumes:
-      - ./target:/usr/target
 
   eshop-edge:
     build:
