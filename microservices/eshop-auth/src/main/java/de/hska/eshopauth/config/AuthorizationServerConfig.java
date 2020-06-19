@@ -1,4 +1,4 @@
-package de.hska.eshopauth;
+package de.hska.eshopauth.config;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -47,10 +47,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // @formatter:off
         clients.inMemory()
-                .withClient("messaging-client")
+                .withClient("eshop-client")
                 .authorizedGrantTypes("authorization_code", "refresh_token", "client_credentials", "password")
-                .scopes("message.read", "message.write")
-                .secret("{noop}secret")
+                .scopes("dev", "user.read", "user.write", "role.read", "role.write")
+                .secret("{noop}123456")
                 .redirectUris("http://localhost:8080/client/authorized");
         // @formatter:on
     }

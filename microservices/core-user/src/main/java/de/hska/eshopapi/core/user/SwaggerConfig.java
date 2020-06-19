@@ -24,7 +24,6 @@ import javax.servlet.ServletContext;
 @EnableCircuitBreaker
 @EnableSwagger2
 @EnableTransactionManagement
-@EnableResourceServer
 public class SwaggerConfig {
 
     public static void main(String[] args) {
