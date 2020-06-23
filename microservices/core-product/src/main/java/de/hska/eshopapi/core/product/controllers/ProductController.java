@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,6 +35,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
+    @RolesAllowed("product.read")
     public ResponseEntity<List<Product>> getProducts() {
         List<Product> products = new ArrayList<>(this.productDAO.findAll());
         return new ResponseEntity<>(products, HttpStatus.OK);

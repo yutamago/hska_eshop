@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -36,6 +37,7 @@ public class RoleController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
+    @RolesAllowed("role.read")
     public ResponseEntity<List<Role>> getRoles() {
         List<Role> roles = StreamSupport.stream(this.roleDAO.findAll().spliterator(), false).collect(Collectors.toList());
         return new ResponseEntity<>(roles, HttpStatus.OK);
@@ -43,6 +45,7 @@ public class RoleController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("role.write")
     public ResponseEntity<Role> addRole(
             @ApiParam(value = "Role", required = true)
             @RequestBody(required = true)
@@ -61,6 +64,7 @@ public class RoleController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{roleId}")
+    @RolesAllowed("role.read")
     public ResponseEntity<Role> getRole(
             @ApiParam(value = "role Id", required = true)
             @PathVariable("roleId")
@@ -74,6 +78,7 @@ public class RoleController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/type/{roleType}")
+    @RolesAllowed("role.read")
     public ResponseEntity<Role> getRole(
             @ApiParam(value = "role Id", required = true)
             @PathVariable("roleType")
@@ -88,7 +93,7 @@ public class RoleController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{roleId}")
-
+    @RolesAllowed("role.write")
     public ResponseEntity<Role> deleteRole(
             @ApiParam(value = "role Id", required = true)
             @PathVariable("roleId")

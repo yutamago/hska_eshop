@@ -1,4 +1,4 @@
-package de.hska.eshopapi.composite.product;
+package de.hska.eshopapi.composite.category.util;
 
 public class RoutesUtil {
     public static final String APICompositeUser = "http://composite-user";

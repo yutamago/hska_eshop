@@ -1,12 +1,11 @@
 package de.hska.eshopapi.composite.category.controllers;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import de.hska.eshopapi.composite.category.ProductUtil;
-import de.hska.eshopapi.composite.category.RoutesUtil;
+import de.hska.eshopapi.composite.category.util.ProductUtil;
+import de.hska.eshopapi.composite.category.util.RoutesUtil;
 import de.hska.eshopapi.composite.category.model.Category;
 import de.hska.eshopapi.composite.category.model.Product;
 import de.hska.eshopapi.composite.category.viewmodels.CategoryView;
-import de.hska.eshopapi.composite.category.viewmodels.ProductView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.apache.http.client.utils.URIBuilder;
@@ -14,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;

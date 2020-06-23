@@ -2,14 +2,12 @@ package de.hska.eshopapi.composite.category.controllers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import de.hska.eshopapi.composite.category.RoutesUtil;
+import de.hska.eshopapi.composite.category.util.RoutesUtil;
 import de.hska.eshopapi.composite.category.model.Category;
 import de.hska.eshopapi.composite.category.model.Product;
-import de.hska.eshopapi.composite.category.viewmodels.CategoryView;
 import io.swagger.annotations.Api;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.*;

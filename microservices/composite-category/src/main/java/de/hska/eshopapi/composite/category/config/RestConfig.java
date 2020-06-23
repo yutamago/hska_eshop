@@ -1,4 +1,4 @@
-package de.hska.eshopapi.composite.product;
+package de.hska.eshopapi.composite.category.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;

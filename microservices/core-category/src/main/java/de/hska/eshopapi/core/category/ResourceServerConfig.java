@@ -1,4 +1,4 @@
-package de.hska.eshopapi.core.user;
+package de.hska.eshopapi.core.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +8,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-
-import javax.ws.rs.HttpMethod;
 
 @EnableResourceServer
 @Configuration
@@ -31,8 +29,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         // @formatter:off
         http
                 .authorizeRequests()
-                .mvcMatchers("/user/**", "/role/**").authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 

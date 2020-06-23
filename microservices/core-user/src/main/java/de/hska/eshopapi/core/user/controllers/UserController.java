@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -42,6 +43,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
+    @RolesAllowed("user.read")
     public ResponseEntity<List<UserView>> getUsers() {
         List<User> users = this.userDAO.findAll();
         List<UserView> userViews = new ArrayList<>();
@@ -59,6 +61,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("user.write")
     public ResponseEntity<UserView> addUser(
             @ApiParam(value = "User", required = true)
             @RequestBody(required = true)
@@ -84,6 +87,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{userId}")
+    @RolesAllowed("user.read")
     public ResponseEntity<UserView> getUser(
             @ApiParam(value = "user Id", required = true)
             @PathVariable("userId")
@@ -101,6 +105,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/username/{username}")
+    @RolesAllowed("user.read")
     public ResponseEntity<UserView> getUserByUsername(
             @ApiParam(value = "user Id", required = true)
             @PathVariable("username")
@@ -132,7 +137,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{userId}")
-
+    @RolesAllowed("user.write")
     public ResponseEntity<UserView> deleteUser(
             @ApiParam(value = "user Id", required = true)
             @PathVariable("userId")

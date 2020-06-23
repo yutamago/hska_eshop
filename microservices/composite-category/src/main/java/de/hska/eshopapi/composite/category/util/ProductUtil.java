@@ -1,4 +1,4 @@
-package de.hska.eshopapi.composite.category;
+package de.hska.eshopapi.composite.category.util;
 
 
 import de.hska.eshopapi.composite.category.model.Category;
