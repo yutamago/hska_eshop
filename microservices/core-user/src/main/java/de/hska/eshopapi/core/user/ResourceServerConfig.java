@@ -31,10 +31,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         // @formatter:off
         http
                 .authorizeRequests()
-                .mvcMatchers("/user/**", "/role/**").authenticated()
-                .anyRequest().permitAll()
+//                    .mvcMatchers("/user/**", "/role/**").authenticated()
+                .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+                    .formLogin().loginPage("/login").failureUrl("/login-error").permitAll();
+
+//                .and()
+//                .authorizeRequests()
+//                .anyRequest().permitAll();
+//                .and()
+//                .exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 
 
 //                .anyRequest().permitAll();

@@ -1,18 +1,12 @@
 #eShop API
 Authoren: Johanna Bräuning, Joan-Angelo Douvere
+
+## Build & Run
+1. `buildall.cmd`
+2. `docker-compose up --build`
+
 ## TODO
 ### Prio
-- 1 Docker-Compose
-  - auf HOST Ebene builden
-  - jars in Container kopieren
-  - depends on einfügen für Abhängigkeiten -> Eureka zuerst
-- 2 Zuul
-  - Nur eShop API sollte exposed sein, 
-  - andere nicht als Zuul-Clients
-- 3 Integrität absichern
-  - Wenn man Kategorien löscht, sollten Produkte auch geändert/gelöscht werden
-  - Produkte, User, Roles genauso
-- 4 Hystrix Fallbacks für Get-Methoden / Cache
 
 ### Nice to have
 - Geteilte Komponenten in einem eigenständigen Projekt auslagern und als Abhängigkeit in die Microservices einbinden
