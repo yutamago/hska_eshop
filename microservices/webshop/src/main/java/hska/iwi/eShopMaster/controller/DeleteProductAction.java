@@ -19,9 +19,8 @@ public class DeleteProductAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public DeleteProductAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public DeleteProductAction() {
+		this.restTemplate = new RestTemplate();
 	}
 	/**
 	 * 

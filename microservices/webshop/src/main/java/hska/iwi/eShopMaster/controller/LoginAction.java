@@ -15,9 +15,8 @@ public class LoginAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public LoginAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public LoginAction() {
+		this.restTemplate = new RestTemplate();
 	}
 	/**
      *
@@ -37,6 +36,9 @@ public class LoginAction extends ActionSupport {
 		String result = "input";
 
 		UserManager myCManager = new UserManagerImpl(restTemplate);
+
+		String token = myCManager.tryGetToken(username, password);
+		System.out.println(">>> SERVER RESPONSE!!!! AUTH TOKEN: " + token);
 		
 		// Get user from DB:
 		User user = myCManager.getUserByUsername(getUsername());

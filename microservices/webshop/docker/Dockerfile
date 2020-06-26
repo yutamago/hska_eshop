@@ -1,17 +1,19 @@
-FROM maven:3.6-jdk-11 as builder
+# Build application
+FROM maven:3.6.1-jdk-11-slim as builder
 
-COPY ./pom.xml ./pom.xml
-COPY ./src ./src
-RUN mvn clean package
+ENV BUILD_DIR /build
+RUN mkdir -p $BUILD_DIR
+WORKDIR $BUILD_DIR
 
+COPY pom.xml $BUILD_DIR
+RUN mvn --batch-mode dependency:go-offline
+
+COPY src $BUILD_DIR/src
+RUN mvn --batch-mode package
+
+# Run application
 FROM tomcat:9.0
-COPY --from=builder /target/*.war /usr/local/tomcat/webapps/webshop.war
+COPY --from=builder /build/target/*.war /usr/local/tomcat/webapps/webshop.war
 COPY ./conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
-# COPY ./conf/context.xml /opt/bitnami/tomcat/conf/Catalina/localhost/context.xml
-# COPY ./conf/context.xml /bitnami/tomcat/data/manager/META-INF/context.xml
-# COPY ./conf/context.xml /opt/bitnami/tomcat/webapps/manager/META-INF/context.xml
-
 
 EXPOSE 8080
-
-# CMD ["catalina.sh", "run"]

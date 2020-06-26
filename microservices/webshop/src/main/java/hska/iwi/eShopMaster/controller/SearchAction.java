@@ -21,9 +21,8 @@ public class SearchAction extends ActionSupport {
 
     private RestTemplate restTemplate;
 
-    @Autowired
-    public SearchAction(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public SearchAction() {
+        this.restTemplate = new RestTemplate();
     }
 
     /**

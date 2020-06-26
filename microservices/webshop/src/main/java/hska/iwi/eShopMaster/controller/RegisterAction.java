@@ -15,9 +15,8 @@ public class RegisterAction extends ActionSupport {
 
     private RestTemplate restTemplate;
 
-    @Autowired
-    public RegisterAction(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public RegisterAction() {
+        this.restTemplate = new RestTemplate();
     }
     /**
      *

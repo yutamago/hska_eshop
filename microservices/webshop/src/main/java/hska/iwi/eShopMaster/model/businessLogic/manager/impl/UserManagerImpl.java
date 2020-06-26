@@ -1,22 +1,22 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
-import hska.iwi.eShopMaster.model.Product;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
-import hska.iwi.eShopMaster.model.converters.ProductRestModelConverter;
 import hska.iwi.eShopMaster.model.converters.UserRestModelConverter;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.RoleDAO;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.UserDAO;
 import hska.iwi.eShopMaster.model.database.dataobjects.Role;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
-import hska.iwi.eShopMaster.viewmodels.ProductView;
+import hska.iwi.eShopMaster.model.sessionFactory.util.OAuth2Manager;
 import hska.iwi.eShopMaster.viewmodels.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,11 +29,13 @@ public class UserManagerImpl implements UserManager {
     private static final ParameterizedTypeReference<List<UserView>> UserListTypeRef = new ParameterizedTypeReference<>() {
     };
 
+    private OAuth2Manager o2;
     private RestTemplate restTemplate;
 
     @Autowired
     public UserManagerImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+        this.o2 = OAuth2Manager.getInstance();
     }
 
     @Override
@@ -58,13 +60,15 @@ public class UserManagerImpl implements UserManager {
             return null;
         }
 
-        UserView userView = this.restTemplate.exchange("http://eshop-api:8080/user/username/" + username, HttpMethod.GET, null, UserView.class).getBody();
+        System.out.println("::::::::::::::::: TRY TO GET USER :::::::::::::::::::::::::");
+        UserView userView = this.restTemplate.exchange("http://eshop-api:8080/user/username/" + username, HttpMethod.GET, o2.getAuthBody(), UserView.class).getBody();
+        System.out.println("::::::::::::::::: GET USER WORKED. FOUND: " +  userView.getUserId() + " ::::::::::::::::::::::::::::::::");
         return UserRestModelConverter.ConvertFromRestView(userView);
     }
 
     @Override
     public boolean deleteUserById(UUID id) {
-        this.restTemplate.exchange("http://eshop-api:8080/user/" + id, HttpMethod.DELETE, null, String.class);
+        this.restTemplate.exchange("http://eshop-api:8080/user/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
 
         return true;
     }

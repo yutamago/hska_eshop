@@ -18,9 +18,8 @@ public class DeleteCategoryAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public DeleteCategoryAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public DeleteCategoryAction() {
+		this.restTemplate = new RestTemplate();
 	}
 
 	/**

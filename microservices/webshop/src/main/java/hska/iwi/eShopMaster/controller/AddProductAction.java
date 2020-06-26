@@ -20,9 +20,8 @@ public class AddProductAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public AddProductAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public AddProductAction() {
+		this.restTemplate = new RestTemplate();
 	}
 
 	private static final long serialVersionUID = 39979991339088L;

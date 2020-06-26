@@ -17,9 +17,8 @@ public class InitCategorySiteAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public InitCategorySiteAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public InitCategorySiteAction() {
+		this.restTemplate = new RestTemplate();
 	}
 
 	/**

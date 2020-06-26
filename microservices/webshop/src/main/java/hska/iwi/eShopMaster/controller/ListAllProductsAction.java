@@ -17,9 +17,8 @@ public class ListAllProductsAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public ListAllProductsAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public ListAllProductsAction() {
+		this.restTemplate = new RestTemplate();
 	}
 	/**
 	 * 

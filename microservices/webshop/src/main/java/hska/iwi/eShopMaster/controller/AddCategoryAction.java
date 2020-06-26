@@ -17,9 +17,8 @@ public class AddCategoryAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public AddCategoryAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public AddCategoryAction() {
+		this.restTemplate = new RestTemplate();
 	}
 
 	private static final long serialVersionUID = -6704600867133294378L;

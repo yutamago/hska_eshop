@@ -17,9 +17,8 @@ public class ProductDetailsAction extends ActionSupport {
 
 	private RestTemplate restTemplate;
 
-	@Autowired
-	public ProductDetailsAction(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public ProductDetailsAction() {
+		this.restTemplate = new RestTemplate();
 	}
 	private User user;
 	private UUID id;
