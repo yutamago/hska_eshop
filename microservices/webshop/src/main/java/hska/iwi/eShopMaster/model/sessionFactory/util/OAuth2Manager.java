@@ -11,27 +11,34 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Base64;
 
 public class OAuth2Manager {
-    private static OAuth2Manager INSTANCE = new OAuth2Manager();
 
     private RestTemplate restTemplate;
-
+    private static OAuth2Manager INSTANCE = new OAuth2Manager();
+    public static OAuth2Manager getInstance() {
+        return INSTANCE;
+    }
     private OAuth2Manager() {
         restTemplate = new RestTemplate();
     }
 
-    public static OAuth2Manager getInstance() {
-        return INSTANCE;
-    }
 
     private static final String CLIENT_ID = "eshop-client";
     private static final String CLIENT_SECRET = "123456";
     private static final String TOKEN_ADDRESS = "http://eshop-auth:8090/oauth/token";
 
-    public static AuthToken authToken = null;
-    public static String accessToken = "";
+    private static AuthToken authToken = null;
+    private static String accessToken = "";
 
     public boolean isLoggedIn() {
         return authToken != null;
+    }
+
+    public static AuthToken getAuthToken() {
+        return authToken;
+    }
+
+    public static String getAccessToken() {
+        return accessToken;
     }
 
     public HttpHeaders getAuthHeader() {
@@ -46,7 +53,7 @@ public class OAuth2Manager {
         return httpEntity;
     }
 
-    public String tryGetToken(String username, String password) {
+    public String authorize(String username, String password) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(username, password);
         headers.set("Content-Type", "application/x-www-form-urlencoded");

@@ -4,6 +4,7 @@ package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.converters.CategoryRestModelConverter;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
+import hska.iwi.eShopMaster.model.sessionFactory.util.OAuth2Manager;
 import hska.iwi.eShopMaster.viewmodels.CategoryView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -21,16 +22,18 @@ public class CategoryManagerImpl implements CategoryManager{
 
 	private static final ParameterizedTypeReference<List<CategoryView>> CategoryListTypeRef = new ParameterizedTypeReference<>() {};
 
+	private final OAuth2Manager o2;
 	private RestTemplate restTemplate;
 
 	@Autowired
 	public CategoryManagerImpl(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
+		this.o2 = OAuth2Manager.getInstance();
 	}
 
 	@Override
 	public List<Category> getCategories() {
-		ResponseEntity<List<CategoryView>> categories = this.restTemplate.exchange("http://eshop-api:8080/category", HttpMethod.GET, null, CategoryListTypeRef);
+		ResponseEntity<List<CategoryView>> categories = this.restTemplate.exchange("http://eshop-api:8080/category", HttpMethod.GET, o2.getAuthBody(), CategoryListTypeRef);
 		List<CategoryView> listOfRestingCats = categories.getBody();
 		List<Category> listOfCats = listOfRestingCats.stream().map(CategoryRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
 		return listOfCats;
@@ -38,7 +41,7 @@ public class CategoryManagerImpl implements CategoryManager{
 
 	@Override
 	public Category getCategory(UUID id) {
-		CategoryView categoryView = this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.GET, null, CategoryView.class).getBody();
+		CategoryView categoryView = this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.GET, o2.getAuthBody(), CategoryView.class).getBody();
 		Category category = CategoryRestModelConverter.ConvertFromRestView(categoryView);
 		return category;
 	}
@@ -52,7 +55,7 @@ public class CategoryManagerImpl implements CategoryManager{
 	@Override
 	public void addCategory(String name) {
 		Category cat = new Category(name);
-		HttpEntity<hska.iwi.eShopMaster.model.Category> body = new HttpEntity<>(CategoryRestModelConverter.ConvertToRestCore(cat));
+		HttpEntity<hska.iwi.eShopMaster.model.Category> body = new HttpEntity<>(CategoryRestModelConverter.ConvertToRestCore(cat), o2.getAuthHeader());
 
 		this.restTemplate.postForEntity("http://eshop-api:8080/category/", body, CategoryView.class);
 	}
@@ -64,6 +67,6 @@ public class CategoryManagerImpl implements CategoryManager{
 
 	@Override
 	public void delCategoryById(UUID id) {
-		this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.DELETE, null, String.class);
+		this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
 	}
 }

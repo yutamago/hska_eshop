@@ -8,15 +8,18 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import org.springframework.beans.factory.annotation.Autowired;
+import hska.iwi.eShopMaster.model.sessionFactory.util.OAuth2Manager;
 import org.springframework.web.client.RestTemplate;
 
 public class LoginAction extends ActionSupport {
 
+	private final OAuth2Manager o2;
 	private RestTemplate restTemplate;
+
 
 	public LoginAction() {
 		this.restTemplate = new RestTemplate();
+		this.o2 = OAuth2Manager.getInstance();
 	}
 	/**
      *
@@ -37,7 +40,7 @@ public class LoginAction extends ActionSupport {
 
 		UserManager myCManager = new UserManagerImpl(restTemplate);
 
-		String token = myCManager.tryGetToken(username, password);
+		String token = o2.authorize(username, password);
 		System.out.println(">>> SERVER RESPONSE!!!! AUTH TOKEN: " + token);
 		
 		// Get user from DB:
