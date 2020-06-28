@@ -50,8 +50,12 @@ public class UserManagerImpl implements UserManager {
 
         HttpEntity<hska.iwi.eShopMaster.model.User> body = new HttpEntity<>(restUser);
 
-        ResponseEntity<UserView> responseEntity = this.restTemplate.postForEntity("http://eshop-api:8080/user/", body, UserView.class);
-
+        try {
+            ResponseEntity<UserView> responseEntity = this.restTemplate.postForEntity("http://eshop-api:8080/user/", body, UserView.class);
+        } catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -60,17 +64,28 @@ public class UserManagerImpl implements UserManager {
             return null;
         }
 
-        System.out.println("::::::::::::::::: TRY TO GET USER :::::::::::::::::::::::::");
-        UserView userView = this.restTemplate.exchange("http://eshop-api:8080/user/username/" + username, HttpMethod.GET, o2.getAuthBody(), UserView.class).getBody();
-        System.out.println("::::::::::::::::: GET USER WORKED. FOUND: " +  userView.getUserId() + " ::::::::::::::::::::::::::::::::");
-        return UserRestModelConverter.ConvertFromRestView(userView);
+        try {
+            UserView userView = this.restTemplate.exchange("http://eshop-api:8080/user/username/" + username, HttpMethod.GET, o2.getAuthBody(), UserView.class).getBody();
+            System.out.println("============= GET USER RESPONSE :::: " + userView);
+
+            return UserRestModelConverter.ConvertFromRestView(userView);
+        } catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public boolean deleteUserById(UUID id) {
-        this.restTemplate.exchange("http://eshop-api:8080/user/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
-
-        return true;
+        try {
+            this.restTemplate.exchange("http://eshop-api:8080/user/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
+            return true;
+        } catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     @Override

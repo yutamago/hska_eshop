@@ -1,12 +1,13 @@
-package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
+package hska.iwi.eShopMaster.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @JsonSerialize
-public class AuthToken {
+public class AuthToken implements Serializable {
 
     @JsonProperty("access_token")
     private String accessToken;

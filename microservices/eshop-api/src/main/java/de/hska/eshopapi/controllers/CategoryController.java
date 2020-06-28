@@ -53,11 +53,13 @@ public class CategoryController {
 
     @HystrixCommand(fallbackMethod = "getCategoriesFromCache")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<CategoryView>> getCategories() throws URISyntaxException, NotFoundInDatabaseException {
+    public ResponseEntity<List<CategoryView>> getCategories(
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException, NotFoundInDatabaseException {
         URI uri = makeURI().build();
         ResponseEntity<List<CategoryView>> categories;
         try {
-            categories = this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryListTypeRef);
+            categories = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), CategoryListTypeRef);
             CategoryViewList list = new CategoryViewList(categories.getBody());
             this.categoryViewListCache.put(0L, list);
             this.categoryViewCache.putAll(list.stream().collect(Collectors.toMap(CategoryView::getCategoryId, v -> v)));
@@ -68,7 +70,7 @@ public class CategoryController {
         return new ResponseEntity<>(categories.getBody(), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<CategoryView>> getCategoriesFromCache() {
+    public ResponseEntity<List<CategoryView>> getCategoriesFromCache(@RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
@@ -81,17 +83,17 @@ public class CategoryController {
     @RequestMapping(method = RequestMethod.GET, path = "/id/{categoryId}")
     public ResponseEntity<CategoryView> getCategoryById(
             @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryId")
-                    UUID categoryId
+            @PathVariable("categoryId") UUID categoryId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI("id", categoryId.toString()).build();
-        CategoryView categoryView = this.restTemplate.exchange(uri, HttpMethod.GET, null, CategoryView.class).getBody();
+        CategoryView categoryView = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), CategoryView.class).getBody();
         this.categoryViewCache.put(categoryId, categoryView);
 
         return new ResponseEntity<>(categoryView, HttpStatus.OK);
     }
 
-    public ResponseEntity<CategoryView> getCategoryFromCache(UUID categoryId) {
+    public ResponseEntity<CategoryView> getCategoryFromCache(UUID categoryId, @RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
@@ -103,10 +105,10 @@ public class CategoryController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CategoryView> addCategory(
             @ApiParam(value = "Category", required = true)
-            @RequestBody(required = true)
-                    Category category) throws URISyntaxException {
+            @RequestBody(required = true) Category category,
+            @RequestHeader HttpHeaders headers) throws URISyntaxException {
         URI uri = makeURI().build();
-        HttpEntity<Category> body = new HttpEntity<>(category);
+        HttpEntity<Category> body = new HttpEntity<>(category, headers);
 
         return this.restTemplate.postForEntity(uri, body, CategoryView.class);
     }
@@ -115,11 +117,11 @@ public class CategoryController {
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
     public ResponseEntity<String> deleteCategory(
             @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryId")
-                    UUID categoryId
+            @PathVariable("categoryId") UUID categoryId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI(categoryId.toString()).build();
-        ResponseEntity<String> response = this.restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class);
+        ResponseEntity<String> response = this.restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<>(null, headers), String.class);
         return response;
     }
 }

@@ -51,11 +51,12 @@ public class RoleController {
 
     @HystrixCommand(fallbackMethod = "getRolesFromCache")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Role>> getRoles() throws URISyntaxException, NotFoundInDatabaseException {
+    public ResponseEntity<List<Role>> getRoles(
+            @RequestHeader HttpHeaders headers) throws URISyntaxException, NotFoundInDatabaseException {
         URI uri = makeURI().build();
         List<Role> roles;
         try {
-            roles = this.restTemplate.exchange(uri, HttpMethod.GET, null, RoleController.RoleListTypeRef).getBody();
+            roles = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), RoleController.RoleListTypeRef).getBody();
             RoleList list = new RoleList(roles);
             this.roleListCache.put(0L, list);
             roleCache.putAll(list.stream().collect(Collectors.toMap(Role::getRoleId, v -> v)));
@@ -67,7 +68,7 @@ public class RoleController {
     }
 
 
-    public ResponseEntity<List<Role>> getRolesFromCache() {
+    public ResponseEntity<List<Role>> getRolesFromCache(@RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
@@ -79,14 +80,14 @@ public class RoleController {
     @RequestMapping(method = RequestMethod.GET, path = "/id/{roleId}")
     public ResponseEntity<Role> getRoleById(
             @ApiParam(value = "role Id", required = true)
-            @PathVariable("roleId")
-                    UUID roleId
+            @PathVariable("roleId") UUID roleId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException, NotFoundInDatabaseException {
         URI uri = makeURI("id", roleId.toString()).build();
         Role role;
 
         try {
-            role = this.restTemplate.exchange(uri, HttpMethod.GET, null, Role.class).getBody();
+            role = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), Role.class).getBody();
             this.roleCache.put(role.getRoleId(), role);
         } catch (Exception ex) {
             throw new NotFoundInDatabaseException(Role.class, ex);
@@ -95,7 +96,7 @@ public class RoleController {
         return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
-    public ResponseEntity<Role> getRoleFromCache(UUID roleId) {
+    public ResponseEntity<Role> getRoleFromCache(UUID roleId, @RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
@@ -110,14 +111,14 @@ public class RoleController {
     @RequestMapping(method = RequestMethod.GET, path = "/type/{type}")
     public ResponseEntity<Role> getRoleByType(
             @ApiParam(value = "role type", required = true)
-            @PathVariable("type")
-                    String type
+            @PathVariable("type") String type,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI("type", type).build();
 
         // TODO: Try-catch nachziehen für alle anderen Stellen
         try {
-            ResponseEntity<Role> response = this.restTemplate.exchange(uri, HttpMethod.GET, null, Role.class);
+            ResponseEntity<Role> response = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), Role.class);
             return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
         } catch (HttpClientErrorException exception) {
             return new ResponseEntity<>(exception.getStatusCode());
@@ -128,11 +129,11 @@ public class RoleController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Role> addRole(
             @ApiParam(value = "Role", required = true)
-            @RequestBody(required = true)
-                    Role role
+            @RequestBody(required = true) Role role,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI().build();
-        HttpEntity<Role> body = new HttpEntity<>(role);
+        HttpEntity<Role> body = new HttpEntity<>(role, headers);
 
         return this.restTemplate.postForEntity(uri, body, Role.class);
     }
@@ -141,11 +142,11 @@ public class RoleController {
     @RequestMapping(method = RequestMethod.DELETE, path = "/{roleId}")
     public ResponseEntity<Role> deleteRole(
             @ApiParam(value = "role Id", required = true)
-            @PathVariable("roleId")
-                    UUID roleId
+            @PathVariable("roleId") UUID roleId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI(roleId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, Role.class);
+        return this.restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<>(null, headers), Role.class);
     }
 
 }

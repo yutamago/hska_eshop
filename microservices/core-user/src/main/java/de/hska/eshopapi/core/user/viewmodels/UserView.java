@@ -15,14 +15,14 @@ public class UserView implements Serializable {
     @JsonProperty private String password;
     @JsonProperty private RoleView role;
 
-    public static UserView FromUser(User user, Role role) {
+    public static UserView FromUser(User user, RoleView role) {
         UserView uv = new UserView();
         uv.userId = user.getUserId();
         uv.username = user.getUsername();
         uv.firstname = user.getFirstname();
         uv.lastname = user.getLastname();
         uv.password = user.getPassword();
-//        uv.role = RoleView.FromRole(role);
+        uv.role = role;
         return uv;
     }
 

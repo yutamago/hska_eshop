@@ -59,11 +59,13 @@ public class ProductController {
 
     @HystrixCommand(fallbackMethod = "getProductsFromCache")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ProductView>> getProducts() throws URISyntaxException, NotFoundInDatabaseException {
+    public ResponseEntity<List<ProductView>> getProducts(
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException, NotFoundInDatabaseException {
         URI uri = makeURI().build();
         List<ProductView> productViews;
         try {
-            productViews = this.restTemplate.exchange(uri, HttpMethod.GET, null, ProductListTypeRef).getBody();
+            productViews = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), ProductListTypeRef).getBody();
             ProductViewList list = new ProductViewList(productViews);
 
             productViewListCache.put(0L, new ProductViewList(productViews));
@@ -75,7 +77,7 @@ public class ProductController {
         return new ResponseEntity<>(productViews, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<ProductView>> getProductsFromCache() {
+    public ResponseEntity<List<ProductView>> getProductsFromCache(@RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
@@ -87,14 +89,14 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.GET, path = "/{productId}")
     public ResponseEntity<ProductView> getProductById(
             @ApiParam(value = "product Id", required = true)
-            @PathVariable("productId")
-                    UUID productId
+            @PathVariable("productId") UUID productId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException, NotFoundInDatabaseException {
         URI uri = makeURI(productId.toString()).build();
         ProductView productView;
 
         try {
-            productView = this.restTemplate.exchange(uri, HttpMethod.GET, null, ProductView.class).getBody();
+            productView = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), ProductView.class).getBody();
             this.productViewCache.put(productView.getProductId(), productView);
         } catch (Exception ex) {
             throw new NotFoundInDatabaseException(ProductView.class, ex);
@@ -103,7 +105,7 @@ public class ProductController {
         return new ResponseEntity<>(productView, HttpStatus.OK);
     }
 
-    public ResponseEntity<ProductView> getProductFromCache(UUID productId) {
+    public ResponseEntity<ProductView> getProductFromCache(UUID productId, @RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
@@ -115,10 +117,11 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.GET, path = "/search")
     public ResponseEntity<List<ProductView>> searchProducts(
             @ApiParam(value = "search options", required = true)
-            @Valid @RequestBody ProductSearchOptions searchOptions
+            @Valid @RequestBody ProductSearchOptions searchOptions,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI().build();
-        HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions);
+        HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, headers);
 
         return this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductListTypeRef);
     }
@@ -127,10 +130,11 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProductView> addProduct(
             @ApiParam(value = "Product", required = true)
-            @RequestBody(required = true)
-                    Product product) throws URISyntaxException {
+            @RequestBody(required = true) Product product,
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException {
         URI uri = makeURI().build();
-        HttpEntity<Product> body = new HttpEntity<>(product);
+        HttpEntity<Product> body = new HttpEntity<>(product, headers);
 
         return this.restTemplate.postForEntity(uri, body, ProductView.class);
     }
@@ -139,10 +143,10 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
     public ResponseEntity<ProductView> deleteProduct(
             @ApiParam(value = "product Id", required = true)
-            @PathVariable("productId")
-                    UUID productId
+            @PathVariable("productId") UUID productId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI(productId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, ProductView.class);
+        return this.restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<>(null, headers), ProductView.class);
     }
 }

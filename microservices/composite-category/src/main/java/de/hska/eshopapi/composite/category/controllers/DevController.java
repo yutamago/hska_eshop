@@ -9,10 +9,8 @@ import io.swagger.annotations.Api;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +44,9 @@ public class DevController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<DevModel> setup() throws URISyntaxException {
+    public ResponseEntity<DevModel> setup(
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException {
         UUID categoryUUID1 = UUID.randomUUID();
         UUID categoryUUID2 = UUID.randomUUID();
         UUID categoryUUID3 = UUID.randomUUID();
@@ -90,8 +90,8 @@ public class DevController {
         buch.setDetails("Im Kapitol macht sich der 18-jährige Coriolanus Snow bereit, als Mentor bei den Hungerspielen zu Ruhm und Ehre zu gelangen.");
         buch.setPrice(new BigDecimal("26.00"));
 
-        HttpEntity<ArrayList<Category>> bodyCategory = new HttpEntity<>(new ArrayList<>(Arrays.asList(spielzeug, unterwaesche, buecher)));
-        HttpEntity<ArrayList<Product>> bodyProduct = new HttpEntity<>(new ArrayList<>(Arrays.asList(legoDrachenburg, wb, buch)));
+        HttpEntity<ArrayList<Category>> bodyCategory = new HttpEntity<>(new ArrayList<>(Arrays.asList(spielzeug, unterwaesche, buecher)), headers);
+        HttpEntity<ArrayList<Product>> bodyProduct = new HttpEntity<>(new ArrayList<>(Arrays.asList(legoDrachenburg, wb, buch)), headers);
 
         ResponseEntity<List<Category>> newCategories = this.restTemplate.exchange(makeURI(RoutesUtil.APICoreCategory, RoutesUtil.APIDev).build(),
                 HttpMethod.POST, bodyCategory, CategoryListTypeRef);

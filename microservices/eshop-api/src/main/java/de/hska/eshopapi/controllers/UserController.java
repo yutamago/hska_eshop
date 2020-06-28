@@ -53,12 +53,14 @@ public class UserController {
 
     @HystrixCommand(fallbackMethod = "getUsersFromCache")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserView>> getUsers() throws URISyntaxException, NotFoundInDatabaseException {
+    public ResponseEntity<List<UserView>> getUsers(
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException, NotFoundInDatabaseException {
         URI uri = makeURI().build();
         List<UserView> userViews;
 
         try {
-            userViews = this.restTemplate.exchange(uri, HttpMethod.GET, null, UserController.UserListTypeRef).getBody();
+            userViews = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), UserController.UserListTypeRef).getBody();
             UserViewList list = new UserViewList(userViews);
             userViewListCache.put(0L, list);
             userViewCache.putAll(list.stream().collect(Collectors.toMap(UserView::getUserId, v -> v)));
@@ -70,26 +72,26 @@ public class UserController {
     }
 
 
-    public ResponseEntity<List<UserView>> getUsersFromCache() {
+    public ResponseEntity<List<UserView>> getUsersFromCache(@RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
 
-        return new ResponseEntity<List<UserView>>(this.userViewListCache.get(0L), customHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(this.userViewListCache.get(0L), customHeaders, HttpStatus.OK);
     }
 
     @HystrixCommand(fallbackMethod = "getUserFromCache")
     @RequestMapping(method = RequestMethod.GET, path = "/id/{userId}")
     public ResponseEntity<UserView> getUserById(
             @ApiParam(value = "user Id", required = true)
-            @PathVariable("userId")
-                    UUID userId
+            @PathVariable("userId") UUID userId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException, NotFoundInDatabaseException {
         URI uri = makeURI("id", userId.toString()).build();
         UserView userView;
 
         try {
-            userView = this.restTemplate.exchange(uri, HttpMethod.GET, null, UserView.class).getBody();
+            userView = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), UserView.class).getBody();
             this.userViewCache.put(userView.getUserId(), userView);
         } catch (Exception ex) {
             throw new NotFoundInDatabaseException(UserView.class, ex);
@@ -98,7 +100,7 @@ public class UserController {
         return new ResponseEntity<>(userView, HttpStatus.OK);
     }
 
-    public ResponseEntity<UserView> getUserFromCache(UUID userId) {
+    public ResponseEntity<UserView> getUserFromCache(UUID userId, @RequestHeader HttpHeaders headers) {
         MultiValueMap<String, String> customHeaders = new HttpHeaders();
         customHeaders.add("fromCache", "true");
         customHeaders.add("isFallback", "true");
@@ -110,22 +112,24 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET, path = "/username/{username}")
     public ResponseEntity<UserView> getUserByUsername(
             @ApiParam(value = "username", required = true)
-            @PathVariable("username")
-                    String username
+            @PathVariable("username") String username,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
+        System.out.println("======================= GET USER, HEADER IS: " + headers);
+
         URI uri = makeURI("username", username).build();
-        return this.restTemplate.exchange(uri, HttpMethod.GET, null, UserView.class);
+        return this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), UserView.class);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserView> addUser(
             @ApiParam(value = "User", required = true)
-            @RequestBody(required = true)
-                    User user
+            @RequestBody(required = true) User user,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI().build();
-        HttpEntity<User> body = new HttpEntity<>(user);
+        HttpEntity<User> body = new HttpEntity<>(user, headers);
 
         return this.restTemplate.postForEntity(uri, body, UserView.class);
     }
@@ -134,10 +138,10 @@ public class UserController {
     @RequestMapping(method = RequestMethod.DELETE, path = "/{userId}")
     public ResponseEntity<UserView> deleteUser(
             @ApiParam(value = "user Id", required = true)
-            @PathVariable("userId")
-                    UUID userId
+            @PathVariable("userId") UUID userId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI(userId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.DELETE, null, UserView.class);
+        return this.restTemplate.exchange(uri, HttpMethod.DELETE, new HttpEntity<>(null, headers), UserView.class);
     }
 }

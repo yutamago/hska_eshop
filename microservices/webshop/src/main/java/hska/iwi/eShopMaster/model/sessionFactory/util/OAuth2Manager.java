@@ -1,14 +1,18 @@
 package hska.iwi.eShopMaster.model.sessionFactory.util;
 
-import hska.iwi.eShopMaster.model.businessLogic.manager.impl.AuthToken;
+import com.opensymphony.xwork2.ActionContext;
+import hska.iwi.eShopMaster.model.AuthToken;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Base64;
+import java.util.List;
+import java.util.Map;
 
 public class OAuth2Manager {
 
@@ -17,8 +21,14 @@ public class OAuth2Manager {
     public static OAuth2Manager getInstance() {
         return INSTANCE;
     }
+
     private OAuth2Manager() {
         restTemplate = new RestTemplate();
+
+        Map<String, Object> session = ActionContext.getContext().getSession();
+        authToken = (AuthToken) session.get("auth");
+        if(authToken != null)
+            accessToken = authToken.getAccessToken();
     }
 
 
@@ -26,24 +36,27 @@ public class OAuth2Manager {
     private static final String CLIENT_SECRET = "123456";
     private static final String TOKEN_ADDRESS = "http://eshop-auth:8090/oauth/token";
 
-    private static AuthToken authToken = null;
-    private static String accessToken = "";
+    private AuthToken authToken = null;
+    private String accessToken = "";
 
     public boolean isLoggedIn() {
         return authToken != null;
     }
 
-    public static AuthToken getAuthToken() {
+    public AuthToken getAuthToken() {
         return authToken;
     }
 
-    public static String getAccessToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 
     public HttpHeaders getAuthHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + authToken.getAccessToken());
+//        headers.setContentType(MediaType.asMediaType(MediaType.APPLICATION_JSON));
+        headers.setBearerAuth(authToken.getAccessToken());
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        System.out.println("================== HEADERS FOR OAUTH2 REQUEST ==================== \n" + headers);
         return headers;
     }
     public HttpEntity<?> getAuthBody() {
@@ -70,12 +83,14 @@ public class OAuth2Manager {
 
 
         System.out.println("HEADERS + BODY: " + httpEntity.toString());
-        System.out.println("HEADERS: " + httpEntity.getHeaders().toString());
-        System.out.println("BODY: " + httpEntity.getBody().toString());
-
-        this.authToken = this.restTemplate.exchange(TOKEN_ADDRESS, HttpMethod.POST, httpEntity, AuthToken.class).getBody();
-        System.out.println(":::::::::::::::::::::AUTH TOKEN:::::::::::::::::::: " + this.authToken);
-        this.accessToken = this.authToken.getAccessToken();
+        try {
+            this.authToken = this.restTemplate.exchange(TOKEN_ADDRESS, HttpMethod.POST, httpEntity, AuthToken.class).getBody();
+            System.out.println(":::::::::::::::::::::AUTH TOKEN:::::::::::::::::::: " + this.authToken);
+            this.accessToken = this.authToken.getAccessToken();
+        } catch(Exception ex) {
+            System.out.println("::::::::::::::::::::: FAILED TO GET AUTH TOKEN:::::::::::::::::::: ");
+            System.out.println(ex);
+        }
 
         return this.accessToken;
     }

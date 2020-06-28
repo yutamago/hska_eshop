@@ -4,6 +4,8 @@ import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -30,7 +32,17 @@ public class LoginAction extends ActionSupport {
 	private String firstname;
 	private String lastname;
 	private String role;
-	
+
+	private static String bytesToHex(byte[] hash) {
+		StringBuffer hexString = new StringBuffer();
+		for (int i = 0; i < hash.length; i++) {
+			String hex = Integer.toHexString(0xff & hash[i]);
+			if(hex.length() == 1) hexString.append('0');
+			hexString.append(hex);
+		}
+		return hexString.toString();
+	}
+
 
 	@Override
 	public String execute() throws Exception {
@@ -49,13 +61,21 @@ public class LoginAction extends ActionSupport {
 		// Does user exist?
 		if (user != null) {
 			// Is the password correct?
-			if (user.getPassword().equals(getPassword())) {
+
+			String pwHash = bytesToHex(MessageDigest.getInstance("SHA-256").digest(password.getBytes(StandardCharsets.UTF_8)));
+//			System.out.println("Password Bytes Self: " + new String(user.getPassword().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
+//			System.out.println("Password Raw Self: " + password);
+//			System.out.println("Password Hash Self: " + pwHash);
+//			System.out.println("Password Hash Server: " + user.getPassword());
+
+			if (user.getPassword().equals(pwHash)) {
 				// Get session to save user role and login:
 				Map<String, Object> session = ActionContext.getContext().getSession();
 				
 				// Save user object in session:
 				session.put("webshop_user", user);
 				session.put("message", "");
+				session.put("auth", OAuth2Manager.getInstance().getAuthToken());
 				firstname= user.getFirstname();
 				lastname = user.getLastname();
 				role = user.getRole().getTyp();

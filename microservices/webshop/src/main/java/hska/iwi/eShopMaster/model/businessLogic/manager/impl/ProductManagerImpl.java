@@ -37,11 +37,17 @@ public class ProductManagerImpl implements ProductManager {
 
 	@Override
 	public List<Product> getProducts() {
-		System.out.println("<<<<<<<<<<<<<<< GET PRODUCTS >>>>>>>>>>>>>>>");
-		ResponseEntity<List<ProductView>> products = this.restTemplate.exchange("http://eshop-api:8080/product", HttpMethod.GET, o2.getAuthBody(), ProductListTypeRef);
-		List<ProductView> listOfRestingCats = products.getBody();
-		List<Product> listOfProducts = listOfRestingCats.stream().map(ProductRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
-		return listOfProducts;
+		try {
+			ResponseEntity<List<ProductView>> products = this.restTemplate.exchange("http://eshop-api:8080/product", HttpMethod.GET, o2.getAuthBody(), ProductListTypeRef);
+			List<ProductView> listOfRestingCats = products.getBody();
+			List<Product> listOfProducts = listOfRestingCats.stream().map(ProductRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
+			return listOfProducts;
+		} catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+		return null;
 	}
 
 	@Override
@@ -54,16 +60,29 @@ public class ProductManagerImpl implements ProductManager {
 		searchOptions.setMaxPrice(searchMaxPrice.toString());
 		HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, o2.getAuthHeader());
 
-		List<ProductView> products = this.restTemplate.exchange("http://eshop-api:8080/search/", HttpMethod.GET, body, ProductListTypeRef).getBody();
-		List<Product> productList = products.stream().map(ProductRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
+		try {
+			List<ProductView> products = this.restTemplate.exchange("http://eshop-api:8080/search/", HttpMethod.GET, body, ProductListTypeRef).getBody();
+			List<Product> productList = products.stream().map(ProductRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
+			return productList;
+		} catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
 
-		return productList;
+		return null;
 	}
 
 	@Override
 	public Product getProductById(UUID id) {
-		ProductView productView = this.restTemplate.exchange("http://eshop-api:8080/product/" + id, HttpMethod.GET, o2.getAuthBody(), ProductView.class).getBody();
-		return ProductRestModelConverter.ConvertFromRestView(productView);
+		try {
+			ProductView productView = this.restTemplate.exchange("http://eshop-api:8080/product/" + id, HttpMethod.GET, o2.getAuthBody(), ProductView.class).getBody();
+			return ProductRestModelConverter.ConvertFromRestView(productView);
+		} catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+		return null;
 	}
 
 	@Override
@@ -82,13 +101,24 @@ public class ProductManagerImpl implements ProductManager {
 
 		HttpEntity<hska.iwi.eShopMaster.model.Product> body = new HttpEntity<>(product, o2.getAuthHeader());
 
-		ResponseEntity<ProductView> responseEntity = this.restTemplate.postForEntity("http://eshop-api:8080/product/", body, ProductView.class);
-		return responseEntity.getBody().getProductId();
+		try {
+			ResponseEntity<ProductView> responseEntity = this.restTemplate.postForEntity("http://eshop-api:8080/product/", body, ProductView.class);
+			return responseEntity.getBody().getProductId();
+		} catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+		return null;
 	}
 
 	@Override
 	public void deleteProductById(UUID id) {
-		this.restTemplate.exchange("http://eshop-api:8080/product/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
+		try {
+			this.restTemplate.exchange("http://eshop-api:8080/product/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
+		} catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
 	}
 
 	@Override

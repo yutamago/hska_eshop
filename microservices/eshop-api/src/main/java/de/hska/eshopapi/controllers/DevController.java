@@ -10,9 +10,8 @@ import de.hska.eshopapi.model.User;
 import io.swagger.annotations.Api;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,10 +40,12 @@ public class DevController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<DevModelAll> setup() throws URISyntaxException {
-        ResponseEntity<UserRoleDevModel> userDevModel = this.restTemplate.exchange(makeURI(RoutesUtil.APICoreUser, RoutesUtil.APIDev).build(), HttpMethod.POST, null, UserRoleDevModel.class);
+    public ResponseEntity<DevModelAll> setup(
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException {
+        ResponseEntity<UserRoleDevModel> userDevModel = this.restTemplate.exchange(makeURI(RoutesUtil.APICoreUser, RoutesUtil.APIDev).build(), HttpMethod.POST, new HttpEntity<>(null, headers), UserRoleDevModel.class);
         ResponseEntity<CatProdDevModel> catsDevModel = this.restTemplate
-                .exchange(makeURI(RoutesUtil.APICompositeCategory, RoutesUtil.APIDev).build(), HttpMethod.POST, null, CatProdDevModel.class);
+                .exchange(makeURI(RoutesUtil.APICompositeCategory, RoutesUtil.APIDev).build(), HttpMethod.POST, new HttpEntity<>(null, headers), CatProdDevModel.class);
 
         DevModelAll devModelAll = new DevModelAll();
         devModelAll.categories = catsDevModel.getBody().getCategories();

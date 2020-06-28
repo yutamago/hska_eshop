@@ -11,6 +11,7 @@ import java.util.UUID;
 @NamedQueries({
         @NamedQuery(name = "Role.findByType", query = "select r from Role r where r.type = :type and r.isDeleted = false"),
 })
+@Eager
 public class Role {
     @Id
     @Column(nullable = false)
@@ -27,6 +28,7 @@ public class Role {
 
     public static Role makeNew(Role role) {
         Role newRole = new Role();
+        newRole.roleId = role.roleId == null ? newRole.roleId : role.roleId;
         newRole.isDeleted = role.isDeleted;
         newRole.level = role.level;
         newRole.type = role.type;

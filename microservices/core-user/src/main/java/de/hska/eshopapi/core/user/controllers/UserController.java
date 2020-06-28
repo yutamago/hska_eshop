@@ -5,6 +5,7 @@ import de.hska.eshopapi.core.user.dao.RoleDAO;
 import de.hska.eshopapi.core.user.dao.UserDAO;
 import de.hska.eshopapi.core.user.model.Role;
 import de.hska.eshopapi.core.user.model.User;
+import de.hska.eshopapi.core.user.viewmodels.RoleView;
 import de.hska.eshopapi.core.user.viewmodels.UserView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -50,13 +52,25 @@ public class UserController {
 
         users.forEach(user -> {
             Role role = null;
+            RoleView roleView = null;
             if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = roleDAO.getOne(user.getRoleId());
+                role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+                roleView = RoleView.FromRole(role);
             }
-            userViews.add(UserView.FromUser(user, role));
+            userViews.add(UserView.FromUser(user, roleView));
         });
 
         return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuffer hexString = new StringBuffer();
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 
     @HystrixCommand
@@ -74,14 +88,17 @@ public class UserController {
         if(user.getRoleId() == null || !roleDAO.existsById(user.getRoleId()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        String pwHash = new String(MessageDigest.getInstance("SHA-384").digest(user.getPassword().getBytes()));
+        String pwHash = bytesToHex(MessageDigest.getInstance("SHA-256").digest(user.getPassword().getBytes(StandardCharsets.UTF_8)));
         user.setPassword(pwHash);
 
-        Role role = roleDAO.getOne(user.getRoleId());
-        User newUser = userDAO.saveAndFlush(User.makeNew(user));
+        Role role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+        RoleView roleView = RoleView.FromRole(role);
+        User newUser = userDAO.save(User.makeNew(user));
 
-        UserView newUserView = UserView.FromUser(newUser, role);
+        UserView newUserView = UserView.FromUser(newUser, roleView);
 
+        userDAO.flush();
+        roleDAO.flush();
         return new ResponseEntity<>(newUserView, HttpStatus.OK);
     }
 
@@ -96,8 +113,9 @@ public class UserController {
         Optional<User> userOptional = this.userDAO.findById(userId);
         return userOptional
                 .map(user -> {
-                    Role role = roleDAO.getOne(user.getRoleId());
-                    UserView newUserView = UserView.FromUser(user, role);
+                    Role role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+                    RoleView roleView = RoleView.FromRole(role);
+                    UserView newUserView = UserView.FromUser(user, roleView);
                     return new ResponseEntity<>(newUserView, HttpStatus.OK);
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -108,14 +126,14 @@ public class UserController {
     @RolesAllowed("user.read")
     public ResponseEntity<UserView> getUserByUsername(
             @ApiParam(value = "user Id", required = true)
-            @PathVariable("username")
-                    String username
+            @PathVariable("username") String username
     ) {
         List<User> users = this.userDAO.findByUsername(username);
         if(!users.isEmpty()) {
             User user = users.get(0);
-            Role role = roleDAO.getOne(user.getRoleId());
-            UserView newUserView = UserView.FromUser(user, role);
+            Role role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+            RoleView roleView = RoleView.FromRole(role);
+            UserView newUserView = UserView.FromUser(user, roleView);
 
             return new ResponseEntity<>(newUserView, HttpStatus.OK);
         } else

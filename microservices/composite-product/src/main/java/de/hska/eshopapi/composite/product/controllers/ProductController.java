@@ -11,10 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -51,10 +48,12 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ProductView>> getProducts() throws URISyntaxException {
+    public ResponseEntity<List<ProductView>> getProducts(
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException {
         URI uri = makeURI().build();
 
-        List<Product> products = this.restTemplate.exchange(uri, HttpMethod.GET, null, ProductUtil.ProductListTypeRef).getBody();
+        List<Product> products = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), ProductUtil.ProductListTypeRef).getBody();
         List<ProductView> productViews = ProductUtil.ExtendProducts(products, this.restTemplate);
 
         return new ResponseEntity<>(productViews, HttpStatus.OK);
@@ -88,10 +87,11 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.GET, path = "/search")
     public ResponseEntity<List<ProductView>> searchProducts(
             @ApiParam(value = "search options", required = true)
-            @Valid @RequestBody ProductSearchOptions searchOptions
+            @Valid @RequestBody ProductSearchOptions searchOptions,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI().build();
-        HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions);
+        HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, headers);
 
         List<Product> products = this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductUtil.ProductListTypeRef).getBody();
         List<ProductView> productViews = ProductUtil.ExtendProducts(products, this.restTemplate);
@@ -103,20 +103,22 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.GET, path = "/{productId}")
     public ResponseEntity<ProductView> getProductById(
             @ApiParam(value = "product Id", required = true)
-            @PathVariable("productId")
-                    UUID productId
+            @PathVariable("productId") UUID productId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI("id", productId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.GET, null, ProductView.class);
+        return this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), ProductView.class);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProductView> addProduct(
             @ApiParam(value = "Product", required = true)
-            @RequestBody Product product) throws URISyntaxException {
+            @RequestBody Product product,
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException {
         URI addProductUrl = makeURI().build();
-        HttpEntity<Product> body = new HttpEntity<>(product);
+        HttpEntity<Product> body = new HttpEntity<>(product, headers);
         ProductView productView = this.restTemplate.postForEntity(addProductUrl, body, ProductView.class).getBody();
 
         URI addProductToCategoryUrl = makeAbsoluteURI(
@@ -131,8 +133,8 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
     public ResponseEntity<String> deleteProduct(
             @ApiParam(value = "product Id", required = true)
-            @PathVariable("productId")
-                    UUID productId
+            @PathVariable("productId") UUID productId,
+            @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI getProductUrl = makeURI("id", productId.toString()).build();
         URI getCategoryByProductIdUrl = makeAbsoluteURI("http://core-category", "category", "productid", productId.toString()).build();
@@ -145,9 +147,9 @@ public class ProductController {
         Category category = null;
         Product product = null;
 
-        try {
-            product = this.restTemplate.getForEntity(getProductUrl, Product.class).getBody();
-            List<Category> categories = this.restTemplate.exchange(getCategoryByProductIdUrl, HttpMethod.GET, null, ProductUtil.CategoryListTypeRef).getBody();
+        try { //new HttpEntity<>(null, headers)
+            product = this.restTemplate.exchange(getProductUrl, HttpMethod.GET, new HttpEntity<>(null, headers), Product.class).getBody();
+            List<Category> categories = this.restTemplate.exchange(getCategoryByProductIdUrl, HttpMethod.GET, new HttpEntity<>(null, headers), ProductUtil.CategoryListTypeRef).getBody();
             if (categories.isEmpty()) {
                 ResponseEntity<String> response = new ResponseEntity<>("Category on Product does not exist! Product: " + productId + ", Category: " + product.getCategoryId().toString(), HttpStatus.NOT_FOUND);
                 return response;
@@ -164,11 +166,11 @@ public class ProductController {
                 "fromCategory", category.getCategoryId().toString()).build();
 
         try {
-            this.restTemplate.delete(deleteProductUrl);
-            this.restTemplate.delete(deleteProductInCategoryUrl);
+            this.restTemplate.exchange(deleteProductUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
+            this.restTemplate.exchange(deleteProductInCategoryUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
         } catch (Exception ex) {
-            this.restTemplate.put(restoreProductUrl, null);
-            this.restTemplate.put(restoreProductInCategoryUrl, null);
+            this.restTemplate.exchange(restoreProductUrl, HttpMethod.PUT, new HttpEntity<>(null, headers), Void.class);
+            this.restTemplate.exchange(restoreProductInCategoryUrl, HttpMethod.PUT, new HttpEntity<>(null, headers), Void.class);
 
             ResponseEntity<String> failResponse = new ResponseEntity<>(HttpStatus.CONFLICT);
             return failResponse;
