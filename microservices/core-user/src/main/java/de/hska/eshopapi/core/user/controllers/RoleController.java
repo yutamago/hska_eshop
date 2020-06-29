@@ -48,8 +48,7 @@ public class RoleController {
     @RolesAllowed("role.write")
     public ResponseEntity<Role> addRole(
             @ApiParam(value = "Role", required = true)
-            @RequestBody(required = true)
-            Role role
+            @RequestBody(required = true) Role role
     ) {
 
         List<Role> roles = roleDAO.findByType(role.getType());
@@ -57,7 +56,7 @@ public class RoleController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        Role newRole = roleDAO.saveAndFlush(Role.makeNew(role));
+        Role newRole = roleDAO.saveAndFlush(role.makeNew());
 
         return new ResponseEntity<>(newRole, HttpStatus.OK);
     }

@@ -118,7 +118,10 @@ public class UserController {
         System.out.println("======================= GET USER, HEADER IS: " + headers);
 
         URI uri = makeURI("username", username).build();
-        return this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), UserView.class);
+        ResponseEntity<UserView> response = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), UserView.class);
+        System.out.println("GET USER BY USERNAME (API), ROLE = " + response.getBody().getRole());
+
+        return response;
     }
 
     @HystrixCommand

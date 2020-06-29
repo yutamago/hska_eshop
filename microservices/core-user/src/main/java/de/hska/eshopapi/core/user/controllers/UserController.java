@@ -9,6 +9,7 @@ import de.hska.eshopapi.core.user.viewmodels.RoleView;
 import de.hska.eshopapi.core.user.viewmodels.UserView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,13 +37,15 @@ public class UserController {
 
     private final RoleDAO roleDAO;
     private final UserDAO userDAO;
+    private final EntityManagerFactory entityManagerFactory;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
-    public UserController(UserDAO userDAO, RoleDAO roleDAO) {
+    public UserController(UserDAO userDAO, RoleDAO roleDAO, EntityManagerFactory entityManagerFactory) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @HystrixCommand
@@ -50,16 +55,19 @@ public class UserController {
         List<User> users = this.userDAO.findAll();
         List<UserView> userViews = new ArrayList<>();
 
+        Session session = entityManagerFactory.createEntityManager().unwrap(Session.class);
+
         users.forEach(user -> {
             Role role = null;
             RoleView roleView = null;
             if (user.getRoleId() != null && roleDAO.existsById(user.getRoleId())) {
-                role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+                role = session.byId(Role.class).load(user.getRoleId());
                 roleView = RoleView.FromRole(role);
             }
             userViews.add(UserView.FromUser(user, roleView));
         });
 
+        session.close();
         return new ResponseEntity<>(userViews, HttpStatus.OK);
     }
 
@@ -76,6 +84,7 @@ public class UserController {
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     @RolesAllowed("user.write")
+    @Transactional
     public ResponseEntity<UserView> addUser(
             @ApiParam(value = "User", required = true)
             @RequestBody(required = true)
@@ -91,14 +100,16 @@ public class UserController {
         String pwHash = bytesToHex(MessageDigest.getInstance("SHA-256").digest(user.getPassword().getBytes(StandardCharsets.UTF_8)));
         user.setPassword(pwHash);
 
-        Role role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+        Session session = entityManagerFactory.createEntityManager().unwrap(Session.class);
+        Role role = session.byId(Role.class).load(user.getRoleId());
+//        Role role = roleDAO.getOne(user.getRoleId()).makeNew();
         RoleView roleView = RoleView.FromRole(role);
         User newUser = userDAO.save(User.makeNew(user));
 
         UserView newUserView = UserView.FromUser(newUser, roleView);
 
         userDAO.flush();
-        roleDAO.flush();
+        session.close();
         return new ResponseEntity<>(newUserView, HttpStatus.OK);
     }
 
@@ -113,9 +124,14 @@ public class UserController {
         Optional<User> userOptional = this.userDAO.findById(userId);
         return userOptional
                 .map(user -> {
-                    Role role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+                    Session session = entityManagerFactory.createEntityManager().unwrap(Session.class);
+
+                    Role role = session.byId(Role.class).load(user.getRoleId());
                     RoleView roleView = RoleView.FromRole(role);
                     UserView newUserView = UserView.FromUser(user, roleView);
+
+                    session.close();
+
                     return new ResponseEntity<>(newUserView, HttpStatus.OK);
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -128,16 +144,31 @@ public class UserController {
             @ApiParam(value = "user Id", required = true)
             @PathVariable("username") String username
     ) {
+        ResponseEntity<UserView> response;
         List<User> users = this.userDAO.findByUsername(username);
         if(!users.isEmpty()) {
             User user = users.get(0);
-            Role role = Role.makeNew(roleDAO.getOne(user.getRoleId()));
+            Session session = entityManagerFactory.createEntityManager().unwrap(Session.class);
+            Role daoRole = session.byId(Role.class).load(user.getRoleId());
+
+            Role role = (daoRole).makeNew();
             RoleView roleView = RoleView.FromRole(role);
             UserView newUserView = UserView.FromUser(user, roleView);
 
-            return new ResponseEntity<>(newUserView, HttpStatus.OK);
-        } else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            System.out.println("::::::::::::::::::::::: GET USER BY USERNAME ::::::::::::::::::::::::::");
+            System.out.println("USER Role ID      = " + user.getRoleId());
+            System.out.println("ROLE Role ID      = " + daoRole.getRoleId());
+            System.out.println("NEW ROLE Role ID  = " + role.getRoleId());
+            System.out.println("ROLE VIEW Role ID = " + roleView.getRoleId());
+            System.out.println("USER VIEW Role ID = " + newUserView.getRole().getRoleId());
+
+
+            response = new ResponseEntity<>(newUserView, HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return response;
     }
 
 //    @RequestMapping(method = RequestMethod.GET, path = "/username/{username}")

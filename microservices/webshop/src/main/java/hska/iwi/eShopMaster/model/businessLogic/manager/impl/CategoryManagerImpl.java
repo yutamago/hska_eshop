@@ -35,8 +35,10 @@ public class CategoryManagerImpl implements CategoryManager{
 	public List<Category> getCategories() {
 		try {
 			ResponseEntity<List<CategoryView>> categories = this.restTemplate.exchange("http://eshop-api:8080/category", HttpMethod.GET, o2.getAuthBody(), CategoryListTypeRef);
-			List<CategoryView> listOfRestingCats = categories.getBody();
-			List<Category> listOfCats = listOfRestingCats.stream().map(CategoryRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
+//			System.out.println("Kategorien STATUS::::::::: " + categories.getStatusCode().toString());
+//			System.out.println("Kategorien ::::::::: " + categories.getBody());
+			List<CategoryView> listOfRestCats = categories.getBody();
+			List<Category> listOfCats = listOfRestCats.stream().map(CategoryRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
 			return listOfCats;
 		} catch(Exception ex) {
             System.out.println(ex.getMessage());
