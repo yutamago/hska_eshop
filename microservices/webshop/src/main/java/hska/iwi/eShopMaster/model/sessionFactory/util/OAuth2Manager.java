@@ -10,9 +10,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class OAuth2Manager {
 
@@ -52,6 +51,13 @@ public class OAuth2Manager {
     }
 
     public HttpHeaders getAuthHeader() {
+//        Set<String> scopes = Arrays.stream(authToken.getScope().split(" ")).collect(Collectors.toSet());
+//        scopes.contains("dev");
+//        scopes.contains("deny-products");
+
+        if(!this.isLoggedIn())
+            System.out.println("::::::::::::::::::: Authorization token not initialized!! :::::::::::::::::::");
+
         HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.asMediaType(MediaType.APPLICATION_JSON));
         headers.setBearerAuth(authToken.getAccessToken());

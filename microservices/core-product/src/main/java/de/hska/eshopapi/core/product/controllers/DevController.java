@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -35,6 +36,7 @@ public class DevController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("dev")
     public ResponseEntity<List<Product>> setup(
             @ApiParam(value = "Products", required = true)
             @RequestBody(required = true)

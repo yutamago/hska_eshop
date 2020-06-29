@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.security.RolesAllowed;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -44,6 +45,7 @@ public class DevController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("dev")
     public ResponseEntity<DevModel> setup(
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {

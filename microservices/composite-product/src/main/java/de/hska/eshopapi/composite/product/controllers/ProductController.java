@@ -15,6 +15,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,13 +49,14 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
+    @RolesAllowed("product.read")
     public ResponseEntity<List<ProductView>> getProducts(
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI().build();
 
         List<Product> products = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), ProductUtil.ProductListTypeRef).getBody();
-        List<ProductView> productViews = ProductUtil.ExtendProducts(products, this.restTemplate);
+        List<ProductView> productViews = ProductUtil.extendProducts(products, this.restTemplate, headers);
 
         return new ResponseEntity<>(productViews, HttpStatus.OK);
     }
@@ -85,6 +87,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/search")
+    @RolesAllowed("product.read")
     public ResponseEntity<List<ProductView>> searchProducts(
             @ApiParam(value = "search options", required = true)
             @Valid @RequestBody ProductSearchOptions searchOptions,
@@ -94,13 +97,14 @@ public class ProductController {
         HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, headers);
 
         List<Product> products = this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductUtil.ProductListTypeRef).getBody();
-        List<ProductView> productViews = ProductUtil.ExtendProducts(products, this.restTemplate);
+        List<ProductView> productViews = ProductUtil.extendProducts(products, this.restTemplate, headers);
 
         return new ResponseEntity<>(productViews, HttpStatus.OK);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/{productId}")
+    @RolesAllowed("product.read")
     public ResponseEntity<ProductView> getProductById(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId") UUID productId,
@@ -112,6 +116,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("product.write")
     public ResponseEntity<ProductView> addProduct(
             @ApiParam(value = "Product", required = true)
             @RequestBody Product product,
@@ -131,6 +136,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
+    @RolesAllowed("product.write")
     public ResponseEntity<String> deleteProduct(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId") UUID productId,
@@ -149,12 +155,12 @@ public class ProductController {
 
         try { //new HttpEntity<>(null, headers)
             product = this.restTemplate.exchange(getProductUrl, HttpMethod.GET, new HttpEntity<>(null, headers), Product.class).getBody();
-            List<Category> categories = this.restTemplate.exchange(getCategoryByProductIdUrl, HttpMethod.GET, new HttpEntity<>(null, headers), ProductUtil.CategoryListTypeRef).getBody();
-            if (categories.isEmpty()) {
+            Category[] categories = this.restTemplate.exchange(getCategoryByProductIdUrl, HttpMethod.GET, new HttpEntity<>(null, headers), Category[].class).getBody();
+            if (categories.length == 0) {
                 ResponseEntity<String> response = new ResponseEntity<>("Category on Product does not exist! Product: " + productId + ", Category: " + product.getCategoryId().toString(), HttpStatus.NOT_FOUND);
                 return response;
             }
-            category = categories.get(0);
+            category = categories[0];
         } catch (Exception ex) {
             ResponseEntity<String> response = new ResponseEntity<>("Product does not exist: " + productId, HttpStatus.NOT_FOUND);
             return response;

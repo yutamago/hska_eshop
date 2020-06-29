@@ -6,7 +6,9 @@ import de.hska.eshopapi.composite.product.viewmodels.ProductView;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -19,16 +21,25 @@ import java.util.stream.Collectors;
 
 public class ProductUtil {
 
-    public static final ParameterizedTypeReference<List<Product>> ProductListTypeRef = new ParameterizedTypeReference<List<Product>>() {
+    public static final ParameterizedTypeReference<List<Product>> ProductListTypeRef = new ParameterizedTypeReference<>() {
     };
-    public static final ParameterizedTypeReference<List<Category>> CategoryListTypeRef = new ParameterizedTypeReference<List<Category>>() {
+    public static final ParameterizedTypeReference<List<Category>> CategoryListTypeRef = new ParameterizedTypeReference<>() {
     };
 
-    public static List<ProductView> ExtendProducts(List<Product> products, RestTemplate restTemplate) throws URISyntaxException {
+    public static List<ProductView> extendProducts(List<Product> products, RestTemplate restTemplate, HttpHeaders headers) throws URISyntaxException {
         URI uri = makeCategoryURI("multiple-id").build();
         List<ProductView> productViews = new ArrayList<>();
-        HttpEntity<List<UUID>> categoryIdsBody = new HttpEntity<>(products.stream().map(Product::getCategoryId).collect(Collectors.toList()));
-        List<Category> categories = restTemplate.exchange(uri, HttpMethod.POST, categoryIdsBody, CategoryListTypeRef).getBody();
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String[]> categoryIdsBody = new HttpEntity<>(products.stream()
+                .map(Product::getCategoryId)
+                .map(UUID::toString)
+                .collect(Collectors.toList())
+                .toArray(new String[]{}), headers);
+
+        System.out.println("PRODUCT UTIL HEADERS =======================================\n" + headers);
+
+        Category[] categories = restTemplate.exchange(uri, HttpMethod.POST, categoryIdsBody, Category[].class).getBody();
 
         products.forEach(product -> {
             Category productCategory = null;

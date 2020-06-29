@@ -40,6 +40,9 @@ public class ProductManagerImpl implements ProductManager {
 		try {
 			ResponseEntity<List<ProductView>> products = this.restTemplate.exchange("http://eshop-api:8080/product", HttpMethod.GET, o2.getAuthBody(), ProductListTypeRef);
 			List<ProductView> listOfRestingCats = products.getBody();
+			System.out.printf("GET PRODUCTS = Status Code: %d\n", products.getStatusCode().value());
+			System.out.println("GET PRODUCTS RET == null: " + (listOfRestingCats == null));
+
 			List<Product> listOfProducts = listOfRestingCats.stream().map(ProductRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
 			return listOfProducts;
 		} catch(Exception ex) {

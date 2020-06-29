@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,6 +39,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
+    @RolesAllowed("category.read")
     public ResponseEntity<List<Category>> getCategories() {
         List<Category> categories = new ArrayList<>(this.categoryDAO.findAll());
         return new ResponseEntity<>(categories, HttpStatus.OK);
@@ -45,6 +47,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("category.write")
     public ResponseEntity<Category> addCategory(
             @ApiParam(value = "Category", required = true)
             @RequestBody(required = true)
@@ -62,7 +65,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/{categoryId}/addProduct/{productId}")
-
+    @RolesAllowed("category.write")
     public ResponseEntity<String> addProduct(
             @ApiParam(value = "Category", required = true)
             @PathVariable("categoryId")
@@ -89,6 +92,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{categoryId}")
+    @RolesAllowed("category.read")
     public ResponseEntity<Category> getCategoryById(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
@@ -102,6 +106,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST, path = "/multiple-id")
+    @RolesAllowed("category.read")
     public ResponseEntity<ArrayList<Category>> getCategoryByIds(
             @ApiParam(value = "category Ids", required = true)
             @RequestBody(required = true)
@@ -113,6 +118,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/productid/{productId}")
+    @RolesAllowed("category.read")
     public ResponseEntity<List<Category>> getCategoriesByProductId(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
@@ -126,7 +132,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
-
+    @RolesAllowed("category.write")
     public ResponseEntity<String> deleteCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
@@ -150,7 +156,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/restore/{categoryId}")
-
+    @RolesAllowed("category.write")
     public ResponseEntity<String> restoreCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
@@ -171,6 +177,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/deleteProductId/{productId}")
+    @RolesAllowed("category.write")
     public ResponseEntity<String> deleteProductId(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
@@ -191,7 +198,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/restoreProductId/{productId}/fromCategory/{categoryId}")
-
+    @RolesAllowed("category.write")
     public ResponseEntity<String> restoreProductId(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")

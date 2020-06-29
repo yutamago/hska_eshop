@@ -43,6 +43,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("product.write")
     public ResponseEntity<Product> addProduct(
             @ApiParam(value = "Product", required = true)
             @RequestBody(required = true)
@@ -60,6 +61,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{productId}")
+    @RolesAllowed("product.read")
     public ResponseEntity<Product> getProduct(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
@@ -75,6 +77,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST, path = "/categoryIds")
+    @RolesAllowed("product.read")
     public ResponseEntity<List<Product>> getProductsByCategoryIds(
             @ApiParam(value = "category Ids", required = true)
             @RequestBody List<UUID> categories
@@ -86,6 +89,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/categoryId/{categoryId}")
+    @RolesAllowed("product.read")
     public ResponseEntity<List<Product>> getProductsByCategoryId(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
@@ -97,6 +101,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{productId}")
+    @RolesAllowed("product.write")
     public ResponseEntity<Product> deleteProduct(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
@@ -117,7 +122,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/restore/{productId}")
-
+    @RolesAllowed("product.write")
     public ResponseEntity<String> restoreProduct(
             @ApiParam(value = "product Id", required = true)
             @PathVariable("productId")
@@ -136,6 +141,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/deleteByCategoryId/{categoryId}")
+    @RolesAllowed("product.write")
     public ResponseEntity<List<Product>> deleteByCategoryId(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")
@@ -156,6 +162,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/restoreByCategoryId/{categoryId}")
+    @RolesAllowed("product.write")
     public ResponseEntity<List<Product>> restoreByCategoryId(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId")

@@ -15,6 +15,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -53,6 +54,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET)
+    @RolesAllowed("category.read")
     public ResponseEntity<List<CategoryView>> getCategories(
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
@@ -103,6 +105,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/id/{categoryId}")
+    @RolesAllowed("category.read")
     public ResponseEntity<CategoryView> getCategoryById(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId") UUID categoryId,
@@ -122,6 +125,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
+    @RolesAllowed("category.write")
     public ResponseEntity<CategoryView> addCategory(
             @ApiParam(value = "Category", required = true)
             @RequestBody(required = true) Category category,
@@ -135,6 +139,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/{categoryId}")
+    @RolesAllowed("category.write")
     public ResponseEntity<String> deleteCategory(
             @ApiParam(value = "category Id", required = true)
             @PathVariable("categoryId") UUID categoryId,
