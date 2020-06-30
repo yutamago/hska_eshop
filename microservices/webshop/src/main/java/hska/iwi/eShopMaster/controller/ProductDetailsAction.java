@@ -1,5 +1,7 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.opensymphony.xwork2.conversion.annotations.Conversion;
+import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
 import hska.iwi.eShopMaster.model.database.dataobjects.Product;
@@ -21,7 +23,7 @@ public class ProductDetailsAction extends ActionSupport {
 		this.restTemplate = new RestTemplate();
 	}
 	private User user;
-	private UUID id;
+	private String id;
 	private String searchValue;
 	private Integer searchMinPrice;
 	private Integer searchMaxPrice;
@@ -41,7 +43,7 @@ public class ProductDetailsAction extends ActionSupport {
 		
 		if(user != null) {
 			ProductManager productManager = new ProductManagerImpl(restTemplate);
-			product = productManager.getProductById(id);
+			product = productManager.getProductById(UUID.fromString(id));
 			
 			res = "success";			
 		}
@@ -57,11 +59,11 @@ public class ProductDetailsAction extends ActionSupport {
 		this.user = user;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

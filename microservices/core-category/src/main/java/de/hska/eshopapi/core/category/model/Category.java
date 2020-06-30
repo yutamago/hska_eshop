@@ -2,6 +2,7 @@ package de.hska.eshopapi.core.category.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Category {
 
     @Id
     @Column(nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     @JsonProperty private UUID categoryId = UUID.randomUUID();
 
     @Column(nullable = false)
@@ -30,6 +32,7 @@ public class Category {
 
     @Column(nullable = false)
     @JsonProperty
+    @Type(type="org.hibernate.type.UUIDCharType")
     @ElementCollection(fetch = FetchType.EAGER)
     private List<UUID> productIds = new ArrayList<>();
 

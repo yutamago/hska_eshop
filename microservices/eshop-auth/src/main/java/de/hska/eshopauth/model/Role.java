@@ -1,11 +1,7 @@
-package de.hska.eshopapi.core.user.model;
+package de.hska.eshopauth.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.FetchProfile;
 import org.hibernate.annotations.Type;
-import org.springframework.data.repository.cdi.Eager;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;

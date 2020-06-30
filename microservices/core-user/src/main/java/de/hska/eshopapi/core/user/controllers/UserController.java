@@ -83,7 +83,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
-    @RolesAllowed("user.write")
+//    @RolesAllowed("user.write")
     @Transactional
     public ResponseEntity<UserView> addUser(
             @ApiParam(value = "User", required = true)

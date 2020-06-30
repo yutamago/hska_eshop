@@ -27,7 +27,7 @@ public class DeleteCategoryAction extends ActionSupport {
 	 */
 	private static final long serialVersionUID = 1254575994729199914L;
 	
-	private UUID catId;
+	private String catId;
 	private List<Category> categories;
 
 	public String execute() throws Exception {
@@ -42,7 +42,7 @@ public class DeleteCategoryAction extends ActionSupport {
 			// Helper inserts new Category in DB:
 			CategoryManager categoryManager = new CategoryManagerImpl(restTemplate);
 		
-			categoryManager.delCategoryById(catId);
+			categoryManager.delCategoryById(UUID.fromString(catId));
 
 			categories = categoryManager.getCategories();
 				
@@ -54,11 +54,11 @@ public class DeleteCategoryAction extends ActionSupport {
 		
 	}
 
-	public UUID getCatId() {
+	public String getCatId() {
 		return catId;
 	}
 
-	public void setCatId(UUID catId) {
+	public void setCatId(String catId) {
 		this.catId = catId;
 	}
 

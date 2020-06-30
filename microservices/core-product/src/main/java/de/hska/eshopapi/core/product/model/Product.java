@@ -1,6 +1,7 @@
 package de.hska.eshopapi.core.product.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -21,9 +22,11 @@ public class Product {
 
     @Id
     @Column(nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     @JsonProperty private UUID productId = UUID.randomUUID();
 
     @Column(nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     @JsonProperty private UUID categoryId;
 
     @Column(nullable = false)

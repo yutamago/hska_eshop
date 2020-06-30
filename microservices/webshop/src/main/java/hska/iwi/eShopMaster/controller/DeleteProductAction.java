@@ -27,7 +27,7 @@ public class DeleteProductAction extends ActionSupport {
 	 */
 	private static final long serialVersionUID = 3666796923937616729L;
 
-	private UUID id;
+	private String id;
 
 	public String execute() throws Exception {
 		
@@ -38,17 +38,17 @@ public class DeleteProductAction extends ActionSupport {
 		
 		if(user != null && (user.getRole().getTyp().equals("admin"))) {
 			ProductManager productManager = new ProductManagerImpl(restTemplate);
-			productManager.deleteProductById(id);
+			productManager.deleteProductById(UUID.fromString(id));
 		}
 		
 		return res;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

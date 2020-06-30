@@ -1,6 +1,5 @@
 package hska.iwi.eShopMaster.model.database.dataobjects;
 
-
 import javax.persistence.*;
 import java.util.UUID;
 

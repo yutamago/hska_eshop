@@ -51,7 +51,7 @@ public class UserManagerImpl implements UserManager {
         HttpEntity<hska.iwi.eShopMaster.model.User> body = new HttpEntity<>(restUser);
 
         try {
-            ResponseEntity<UserView> responseEntity = this.restTemplate.postForEntity("http://eshop-api:8080/user/", body, UserView.class);
+            ResponseEntity<UserView> responseEntity = this.restTemplate.postForEntity("http://eshop-auth:8090/auth/register", body, UserView.class);
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();

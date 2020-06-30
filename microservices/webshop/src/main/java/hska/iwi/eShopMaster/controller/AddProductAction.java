@@ -28,7 +28,7 @@ public class AddProductAction extends ActionSupport {
 
 	private String name = null;
 	private String price = null;
-	private UUID categoryId = null;
+	private String categoryId = null;
 	private String details = null;
 	private List<Category> categories;
 
@@ -40,7 +40,7 @@ public class AddProductAction extends ActionSupport {
 		if(user != null && (user.getRole().getTyp().equals("admin"))) {
 
 			ProductManager productManager = new ProductManagerImpl(restTemplate);
-			UUID productId = productManager.addProduct(name, Double.parseDouble(price), categoryId,
+			UUID productId = productManager.addProduct(name, Double.parseDouble(price), UUID.fromString(categoryId),
 					details);
 
 			if (productId != null) {
@@ -89,11 +89,11 @@ public class AddProductAction extends ActionSupport {
 		this.price = price;
 	}
 
-	public UUID getCategoryId() {
+	public String getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(UUID categoryId) {
+	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
 	}
 

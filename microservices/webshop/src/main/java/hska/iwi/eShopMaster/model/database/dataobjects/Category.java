@@ -1,10 +1,10 @@
 package hska.iwi.eShopMaster.model.database.dataobjects;
 
+import javax.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import javax.persistence.*;
 
 /**
  * This class contains details about categories.

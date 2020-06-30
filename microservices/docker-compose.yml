@@ -21,7 +21,7 @@ services:
     ports:
       - 8090:8090
     depends_on:
-      - core-user
+      - database
 
   eshop-discovery:
     build:
@@ -47,6 +47,7 @@ services:
       - 8086:8086
     depends_on:
       - eshop-discovery
+      - database
 
   core-product:
     build:
@@ -56,6 +57,7 @@ services:
       - 8085:8085
     depends_on:
       - eshop-discovery
+      - database
 
   core-category:
     build:
@@ -65,6 +67,7 @@ services:
       - 8084:8084
     depends_on:
       - eshop-discovery
+      - database
 
   composite-product:
     build:
@@ -97,16 +100,18 @@ services:
       - eshop-auth
       - eshop-api
 
-  web-shop-db-image:
-    build:
-      context: ./webshop
-      dockerfile: ./docker/DockerfileMySQL
-    volumes:
-      - "./.data/db:/var/lib/mysql"
+  database:
+    image: mysql
+    container_name: database
     environment:
-      MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
+      MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: webshop
-      MYSQL_USER: webshopuser
-      MYSQL_PASSWORD: 240b2c6d58ff2ce2f508b49f
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
     ports:
       - "3306:3306"
+    volumes:
+      - webshop_data:/var/lib/mysql
+
+volumes:
+  webshop_data:

@@ -111,7 +111,22 @@ public class ProductController {
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI("id", productId.toString()).build();
-        return this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), ProductView.class);
+        ResponseEntity<Product> responseProduct = this.restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(null, headers), Product.class);
+        Product product = responseProduct.getBody();
+        if(product == null || responseProduct.getStatusCode() == HttpStatus.NOT_FOUND)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        URI catUrl = makeAbsoluteURI(RoutesUtil.APICoreCategory, RoutesUtil.APICategory, "id", product.getCategoryId().toString()).build();
+        ResponseEntity<Category> responseCategory = this.restTemplate.exchange(catUrl, HttpMethod.GET, new HttpEntity<>(null, headers), Category.class);
+        Category category = responseCategory.getBody();
+        if(category == null || responseCategory.getStatusCode() == HttpStatus.NOT_FOUND)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(responseCategory.getStatusCode().isError())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        ProductView productView = ProductView.FromProduct(product, category);
+
+        return new ResponseEntity<>(productView, HttpStatus.OK);
     }
 
     @HystrixCommand
@@ -124,14 +139,20 @@ public class ProductController {
     ) throws URISyntaxException {
         URI addProductUrl = makeURI().build();
         HttpEntity<Product> body = new HttpEntity<>(product, headers);
-        ProductView productView = this.restTemplate.postForEntity(addProductUrl, body, ProductView.class).getBody();
+        Product newProduct = this.restTemplate.postForEntity(addProductUrl, body, Product.class).getBody();
 
         URI addProductToCategoryUrl = makeAbsoluteURI(
-                RoutesUtil.APICoreCategory, RoutesUtil.APICategory, product.getCategoryId().toString(), "addProduct", productView.getProductId().toString())
+                RoutesUtil.APICoreCategory, RoutesUtil.APICategory, product.getCategoryId().toString(), "addProduct", newProduct.getProductId().toString())
                 .build();
-        this.restTemplate.put(addProductToCategoryUrl, body);
+        ResponseEntity<Category> responseCategory = this.restTemplate.exchange(addProductToCategoryUrl, HttpMethod.PUT, new HttpEntity<>(null, headers), Category.class);
+        Category updatedCategory = responseCategory.getBody();
 
-        return new ResponseEntity<>(productView, HttpStatus.OK);
+        if(updatedCategory == null || responseCategory.getStatusCode() == HttpStatus.NOT_FOUND)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        ProductView newProductView = ProductView.FromProduct(newProduct, updatedCategory);
+
+        return new ResponseEntity<>(newProductView, HttpStatus.OK);
     }
 
     @HystrixCommand

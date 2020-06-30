@@ -1,4 +1,4 @@
-package de.hska.eshopapi.core.user.model;
+package de.hska.eshopauth.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Type;

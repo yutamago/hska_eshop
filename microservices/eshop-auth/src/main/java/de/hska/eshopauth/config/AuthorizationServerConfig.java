@@ -37,19 +37,27 @@ import java.util.Map;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private ClientDetailsService clientDetailsService;
+    private final ClientDetailsService clientDetailsService;
+    private final AuthenticationManager authenticationManager;
+    private final ClientDetailsService authUserDetailService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    public AuthorizationServerConfig(ClientDetailsService clientDetailsService, AuthenticationManager authenticationManager, ClientDetailsService authUserDetailService) {
+        this.clientDetailsService = clientDetailsService;
+        this.authenticationManager = authenticationManager;
+        this.authUserDetailService = authUserDetailService;
+    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // @formatter:off
-        clients.inMemory()
+        clients
+//                .inMemory()
+                .withClientDetails(this.authUserDetailService)
                 .withClient("eshop-client")
-                .authorizedGrantTypes("authorization_code", "refresh_token", "client_credentials", "password")
-                .scopes("dev", "user.read", "user.write", "role.read", "role.write")
+//                .authorizedGrantTypes("authorization_code", "refresh_token", "client_credentials", "password")
+                .authorizedGrantTypes("password")
+                .scopes("dev", "user.read", "user.write", "role.read", "role.write", "category.read", "category.write", "product.read", "product.write")
                 .secret("{noop}123456")
                 .redirectUris("http://localhost:8080/client/authorized");
         // @formatter:on
@@ -85,7 +93,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         final RsaSigner signer = new RsaSigner(KeyConfig.getSignerKey());
 
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter() {
-            private JsonParser objectMapper = JsonParserFactory.create();
+            private final JsonParser objectMapper = JsonParserFactory.create();
 
             @Override
             protected String encode(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {

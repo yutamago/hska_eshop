@@ -66,7 +66,7 @@ public class CategoryController {
     @HystrixCommand
     @RequestMapping(method = RequestMethod.PUT, path = "/{categoryId}/addProduct/{productId}")
     @RolesAllowed("category.write")
-    public ResponseEntity<String> addProduct(
+    public ResponseEntity<Category> addProduct(
             @ApiParam(value = "Category", required = true)
             @PathVariable("categoryId")
                     UUID categoryId,
@@ -84,9 +84,9 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         category.get().getProductIds().add(productId);
-        categoryDAO.saveAndFlush(category.get());
+        Category updatedCategory = categoryDAO.saveAndFlush(category.get());
 
-        return new ResponseEntity<>("Successfully added product to category", HttpStatus.OK);
+        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 
 

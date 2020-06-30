@@ -71,6 +71,8 @@ public class CategoryController {
 
     List<CategoryView> extendCategories(List<Category> categories, HttpHeaders headers) throws URISyntaxException {
         List<CategoryView> categoryViews = new ArrayList<>();
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         URI uri = makeAbsoluteURI(RoutesUtil.APICoreProduct, RoutesUtil.APIProduct, "categoryIds").build();
         List<UUID> uuids = categories.stream().map(Category::getCategoryId).collect(Collectors.toList());
         HttpEntity<List<UUID>> body = new HttpEntity<>(uuids, headers);
@@ -119,14 +121,12 @@ public class CategoryController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     @RolesAllowed("category.write")
-    public ResponseEntity<CategoryView> addCategory(
+    public ResponseEntity<Category> addCategory(
             @ApiParam(value = "Category", required = true)
             @RequestBody(required = true) Category category,
             @RequestHeader HttpHeaders headers
@@ -134,7 +134,10 @@ public class CategoryController {
         URI uri = makeURI().build();
         HttpEntity<Category> body = new HttpEntity<>(category, headers);
 
-        return this.restTemplate.postForEntity(uri, body, CategoryView.class);
+        ResponseEntity<Category> newCategory = this.restTemplate.postForEntity(uri, body, Category.class);
+
+
+        return newCategory;
     }
 
     @HystrixCommand
