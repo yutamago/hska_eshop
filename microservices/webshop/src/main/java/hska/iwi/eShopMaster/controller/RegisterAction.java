@@ -8,7 +8,8 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class RegisterAction extends ActionSupport {
@@ -31,29 +32,33 @@ public class RegisterAction extends ActionSupport {
     private Role role = null;
 
     @Override
-    public String execute() throws Exception {
+    public String execute() {
 
         // Return string:
         String result = "input";
 
         UserManager userManager = new UserManagerImpl(restTemplate);
 
-        this.role = userManager.getRoleByLevel(1); // 1 -> regular User, 2-> Admin
-
-        if (!userManager.doesUserAlreadyExist(this.username)) {
-
+        try {
             // save it to database
-            userManager.registerUser(this.username, this.firstname, this.lastname, this.password1, this.role);
+            userManager.registerUser(this.username, this.firstname, this.lastname, this.password1);
             // User has been saved successfully to databse:
             addActionMessage("user registered, please login");
             addActionError("user registered, please login");
             Map<String, Object> session = ActionContext.getContext().getSession();
             session.put("message", "user registered, please login");
             result = "success";
-
-        } else {
-            addActionError(getText("error.username.alreadyInUse"));
+        } catch(HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.CONFLICT) {
+                addActionError(getText("error.username.alreadyInUse"));
+            } else if(e.getStatusCode() == HttpStatus.valueOf(425)) {
+                addActionError("Noch keine User-Rolle eingerichtet!");
+            }
+            else {
+                addActionError("Ein unbekannter Fehler ist aufgetreten.");
+            }
         }
+
         return result;
 
     }

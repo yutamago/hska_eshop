@@ -22,21 +22,21 @@ public class AuthController {
     public AuthController() {
     }
 
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.DELETE, path = "/register")
-    public ResponseEntity<Boolean> register(
-//            @ApiParam(value = "registerBody", required = true)
-//            @RequestBody() Object registerBody
-    ) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.DELETE, path = "/login")
-    public ResponseEntity<Boolean> login(
-//            @ApiParam(value = "loginBody", required = true)
-//            @RequestBody() Object loginBody
-    ) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @HystrixCommand
+//    @RequestMapping(method = RequestMethod.POST, path = "/register")
+//    public ResponseEntity<Boolean> register(
+////            @ApiParam(value = "registerBody", required = true)
+////            @RequestBody() Object registerBody
+//    ) {
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+//
+//    @HystrixCommand
+//    @RequestMapping(method = RequestMethod.POST, path = "/login")
+//    public ResponseEntity<Boolean> login(
+////            @ApiParam(value = "loginBody", required = true)
+////            @RequestBody() Object loginBody
+//    ) {
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }

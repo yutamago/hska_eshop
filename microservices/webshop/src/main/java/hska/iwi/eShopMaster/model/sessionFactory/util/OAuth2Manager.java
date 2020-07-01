@@ -30,12 +30,11 @@ public class OAuth2Manager {
             accessToken = authToken.getAccessToken();
     }
 
-
     private static final String CLIENT_ID = "eshop-client";
     private static final String CLIENT_SECRET = "123456";
     private static final String TOKEN_ADDRESS = "http://eshop-auth:8090/oauth/token";
 
-    private AuthToken authToken = null;
+    private AuthToken authToken;
     private String accessToken = "";
 
     public boolean isLoggedIn() {
@@ -55,8 +54,10 @@ public class OAuth2Manager {
 //        scopes.contains("dev");
 //        scopes.contains("deny-products");
 
-        if(!this.isLoggedIn())
+        if(!this.isLoggedIn()) {
             System.out.println("::::::::::::::::::: Authorization token not initialized!! :::::::::::::::::::");
+            return null;
+        }
 
         HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.asMediaType(MediaType.APPLICATION_JSON));
@@ -66,6 +67,11 @@ public class OAuth2Manager {
         return headers;
     }
     public HttpEntity<?> getAuthBody() {
+        if(!this.isLoggedIn()) {
+            System.out.println("::::::::::::::::::: Authorization token not initialized!! :::::::::::::::::::");
+            return null;
+        }
+
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         HttpEntity<?> httpEntity = new HttpEntity<Object>(body, getAuthHeader());
 

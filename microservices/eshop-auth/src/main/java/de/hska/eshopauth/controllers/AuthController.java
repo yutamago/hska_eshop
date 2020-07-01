@@ -10,14 +10,17 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,17 +43,23 @@ public class AuthController {
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public ResponseEntity<UserView> register(User user) throws NoSuchAlgorithmException {
+    @RolesAllowed("user.write")
+    public ResponseEntity<UserView> register(
+            @RequestBody User user
+    ) throws NoSuchAlgorithmException {
 
-        Optional<Role> role = roleDAO.findById(user.getRoleId());
-        if(!role.isPresent())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Role> role = roleDAO.findByType("user");
+        if(role.isEmpty())
+            return new ResponseEntity<>(HttpStatus.TOO_EARLY);
+
+        if(!userDAO.findByUsername(user.getUsername()).isEmpty())
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
 
         String pwHash = bytesToHex(MessageDigest.getInstance("SHA-256").digest(user.getPassword().getBytes(StandardCharsets.UTF_8)));
         user.setPassword(pwHash);
 
         User newUser = new User();
-        newUser.setRoleId(role.get().getRoleId());
+        newUser.setRoleId(role.get(0).getRoleId());
         newUser.setPassword(pwHash);
         newUser.setFirstname(user.getFirstname());
         newUser.setLastname(user.getLastname());
@@ -58,7 +67,7 @@ public class AuthController {
         newUser.setDeleted(false);
         newUser = userDAO.save(user);
 
-        UserView ret = UserView.FromUser(newUser, RoleView.FromRole(role.get()));
+        UserView ret = UserView.FromUser(newUser, RoleView.FromRole(role.get(0)));
 
         userDAO.flush();
 

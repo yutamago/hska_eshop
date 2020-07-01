@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
@@ -37,26 +38,23 @@ import java.util.Map;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    private final ClientDetailsService clientDetailsService;
     private final AuthenticationManager authenticationManager;
-    private final ClientDetailsService authUserDetailService;
+    private ClientDetailsService clientDetailsService;
 
     @Autowired
-    public AuthorizationServerConfig(ClientDetailsService clientDetailsService, AuthenticationManager authenticationManager, ClientDetailsService authUserDetailService) {
-        this.clientDetailsService = clientDetailsService;
+    public AuthorizationServerConfig(AuthenticationManager authenticationManager, ClientDetailsService clientDetailsService) {
         this.authenticationManager = authenticationManager;
-        this.authUserDetailService = authUserDetailService;
+        this.clientDetailsService = clientDetailsService;
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // @formatter:off
         clients
-//                .inMemory()
-                .withClientDetails(this.authUserDetailService)
+                .inMemory()
                 .withClient("eshop-client")
-//                .authorizedGrantTypes("authorization_code", "refresh_token", "client_credentials", "password")
-                .authorizedGrantTypes("password")
+                .authorizedGrantTypes("authorization_code", "refresh_token", "client_credentials", "password")
+//                .authorizedGrantTypes("password")
                 .scopes("dev", "user.read", "user.write", "role.read", "role.write", "category.read", "category.write", "product.read", "product.write")
                 .secret("{noop}123456")
                 .redirectUris("http://localhost:8080/client/authorized");
@@ -113,6 +111,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         converter.setVerifier(new RsaVerifier(KeyConfig.getVerifierKey()));
         return converter;
     }
+//
+//    @Override
+//    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+//        security.checkTokenAccess("permitALl()")
+//                .tokenKeyAccess("permitAll()");
+//    }
 
     @Bean
     public ApprovalStore approvalStore() {

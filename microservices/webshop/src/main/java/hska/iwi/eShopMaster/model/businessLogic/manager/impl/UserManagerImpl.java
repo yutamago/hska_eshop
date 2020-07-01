@@ -9,14 +9,11 @@ import hska.iwi.eShopMaster.viewmodels.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,10 +36,9 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public void registerUser(String username, String name, String lastname, String password, Role role) {
+    public void registerUser(String username, String name, String lastname, String password) throws HttpClientErrorException {
 
         hska.iwi.eShopMaster.model.User restUser = new hska.iwi.eShopMaster.model.User();
-        restUser.setRoleId(role.getId());
         restUser.setFirstname(name);
         restUser.setLastname(lastname);
         restUser.setPassword(password);
@@ -51,10 +47,14 @@ public class UserManagerImpl implements UserManager {
         HttpEntity<hska.iwi.eShopMaster.model.User> body = new HttpEntity<>(restUser);
 
         try {
-            ResponseEntity<UserView> responseEntity = this.restTemplate.postForEntity("http://eshop-auth:8090/auth/register", body, UserView.class);
+            ResponseEntity<UserView> responseEntity = this.restTemplate.exchange("http://eshop-auth:8090/auth/register", HttpMethod.POST, body, UserView.class);
+            if(responseEntity.getStatusCode().isError()) {
+                throw new HttpClientErrorException(responseEntity.getStatusCode());
+            }
         } catch(Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw ex;
         }
     }
 
@@ -86,24 +86,6 @@ public class UserManagerImpl implements UserManager {
             ex.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public Role getRoleByLevel(int level) {
-        // TODO
-        return null;
-    }
-
-    @Override
-    public boolean doesUserAlreadyExist(String username) {
-
-        User dbUser = this.getUserByUsername(username);
-
-        if (dbUser != null) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public boolean validate(User user) {
