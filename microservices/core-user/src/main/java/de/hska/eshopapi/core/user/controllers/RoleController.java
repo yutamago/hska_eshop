@@ -2,6 +2,7 @@ package de.hska.eshopapi.core.user.controllers;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.core.user.dao.RoleDAO;
+import de.hska.eshopapi.core.user.dao.UserDAO;
 import de.hska.eshopapi.core.user.model.Role;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -27,12 +28,12 @@ import java.util.stream.StreamSupport;
 public class RoleController {
 
     private RoleDAO roleDAO;
-
-    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private UserDAO userDAO;
 
     @Autowired
-    public RoleController(RoleDAO roleDAO) {
+    public RoleController(RoleDAO roleDAO, UserDAO userDAO) {
         this.roleDAO = roleDAO;
+        this.userDAO = userDAO;
     }
 
     @HystrixCommand
@@ -100,12 +101,16 @@ public class RoleController {
     ) {
         final Optional<Role> role = roleDAO.findById(roleId);
 
-        if(role.isPresent()) {
-            role.get().setDeleted(true);
-            roleDAO.save(role.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+        if(!role.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(!userDAO.findByRole(roleId).isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        roleDAO.deleteById(roleId);
+        roleDAO.flush();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

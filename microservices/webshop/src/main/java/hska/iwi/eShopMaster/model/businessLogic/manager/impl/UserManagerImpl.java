@@ -2,9 +2,9 @@ package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.converters.UserRestModelConverter;
-import hska.iwi.eShopMaster.model.database.dataobjects.Role;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
-import hska.iwi.eShopMaster.model.sessionFactory.util.OAuth2Manager;
+import hska.iwi.eShopMaster.model.sessionFactory.util.ClientCredentialsOAuth2Manager;
+import hska.iwi.eShopMaster.model.sessionFactory.util.PasswordOAuth2Manager;
 import hska.iwi.eShopMaster.viewmodels.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,17 +26,20 @@ public class UserManagerImpl implements UserManager {
     private static final ParameterizedTypeReference<List<UserView>> UserListTypeRef = new ParameterizedTypeReference<>() {
     };
 
-    private OAuth2Manager o2;
+    private PasswordOAuth2Manager o2;
     private RestTemplate restTemplate;
 
     @Autowired
     public UserManagerImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.o2 = OAuth2Manager.getInstance();
+        this.o2 = PasswordOAuth2Manager.getInstance();
     }
 
     @Override
     public void registerUser(String username, String name, String lastname, String password) throws HttpClientErrorException {
+        ClientCredentialsOAuth2Manager o2 = ClientCredentialsOAuth2Manager.getInstance();
+        if(!o2.isLoggedIn())
+            o2.authorize();
 
         hska.iwi.eShopMaster.model.User restUser = new hska.iwi.eShopMaster.model.User();
         restUser.setFirstname(name);
@@ -44,10 +47,10 @@ public class UserManagerImpl implements UserManager {
         restUser.setPassword(password);
         restUser.setUsername(username);
 
-        HttpEntity<hska.iwi.eShopMaster.model.User> body = new HttpEntity<>(restUser);
+        HttpEntity<hska.iwi.eShopMaster.model.User> body = new HttpEntity<>(restUser, o2.getAuthHeader());
 
         try {
-            ResponseEntity<UserView> responseEntity = this.restTemplate.exchange("http://eshop-auth:8090/auth/register", HttpMethod.POST, body, UserView.class);
+            ResponseEntity<UserView> responseEntity = this.restTemplate.exchange("http://eshop-api:8080/user/register", HttpMethod.POST, body, UserView.class);
             if(responseEntity.getStatusCode().isError()) {
                 throw new HttpClientErrorException(responseEntity.getStatusCode());
             }

@@ -38,8 +38,7 @@ public class Product {
     @Column(nullable = false)
     @JsonProperty private String details;
 
-    @Column(nullable = false)
-    @JsonProperty private boolean isDeleted;
+
 
     public UUID getProductId() {
         return productId;
@@ -79,13 +78,5 @@ public class Product {
 
     public void setDetails(String details) {
         this.details = details;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
     }
 }

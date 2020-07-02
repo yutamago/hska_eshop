@@ -11,17 +11,16 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class OAuth2Manager {
+public class PasswordOAuth2Manager {
 
     private RestTemplate restTemplate;
-    private static OAuth2Manager INSTANCE = new OAuth2Manager();
-    public static OAuth2Manager getInstance() {
+    private static PasswordOAuth2Manager INSTANCE = new PasswordOAuth2Manager();
+    public static PasswordOAuth2Manager getInstance() {
         return INSTANCE;
     }
 
-    private OAuth2Manager() {
+    private PasswordOAuth2Manager() {
         restTemplate = new RestTemplate();
 
         Map<String, Object> session = ActionContext.getContext().getSession();

@@ -4,13 +4,14 @@ package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.converters.CategoryRestModelConverter;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.sessionFactory.util.OAuth2Manager;
+import hska.iwi.eShopMaster.model.sessionFactory.util.PasswordOAuth2Manager;
 import hska.iwi.eShopMaster.viewmodels.CategoryView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -22,13 +23,13 @@ public class CategoryManagerImpl implements CategoryManager{
 
 	private static final ParameterizedTypeReference<List<CategoryView>> CategoryListTypeRef = new ParameterizedTypeReference<>() {};
 
-	private final OAuth2Manager o2;
+	private final PasswordOAuth2Manager o2;
 	private RestTemplate restTemplate;
 
 	@Autowired
 	public CategoryManagerImpl(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
-		this.o2 = OAuth2Manager.getInstance();
+		this.o2 = PasswordOAuth2Manager.getInstance();
 	}
 
 	@Override
@@ -81,18 +82,26 @@ public class CategoryManagerImpl implements CategoryManager{
 	}
 
 	@Override
-	public void delCategory(Category cat) {
-		delCategoryById(cat.getId());
+	public ResponseEntity<String> delCategory(Category cat) throws HttpClientErrorException {
+		try {
+			 return delCategoryById(cat.getId());
+		} catch (HttpClientErrorException e) {
+			throw e;
+		}
 	}
 
 	@Override
-	public void delCategoryById(UUID id) {
+	public ResponseEntity<String> delCategoryById(UUID id) throws HttpClientErrorException {
 		try {
-			this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
-		} catch(Exception ex) {
+			ResponseEntity<String> ret = this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
+			if(ret.getStatusCode().isError())
+				throw new HttpClientErrorException(ret.getStatusCode());
+
+			return ret;
+		} catch(HttpClientErrorException ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
+            throw ex;
         }
-
 	}
 }

@@ -31,7 +31,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         // @formatter:off
         http
                 .authorizeRequests()
-//                  .mvcMatchers("/user/**", "/role/**").authenticated()
+                    .mvcMatchers("/user/register").permitAll()
+                .and()
+                    .authorizeRequests()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin().loginPage("/login").failureUrl("/login-error").permitAll();

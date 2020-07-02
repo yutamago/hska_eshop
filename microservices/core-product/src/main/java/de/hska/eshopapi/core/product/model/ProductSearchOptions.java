@@ -1,9 +1,8 @@
-package de.hska.eshopapi.composite.product.model;
+package de.hska.eshopapi.core.product.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class ProductSearchOptions {
     @JsonProperty String description;

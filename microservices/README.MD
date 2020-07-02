@@ -7,6 +7,8 @@ Authoren: Johanna Bräuning, Joan-Angelo Douvere
 
 ## TODO
 ### Prio
+- Kategorien löschen
+- Produkte suchen
 
 ### Nice to have
 - Geteilte Komponenten in einem eigenständigen Projekt auslagern und als Abhängigkeit in die Microservices einbinden

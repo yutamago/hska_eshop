@@ -18,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -69,6 +70,21 @@ public class UserController {
         }
 
         return new ResponseEntity<>(userViews, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    @RolesAllowed("register")
+    public ResponseEntity<UserView> register(
+            @RequestBody User user,
+            @RequestHeader HttpHeaders headers
+    ) throws URISyntaxException {
+        URI uri = makeURI("register").build();
+        UserView userView;
+
+        userView = this.restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(user, headers), UserView.class).getBody();
+        userViewCache.put(userView.getUserId(), userView);
+
+        return new ResponseEntity<>(userView, HttpStatus.OK);
     }
 
 

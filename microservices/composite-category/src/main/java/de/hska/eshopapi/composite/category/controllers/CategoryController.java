@@ -148,39 +148,23 @@ public class CategoryController {
             @PathVariable("categoryId") UUID categoryId,
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
-        URI getCategoryUrl = makeURI(categoryId.toString()).build();
         URI deleteCategoryUrl = makeURI(categoryId.toString()).build();
-
         URI getProductsByCategoryUrl = makeAbsoluteURI("http://core-product", "product", "categoryId", categoryId.toString()).build();
-        URI deleteProductsByCategoryUrl = makeAbsoluteURI("http://core-product","product", "deleteByCategoryId", categoryId.toString()).build();
 
-        URI restoreCategoryUrl = makeURI("restore", categoryId.toString()).build();
-        URI restoreProductsByCategoryUrl = makeAbsoluteURI("http://core-product", "restoreByCategoryId", categoryId.toString()).build();
-
-        Category category = null;
-        List<Product> products = new ArrayList<>();
+        List<Product> products;
 
         try {
-            category = this.restTemplate.exchange(getCategoryUrl, HttpMethod.GET, new HttpEntity<>(null, headers), Category.class).getBody();
             products = this.restTemplate.exchange(getProductsByCategoryUrl, HttpMethod.GET, new HttpEntity<>(null, headers), ProductUtil.ProductListTypeRef).getBody();
         } catch (Exception ex) {
             ResponseEntity<String> response = new ResponseEntity<>("Category does not exist: " + categoryId, HttpStatus.NOT_FOUND);
-        }
-
-        try {
-            this.restTemplate.exchange(deleteCategoryUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
-            if (!products.isEmpty()) {
-                this.restTemplate.exchange(deleteProductsByCategoryUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
-            }
-        } catch (Exception ex) {
-            this.restTemplate.exchange(restoreCategoryUrl, HttpMethod.PUT, new HttpEntity<>(null, headers), Void.class);
-            if (!products.isEmpty()) {
-                this.restTemplate.exchange(restoreProductsByCategoryUrl, HttpMethod.PUT, new HttpEntity<>(null, headers), Void.class);
-            }
-
-            ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.CONFLICT);
             return response;
         }
+
+        if(!products.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        this.restTemplate.exchange(deleteCategoryUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
 
         ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.OK);
         return response;

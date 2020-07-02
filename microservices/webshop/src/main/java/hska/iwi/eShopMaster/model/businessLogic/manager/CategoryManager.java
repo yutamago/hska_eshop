@@ -1,6 +1,7 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager;
 
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,9 +16,9 @@ public interface CategoryManager {
 	
 	public void addCategory(String name);
 	
-	public void delCategory(Category cat);
+	public ResponseEntity<String> delCategory(Category cat);
 	
-	public void delCategoryById(UUID id);
+	public ResponseEntity<String> delCategoryById(UUID id);
 
 	
 }

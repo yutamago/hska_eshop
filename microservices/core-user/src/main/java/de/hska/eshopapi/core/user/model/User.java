@@ -18,7 +18,7 @@ import java.util.UUID;
         // TODO: password -> SHA HASH
         @NamedQuery(name = "User.findByUsernamePassword", query = "select u from User u where u.username = :username and u.password = :password and u.isDeleted = false")
 })
-public class User implements UserDetails {
+public class User {
 
     public static User makeNew(User user) {
         User newUser = new User();
@@ -55,8 +55,7 @@ public class User implements UserDetails {
     @Type(type="org.hibernate.type.UUIDCharType")
     @JsonProperty private UUID roleId;
 
-    @Column(nullable = false)
-    @JsonProperty private boolean isDeleted;
+
 
     public UUID getUserId() {
         return userId;
@@ -68,26 +67,6 @@ public class User implements UserDetails {
 
     public String getUsername() {
         return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return !this.isDeleted;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !this.isDeleted;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return !this.isDeleted;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return !this.isDeleted;
     }
 
     public void setUsername(String username) {
@@ -110,36 +89,6 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuth = new ArrayList<>();
-        if ("admin".equals(username)) {
-            grantedAuth.addAll(List.of(
-                    new SimpleGrantedAuthority("USER"),
-                    new SimpleGrantedAuthority("ADMIN"),
-                    new SimpleGrantedAuthority("dev"),
-                    new SimpleGrantedAuthority("user.read"),
-                    new SimpleGrantedAuthority("user.write"),
-                    new SimpleGrantedAuthority("role.read"),
-                    new SimpleGrantedAuthority("role.write"),
-                    new SimpleGrantedAuthority("category.read"),
-                    new SimpleGrantedAuthority("category.write"),
-                    new SimpleGrantedAuthority("product.read"),
-                    new SimpleGrantedAuthority("product.write")
-            ));
-        } else {
-            grantedAuth.addAll(List.of(
-                    new SimpleGrantedAuthority("USER"),
-                    new SimpleGrantedAuthority("user.read"),
-                    new SimpleGrantedAuthority("role.read"),
-                    new SimpleGrantedAuthority("category.read"),
-                    new SimpleGrantedAuthority("product.read")
-            ));
-        }
-
-        return grantedAuth;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -154,17 +103,5 @@ public class User implements UserDetails {
 
     public void setRoleId(UUID roleId) {
         this.roleId = roleId;
-    }
-
-    private String makeHash(String something) {
-        return something;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
     }
 }

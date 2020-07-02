@@ -10,18 +10,18 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import hska.iwi.eShopMaster.model.sessionFactory.util.OAuth2Manager;
+import hska.iwi.eShopMaster.model.sessionFactory.util.PasswordOAuth2Manager;
 import org.springframework.web.client.RestTemplate;
 
 public class LoginAction extends ActionSupport {
 
-	private final OAuth2Manager o2;
+	private final PasswordOAuth2Manager o2;
 	private RestTemplate restTemplate;
 
 
 	public LoginAction() {
 		this.restTemplate = new RestTemplate();
-		this.o2 = OAuth2Manager.getInstance();
+		this.o2 = PasswordOAuth2Manager.getInstance();
 	}
 	/**
      *
@@ -50,19 +50,20 @@ public class LoginAction extends ActionSupport {
 		// Return string:
 		String result = "input";
 
-		UserManager myCManager = new UserManagerImpl(restTemplate);
+		UserManager userManager = new UserManagerImpl(restTemplate);
+		String pwHash = bytesToHex(MessageDigest.getInstance("SHA-256").digest(password.getBytes(StandardCharsets.UTF_8)));
 
-		String token = o2.authorize(username, password);
+		String token = o2.authorize(username, pwHash);
 		System.out.println(">>> SERVER RESPONSE!!!! AUTH TOKEN: " + token);
 		
 		// Get user from DB:
-		User user = myCManager.getUserByUsername(getUsername());
+		User user = userManager.getUserByUsername(getUsername());
 
 		// Does user exist?
 		if (user != null) {
 			// Is the password correct?
 
-			String pwHash = bytesToHex(MessageDigest.getInstance("SHA-256").digest(password.getBytes(StandardCharsets.UTF_8)));
+
 //			System.out.println("Password Bytes Self: " + new String(user.getPassword().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8));
 //			System.out.println("Password Raw Self: " + password);
 //			System.out.println("Password Hash Self: " + pwHash);
@@ -75,7 +76,7 @@ public class LoginAction extends ActionSupport {
 				// Save user object in session:
 				session.put("webshop_user", user);
 				session.put("message", "");
-				session.put("auth", OAuth2Manager.getInstance().getAuthToken());
+				session.put("auth", PasswordOAuth2Manager.getInstance().getAuthToken());
 				firstname= user.getFirstname();
 				lastname = user.getLastname();
 				role = user.getRole().getTyp();

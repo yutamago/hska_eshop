@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaSigner;
 import org.springframework.security.jwt.crypto.sign.RsaVerifier;
@@ -40,11 +41,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final AuthenticationManager authenticationManager;
     private ClientDetailsService clientDetailsService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthorizationServerConfig(AuthenticationManager authenticationManager, ClientDetailsService clientDetailsService) {
+    public AuthorizationServerConfig(AuthenticationManager authenticationManager, ClientDetailsService clientDetailsService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.clientDetailsService = clientDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -52,12 +55,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // @formatter:off
         clients
                 .inMemory()
-                .withClient("eshop-client")
-                .authorizedGrantTypes("authorization_code", "refresh_token", "client_credentials", "password")
-//                .authorizedGrantTypes("password")
-                .scopes("dev", "user.read", "user.write", "role.read", "role.write", "category.read", "category.write", "product.read", "product.write")
-                .secret("{noop}123456")
-                .redirectUris("http://localhost:8080/client/authorized");
+                        .withClient("eshop-client")
+        //                .authorizedGrantTypes("authorization_code", "refresh_token", "client_credentials", "password")
+                        .authorizedGrantTypes("password")
+                        .scopes("dev", "user.read", "user.write", "role.read", "role.write", "category.read", "category.write", "product.read", "product.write")
+                        .secret("{noop}123456")
+                .and()
+                        .withClient("eshop-register-client")
+                        .authorizedGrantTypes("client_credentials")
+                        .scopes("register")
+                        .secret("{noop}123456");
         // @formatter:on
     }
 
@@ -111,12 +118,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         converter.setVerifier(new RsaVerifier(KeyConfig.getVerifierKey()));
         return converter;
     }
-//
-//    @Override
-//    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-//        security.checkTokenAccess("permitALl()")
-//                .tokenKeyAccess("permitAll()");
-//    }
 
     @Bean
     public ApprovalStore approvalStore() {
@@ -130,5 +131,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .algorithm(JWSAlgorithm.RS256)
                 .keyID(KeyConfig.VERIFIER_KEY_ID);
         return new JWKSet(builder.build());
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.checkTokenAccess("permitAll()")
+                .tokenKeyAccess("permitAll()")
+                .passwordEncoder(passwordEncoder);
     }
 }

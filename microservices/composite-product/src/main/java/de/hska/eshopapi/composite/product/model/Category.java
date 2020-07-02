@@ -9,7 +9,7 @@ public class Category {
     @JsonProperty private UUID categoryId;
     @JsonProperty private String name;
     @JsonProperty private List<UUID> productIds;
-    @JsonProperty private boolean isDeleted;
+
 
     public UUID getCategoryId() {
         return categoryId;
@@ -33,13 +33,5 @@ public class Category {
 
     public void setProductIds(List<UUID> productIds) {
         this.productIds = productIds;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
     }
 }

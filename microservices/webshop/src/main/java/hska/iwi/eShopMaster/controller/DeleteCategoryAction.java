@@ -12,6 +12,8 @@ import java.util.UUID;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class DeleteCategoryAction extends ActionSupport {
@@ -29,6 +31,7 @@ public class DeleteCategoryAction extends ActionSupport {
 	
 	private String catId;
 	private List<Category> categories;
+	private String error;
 
 	public String execute() throws Exception {
 		
@@ -41,12 +44,19 @@ public class DeleteCategoryAction extends ActionSupport {
 
 			// Helper inserts new Category in DB:
 			CategoryManager categoryManager = new CategoryManagerImpl(restTemplate);
-		
-			categoryManager.delCategoryById(UUID.fromString(catId));
 
-			categories = categoryManager.getCategories();
-				
-			res = "success";
+			try {
+				categoryManager.delCategoryById(UUID.fromString(catId));
+				categories = categoryManager.getCategories();
+				res = "success";
+			} catch (HttpClientErrorException e) {
+				if(e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+					this.error = "Die Kategorie darf keine Produkte beinhalten!";
+				} else {
+					this.error = "Unbekannter Fehler...";
+				}
+			}
+
 
 		}
 		

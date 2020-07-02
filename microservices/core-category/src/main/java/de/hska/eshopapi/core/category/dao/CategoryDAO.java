@@ -16,12 +16,12 @@ import java.util.UUID;
 @Repository
 //
 public interface CategoryDAO extends JpaRepository<Category, UUID> {
-    @Query("select c from Category c where c.name = :name and c.isDeleted = false")
+    @Query("select c from Category c where c.name = :name")
     List<Category> findByName(@Param("name") String name);
 
-    @Query("select c from Category c where :productId MEMBER OF c.productIds and c.isDeleted = false")
+    @Query("select c from Category c where :productId MEMBER OF c.productIds")
     List<Category> findByProductId(@Param("productId") UUID productId);
 
-    @Query("Select c from Category c WHERE c.categoryId = :categoryId and c.isDeleted = false")
+    @Query("Select c from Category c WHERE c.categoryId = :categoryId")
     Optional<Category> findDeletedById(@Param("categoryId") UUID categoryId);
 }

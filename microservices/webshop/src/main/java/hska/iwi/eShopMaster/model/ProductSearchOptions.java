@@ -2,10 +2,12 @@ package hska.iwi.eShopMaster.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+
 public class ProductSearchOptions {
     @JsonProperty String description;
-    @JsonProperty String minPrice;
-    @JsonProperty String maxPrice;
+    @JsonProperty BigDecimal minPrice;
+    @JsonProperty BigDecimal maxPrice;
 
     public String getDescription() {
         return description;
@@ -15,19 +17,19 @@ public class ProductSearchOptions {
         this.description = description;
     }
 
-    public String getMinPrice() {
+    public BigDecimal getMinPrice() {
         return minPrice;
     }
 
-    public void setMinPrice(String minPrice) {
+    public void setMinPrice(BigDecimal minPrice) {
         this.minPrice = minPrice;
     }
 
-    public String getMaxPrice() {
+    public BigDecimal getMaxPrice() {
         return maxPrice;
     }
 
-    public void setMaxPrice(String maxPrice) {
+    public void setMaxPrice(BigDecimal maxPrice) {
         this.maxPrice = maxPrice;
     }
 }

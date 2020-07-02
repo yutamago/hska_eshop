@@ -12,7 +12,7 @@ public class Product {
     @JsonProperty private String name;
     @JsonProperty private BigDecimal price;
     @JsonProperty private String details;
-    @JsonProperty private boolean isDeleted;
+
 
     public UUID getProductId() {
         return productId;
@@ -52,13 +52,5 @@ public class Product {
 
     public void setDetails(String details) {
         this.details = details;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
     }
 }

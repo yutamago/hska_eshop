@@ -137,6 +137,36 @@ public class UserController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    public ResponseEntity<UserView> register(
+            @RequestBody User user
+    ) throws NoSuchAlgorithmException {
+
+        List<Role> role = roleDAO.findByType("user");
+        if(role.isEmpty())
+            return new ResponseEntity<>(HttpStatus.TOO_EARLY);
+
+        if(!userDAO.findByUsername(user.getUsername()).isEmpty())
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+
+        String pwHash = bytesToHex(MessageDigest.getInstance("SHA-256").digest(user.getPassword().getBytes(StandardCharsets.UTF_8)));
+        user.setPassword(pwHash);
+
+        User newUser = new User();
+        newUser.setRoleId(role.get(0).getRoleId());
+        newUser.setPassword(pwHash);
+        newUser.setFirstname(user.getFirstname());
+        newUser.setLastname(user.getLastname());
+        newUser.setUsername(user.getUsername());
+        newUser = userDAO.save(newUser);
+
+        UserView ret = UserView.FromUser(newUser, RoleView.FromRole(role.get(0)));
+
+        userDAO.flush();
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
+    }
+
     @HystrixCommand
     @RequestMapping(method = RequestMethod.GET, path = "/username/{username}")
     @RolesAllowed("user.read")
@@ -194,13 +224,13 @@ public class UserController {
     ) {
         final Optional<User> user = userDAO.findById(userId);
 
-        if(user.isPresent()) {
-            user.get().setDeleted(true);
-            userDAO.save(user.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+        if(!user.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        userDAO.deleteById(userId);
+        userDAO.flush();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }

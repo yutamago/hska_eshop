@@ -74,8 +74,7 @@ public class CategoryController {
             @PathVariable("productId")
                     UUID productId
     ) {
-        List<Category> alreadyInCategories = categoryDAO.findByProductId(productId)
-                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
+        List<Category> alreadyInCategories = categoryDAO.findByProductId(productId);
         if(!alreadyInCategories.isEmpty())
             return new ResponseEntity<>(HttpStatus.CONFLICT);
 
@@ -124,8 +123,7 @@ public class CategoryController {
             @PathVariable("productId")
                     UUID productId
     ) {
-        List<Category> categories = this.categoryDAO.findByProductId(productId)
-                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
+        List<Category> categories = this.categoryDAO.findByProductId(productId);
 
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
@@ -135,8 +133,7 @@ public class CategoryController {
     @RolesAllowed("category.write")
     public ResponseEntity<String> deleteCategory(
             @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryId")
-                    UUID categoryId
+            @PathVariable("categoryId") UUID categoryId
     ) {
         final Optional<Category> category = categoryDAO.findById(categoryId);
 
@@ -145,46 +142,22 @@ public class CategoryController {
         }
 
         if (!category.get().getProductIds().isEmpty()) {
-            return new ResponseEntity<>("Category still contains products. Must not be used by any products!", HttpStatus.LOCKED);
+            return new ResponseEntity<>("Category still contains products. Must not be used by any products!", HttpStatus.BAD_REQUEST);
         }
 
-        category.get().setDeleted(true);
-        categoryDAO.save(category.get());
-
+        categoryDAO.deleteById(categoryId);
+        categoryDAO.flush();
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.PUT, path = "/restore/{categoryId}")
-    @RolesAllowed("category.write")
-    public ResponseEntity<String> restoreCategory(
-            @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryId")
-                    UUID categoryId
-    ) {
-        final Optional<Category> category = categoryDAO.findDeletedById(categoryId);
-
-        if (category.isPresent()) {
-            category.get().setDeleted(false);
-            categoryDAO.save(category.get());
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.DELETE, path = "/deleteProductId/{productId}")
     @RolesAllowed("category.write")
     public ResponseEntity<String> deleteProductId(
             @ApiParam(value = "product Id", required = true)
-            @PathVariable("productId")
-                    UUID productId
+            @PathVariable("productId") UUID productId
     ) {
-        List<Category> categories = this.categoryDAO.findByProductId(productId)
-                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
+        List<Category> categories = this.categoryDAO.findByProductId(productId);
         if (!categories.isEmpty()) {
 
             for (Category category : categories) {
@@ -193,27 +166,6 @@ public class CategoryController {
             }
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.DELETE, path = "/restoreProductId/{productId}/fromCategory/{categoryId}")
-    @RolesAllowed("category.write")
-    public ResponseEntity<String> restoreProductId(
-            @ApiParam(value = "product Id", required = true)
-            @PathVariable("productId")
-                    UUID productId,
-            @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryId")
-                    UUID categoryId
-    ) {
-        Optional<Category> category = this.categoryDAO.findById(categoryId);
-        if (!category.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        category.get().getProductIds().add(productId);
-        categoryDAO.save(category.get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -86,12 +86,4 @@ public class Role {
     public void setLevel(int level) {
         this.level = level;
     }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 }

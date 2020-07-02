@@ -93,7 +93,7 @@ public class ProductController {
             @Valid @RequestBody ProductSearchOptions searchOptions,
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
-        URI uri = makeURI().build();
+        URI uri = makeURI("search").build();
         HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, headers);
 
         List<Product> products = this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductUtil.ProductListTypeRef).getBody();
@@ -166,42 +166,25 @@ public class ProductController {
         URI getProductUrl = makeURI("id", productId.toString()).build();
         URI getCategoryByProductIdUrl = makeAbsoluteURI("http://core-category", "category", "productid", productId.toString()).build();
         URI deleteProductUrl = makeURI(productId.toString()).build();
-        URI restoreProductUrl = makeURI("restore", productId.toString()).build();
-
         URI deleteProductInCategoryUrl = makeAbsoluteURI("http://core-category", "category", "deleteProductId", productId.toString()).build();
 
 
-        Category category = null;
-        Product product = null;
+        Product product;
 
-        try { //new HttpEntity<>(null, headers)
+        try {
             product = this.restTemplate.exchange(getProductUrl, HttpMethod.GET, new HttpEntity<>(null, headers), Product.class).getBody();
             Category[] categories = this.restTemplate.exchange(getCategoryByProductIdUrl, HttpMethod.GET, new HttpEntity<>(null, headers), Category[].class).getBody();
             if (categories.length == 0) {
                 ResponseEntity<String> response = new ResponseEntity<>("Category on Product does not exist! Product: " + productId + ", Category: " + product.getCategoryId().toString(), HttpStatus.NOT_FOUND);
                 return response;
             }
-            category = categories[0];
         } catch (Exception ex) {
             ResponseEntity<String> response = new ResponseEntity<>("Product does not exist: " + productId, HttpStatus.NOT_FOUND);
             return response;
         }
 
-        URI restoreProductInCategoryUrl = makeAbsoluteURI("http://core-category",
-                "category",
-                "restoreProductId", productId.toString(),
-                "fromCategory", category.getCategoryId().toString()).build();
-
-        try {
-            this.restTemplate.exchange(deleteProductUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
-            this.restTemplate.exchange(deleteProductInCategoryUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
-        } catch (Exception ex) {
-            this.restTemplate.exchange(restoreProductUrl, HttpMethod.PUT, new HttpEntity<>(null, headers), Void.class);
-            this.restTemplate.exchange(restoreProductInCategoryUrl, HttpMethod.PUT, new HttpEntity<>(null, headers), Void.class);
-
-            ResponseEntity<String> failResponse = new ResponseEntity<>(HttpStatus.CONFLICT);
-            return failResponse;
-        }
+        this.restTemplate.exchange(deleteProductInCategoryUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
+        this.restTemplate.exchange(deleteProductUrl, HttpMethod.DELETE, new HttpEntity<>(null, headers), Void.class);
 
         ResponseEntity<String> response = new ResponseEntity<>(HttpStatus.OK);
         return response;

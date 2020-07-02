@@ -1,15 +1,10 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
 import hska.iwi.eShopMaster.model.ProductSearchOptions;
-import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
-import hska.iwi.eShopMaster.model.converters.CategoryRestModelConverter;
 import hska.iwi.eShopMaster.model.converters.ProductRestModelConverter;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
 import hska.iwi.eShopMaster.model.database.dataobjects.Product;
-import hska.iwi.eShopMaster.model.sessionFactory.util.OAuth2Manager;
-import hska.iwi.eShopMaster.viewmodels.CategoryView;
+import hska.iwi.eShopMaster.model.sessionFactory.util.PasswordOAuth2Manager;
 import hska.iwi.eShopMaster.viewmodels.ProductView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,6 +13,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,13 +23,13 @@ public class ProductManagerImpl implements ProductManager {
 
 	private static final ParameterizedTypeReference<List<ProductView>> ProductListTypeRef = new ParameterizedTypeReference<>() {};
 
-	private final OAuth2Manager o2;
+	private final PasswordOAuth2Manager o2;
 	private RestTemplate restTemplate;
 
 	@Autowired
 	public ProductManagerImpl(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
-		this.o2 = OAuth2Manager.getInstance();
+		this.o2 = PasswordOAuth2Manager.getInstance();
 	}
 
 	@Override
@@ -59,12 +56,12 @@ public class ProductManagerImpl implements ProductManager {
 
 		ProductSearchOptions searchOptions = new ProductSearchOptions();
 		searchOptions.setDescription(searchDescription);
-		searchOptions.setMinPrice(searchMinPrice.toString());
-		searchOptions.setMaxPrice(searchMaxPrice.toString());
+		searchOptions.setMinPrice(new BigDecimal(searchMinPrice));
+		searchOptions.setMaxPrice(new BigDecimal(searchMaxPrice));
 		HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, o2.getAuthHeader());
 
 		try {
-			List<ProductView> products = this.restTemplate.exchange("http://eshop-api:8080/search/", HttpMethod.GET, body, ProductListTypeRef).getBody();
+			List<ProductView> products = this.restTemplate.exchange("http://eshop-api:8080/product/search", HttpMethod.POST, body, ProductListTypeRef).getBody();
 			List<Product> productList = products.stream().map(ProductRestModelConverter::ConvertFromRestView).collect(Collectors.toList());
 			return productList;
 		} catch(Exception ex) {
@@ -72,7 +69,7 @@ public class ProductManagerImpl implements ProductManager {
             ex.printStackTrace();
         }
 
-		return null;
+		return new ArrayList<>();
 	}
 
 	@Override

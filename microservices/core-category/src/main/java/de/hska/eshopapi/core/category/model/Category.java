@@ -62,12 +62,4 @@ public class Category {
     public void setProductIds(List<UUID> productIds) {
         this.productIds = productIds;
     }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 }

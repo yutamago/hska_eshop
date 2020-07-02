@@ -3,16 +3,20 @@ package de.hska.eshopapi.core.product.controllers;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.eshopapi.core.product.dao.ProductDAO;
 import de.hska.eshopapi.core.product.model.Product;
+import de.hska.eshopapi.core.product.model.ProductSearchOptions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -24,9 +28,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductController {
 
-    private ProductDAO productDAO;
-
-    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private final ProductDAO productDAO;
 
     @Autowired
     public ProductController(ProductDAO productDAO) {
@@ -68,11 +70,25 @@ public class ProductController {
                     UUID productId
     ) {
         Optional<Product> productOptional = this.productDAO.findById(productId);
-        if (productOptional.isPresent()) {
-            return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return productOptional
+                .map(product -> new ResponseEntity<>(product, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @HystrixCommand
+    @RequestMapping(method = RequestMethod.POST, path = "/search")
+    @RolesAllowed("product.read")
+    public ResponseEntity<List<Product>> searchProducts(
+            @ApiParam(value = "search options", required = true)
+            @Valid @RequestBody ProductSearchOptions searchOptions
+    ) throws URISyntaxException {
+        if (searchOptions.getMaxPrice() == null)
+            searchOptions.setMaxPrice(new BigDecimal(Integer.MAX_VALUE));
+        if (searchOptions.getMinPrice() == null)
+            searchOptions.setMinPrice(new BigDecimal(0));
+
+        List<Product> products = productDAO.search(searchOptions.getDescription(), searchOptions.getMinPrice(), searchOptions.getMaxPrice());
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @HystrixCommand
@@ -82,8 +98,7 @@ public class ProductController {
             @ApiParam(value = "category Ids", required = true)
             @RequestBody List<UUID> categories
     ) {
-        List<Product> products = this.productDAO.findByCategoryIds(categories)
-                .stream().filter(x -> !x.isDeleted()).collect(Collectors.toList());
+        List<Product> products = this.productDAO.findByCategoryIds(categories);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -109,34 +124,13 @@ public class ProductController {
     ) {
         final Optional<Product> product = productDAO.findById(productId);
 
-        if(product.isPresent()) {
-            product.get().setDeleted(true);
-            productDAO.save(product.get());
-
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (!product.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.PUT, path = "/restore/{productId}")
-    @RolesAllowed("product.write")
-    public ResponseEntity<String> restoreProduct(
-            @ApiParam(value = "product Id", required = true)
-            @PathVariable("productId")
-                    UUID productId
-    ) {
-        final Optional<Product> product = productDAO.findDeletedById(productId);
-
-        if(product.isPresent()) {
-            product.get().setDeleted(false);
-            productDAO.save(product.get());
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        productDAO.deleteById(productId);
+        productDAO.flush();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @HystrixCommand
@@ -148,36 +142,16 @@ public class ProductController {
                     UUID categoryId
     ) {
         List<Product> products = this.productDAO.findByCategoryId(categoryId);
-        if(!products.isEmpty()){
+        if (!products.isEmpty()) {
 
-            for (Product product: products
-                 ) {
-                product.setDeleted(true);
-                productDAO.save(product);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @HystrixCommand
-    @RequestMapping(method = RequestMethod.PUT, path = "/restoreByCategoryId/{categoryId}")
-    @RolesAllowed("product.write")
-    public ResponseEntity<List<Product>> restoreByCategoryId(
-            @ApiParam(value = "category Id", required = true)
-            @PathVariable("categoryId")
-                    UUID categoryId
-    ) {
-        List<Product> products = this.productDAO.findByCategoryId(categoryId);
-        if(!products.isEmpty()){
-
-            for (Product product: products
+            for (Product product : products
             ) {
-                product.setDeleted(false);
-                productDAO.save(product);
+                productDAO.deleteById(product.getProductId());
             }
         }
+        productDAO.flush();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
