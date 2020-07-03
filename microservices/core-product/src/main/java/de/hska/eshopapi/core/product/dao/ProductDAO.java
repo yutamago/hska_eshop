@@ -19,20 +19,20 @@ import java.util.UUID;
 @Repository
 public interface ProductDAO extends JpaRepository<Product, UUID> {
 
-    @Query("SELECT p FROM Product p WHERE p.name = :name and p.isDeleted = false")
+    @Query("SELECT p FROM Product p WHERE p.name = :name")
     Product findByName(@Param("name") String name);
 
-    @Query("SELECT p FROM Product p WHERE p.categoryId = :categoryId and p.isDeleted = false")
+    @Query("SELECT p FROM Product p WHERE p.categoryId = :categoryId")
     ArrayList<Product> findByCategoryId(@Param("categoryId") UUID categoryId);
 
     @Query("SELECT p FROM Product p WHERE p.categoryId in :categoryIds")
     ArrayList<Product> findByCategoryIds(@Param("categoryIds") List<UUID> categoryIds);
 
-    @Query("Select p from Product p WHERE p.productId = :productId and p.isDeleted = false")
+    @Query("Select p from Product p WHERE p.productId = :productId")
     Optional<Product> findDeletedById(@Param("productId") UUID productId);
 
     @Override
-    @Query("SELECT p FROM Product p WHERE p.isDeleted = false")
+    @Query("SELECT p FROM Product p")
     List<Product> findAll();
 
     @Override
@@ -42,7 +42,7 @@ public interface ProductDAO extends JpaRepository<Product, UUID> {
     List<Product> findAllById(Iterable<UUID> uuids);
 
     @Override
-    @Query("SELECT p FROM Product p WHERE p.productId = :uuid and p.isDeleted = false")
+    @Query("SELECT p FROM Product p WHERE p.productId = :uuid")
     Product getOne(@Param("uuid") UUID uuid);
 
     @Override

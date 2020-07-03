@@ -80,8 +80,10 @@ public class ProductController {
     @RolesAllowed("product.read")
     public ResponseEntity<List<Product>> searchProducts(
             @ApiParam(value = "search options", required = true)
-            @Valid @RequestBody ProductSearchOptions searchOptions
+            @RequestBody ProductSearchOptions searchOptions
     ) throws URISyntaxException {
+        if(searchOptions.getDescription() == null)
+            searchOptions.setDescription("");
         if (searchOptions.getMaxPrice() == null)
             searchOptions.setMaxPrice(new BigDecimal(Integer.MAX_VALUE));
         if (searchOptions.getMinPrice() == null)

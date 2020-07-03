@@ -1,7 +1,9 @@
 package hska.iwi.eShopMaster.model.sessionFactory.util;
 
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.inject.Inject;
 import hska.iwi.eShopMaster.model.AuthToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientCredentialsOAuth2Manager {
+
+    private String eshopApiEdgeUrl = PropertiesLoader.get("eshop-api.edge-url");
 
     private RestTemplate restTemplate;
     private static ClientCredentialsOAuth2Manager INSTANCE = new ClientCredentialsOAuth2Manager();
@@ -33,7 +37,7 @@ public class ClientCredentialsOAuth2Manager {
 
     private static final String CLIENT_ID = "eshop-register-client";
     private static final String CLIENT_SECRET = "123456";
-    private static final String TOKEN_ADDRESS = "http://eshop-auth:8090/oauth/token";
+    private static final String TOKEN_ADDRESS = "/eshop-auth/oauth/token";
 
     private AuthToken authToken;
     private String accessToken = "";
@@ -94,7 +98,7 @@ public class ClientCredentialsOAuth2Manager {
 
         System.out.println("HEADERS + BODY: " + httpEntity.toString());
         try {
-            this.authToken = this.restTemplate.exchange(TOKEN_ADDRESS, HttpMethod.POST, httpEntity, AuthToken.class).getBody();
+            this.authToken = this.restTemplate.exchange(eshopApiEdgeUrl + TOKEN_ADDRESS, HttpMethod.POST, httpEntity, AuthToken.class).getBody();
             System.out.println(":::::::::::::::::::::AUTH TOKEN:::::::::::::::::::: " + this.authToken);
             this.accessToken = this.authToken.getAccessToken();
         } catch(Exception ex) {

@@ -31,9 +31,8 @@ public class DeleteCategoryAction extends ActionSupport {
 	
 	private String catId;
 	private List<Category> categories;
-	private String error;
 
-	public String execute() throws Exception {
+	public String execute() {
 		
 		String res = "input";
 		
@@ -47,17 +46,16 @@ public class DeleteCategoryAction extends ActionSupport {
 
 			try {
 				categoryManager.delCategoryById(UUID.fromString(catId));
-				categories = categoryManager.getCategories();
-				res = "success";
 			} catch (HttpClientErrorException e) {
 				if(e.getStatusCode() == HttpStatus.BAD_REQUEST) {
-					this.error = "Die Kategorie darf keine Produkte beinhalten!";
+					addActionError("Die Kategorie darf keine Produkte beinhalten!");
 				} else {
-					this.error = "Unbekannter Fehler...";
+					addActionError("Unbekannter Fehler...");
 				}
 			}
 
-
+			categories = categoryManager.getCategories();
+			res = "success";
 		}
 		
 		return res;

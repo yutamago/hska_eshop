@@ -1,12 +1,15 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
+import com.opensymphony.xwork2.inject.Inject;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.converters.UserRestModelConverter;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
 import hska.iwi.eShopMaster.model.sessionFactory.util.ClientCredentialsOAuth2Manager;
 import hska.iwi.eShopMaster.model.sessionFactory.util.PasswordOAuth2Manager;
+import hska.iwi.eShopMaster.model.sessionFactory.util.PropertiesLoader;
 import hska.iwi.eShopMaster.viewmodels.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -25,6 +28,8 @@ public class UserManagerImpl implements UserManager {
 
     private static final ParameterizedTypeReference<List<UserView>> UserListTypeRef = new ParameterizedTypeReference<>() {
     };
+
+    private String eshopApiEdgeUrl = PropertiesLoader.get("eshop-api.edge-url");
 
     private PasswordOAuth2Manager o2;
     private RestTemplate restTemplate;
@@ -50,7 +55,7 @@ public class UserManagerImpl implements UserManager {
         HttpEntity<hska.iwi.eShopMaster.model.User> body = new HttpEntity<>(restUser, o2.getAuthHeader());
 
         try {
-            ResponseEntity<UserView> responseEntity = this.restTemplate.exchange("http://eshop-api:8080/user/register", HttpMethod.POST, body, UserView.class);
+            ResponseEntity<UserView> responseEntity = this.restTemplate.exchange(eshopApiEdgeUrl + "/eshop-api/user/register", HttpMethod.POST, body, UserView.class);
             if(responseEntity.getStatusCode().isError()) {
                 throw new HttpClientErrorException(responseEntity.getStatusCode());
             }
@@ -68,7 +73,7 @@ public class UserManagerImpl implements UserManager {
         }
 
         try {
-            UserView userView = this.restTemplate.exchange("http://eshop-api:8080/user/username/" + username, HttpMethod.GET, o2.getAuthBody(), UserView.class).getBody();
+            UserView userView = this.restTemplate.exchange(eshopApiEdgeUrl + "/eshop-api/user/username/" + username, HttpMethod.GET, o2.getAuthBody(), UserView.class).getBody();
             System.out.println("============= GET USER RESPONSE :::: " + userView);
 
             return UserRestModelConverter.ConvertFromRestView(userView);
@@ -82,7 +87,7 @@ public class UserManagerImpl implements UserManager {
     @Override
     public boolean deleteUserById(UUID id) {
         try {
-            this.restTemplate.exchange("http://eshop-api:8080/user/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
+            this.restTemplate.exchange(eshopApiEdgeUrl + "/eshop-api/user/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
             return true;
         } catch(Exception ex) {
             System.out.println(ex.getMessage());

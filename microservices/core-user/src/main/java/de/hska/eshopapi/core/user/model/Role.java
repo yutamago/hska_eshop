@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Table
 @NamedQueries({
-        @NamedQuery(name = "Role.findByType", query = "select r from Role r where r.type = :type and r.isDeleted = false"),
+        @NamedQuery(name = "Role.findByType", query = "select r from Role r where r.type = :type"),
 })
 public class Role {
     @Id
@@ -31,28 +31,21 @@ public class Role {
     @JsonProperty
     private int level;
 
-    @Column(nullable = false)
-    @JsonProperty
-    private boolean isDeleted;
-
     public Role(){}
 
-    public Role(UUID roleId, String type, int level, boolean isDeleted) {
+    public Role(UUID roleId, String type, int level) {
         this.roleId = roleId;
         this.type = type;
         this.level = level;
-        this.isDeleted = isDeleted;
     }
 
-    public Role(String type, int level, boolean isDeleted) {
+    public Role(String type, int level) {
         this.type = type;
         this.level = level;
-        this.isDeleted = isDeleted;
     }
 
     public Role(Role role) {
         this.roleId = role.roleId == null ? this.roleId : role.roleId;
-        this.isDeleted = role.isDeleted;
         this.level = role.level;
         this.type = role.type;
     }
@@ -61,7 +54,6 @@ public class Role {
     public Role makeNew() {
         Role newRole = new Role();
         newRole.roleId = this.roleId == null ? newRole.roleId : this.roleId;
-        newRole.isDeleted = this.isDeleted;
         newRole.level = this.level;
         newRole.type = this.type;
         return newRole;

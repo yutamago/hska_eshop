@@ -1,4 +1,4 @@
-http://localhost:8888/EShop-1.0.0/
+http://localhost:8888/webshop/
 
 
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)

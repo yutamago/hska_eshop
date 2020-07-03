@@ -13,9 +13,9 @@ public interface ProductManager {
 
 	public Product getProductByName(String name);
 
-	public UUID addProduct(String name, double price, UUID categoryId, String details);
+	public UUID addProduct(String name, String price, UUID categoryId, String details);
 
-	public List<Product> getProductsForSearchValues(String searchValue, Double searchMinPrice, Double searchMaxPrice);
+	public List<Product> getProductsForSearchValues(String searchValue, String searchMinPrice, String searchMaxPrice);
 	
 	public boolean deleteProductsByCategoryId(UUID categoryId);
 	

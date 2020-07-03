@@ -14,16 +14,15 @@ import java.util.UUID;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "User.findByUsername", query = "select u from User u where u.username = :username and u.isDeleted = false"),
+        @NamedQuery(name = "User.findByUsername", query = "select u from User u where u.username = :username "),
         // TODO: password -> SHA HASH
-        @NamedQuery(name = "User.findByUsernamePassword", query = "select u from User u where u.username = :username and u.password = :password and u.isDeleted = false")
+        @NamedQuery(name = "User.findByUsernamePassword", query = "select u from User u where u.username = :username and u.password = :password")
 })
 public class User {
 
     public static User makeNew(User user) {
         User newUser = new User();
         newUser.firstname = user.firstname;
-        newUser.isDeleted = user.isDeleted;
         newUser.lastname = user.lastname;
         newUser.password = user.password;
         newUser.roleId = user.roleId;

@@ -86,17 +86,17 @@ public class ProductController {
 //    }
 
     @HystrixCommand
-    @RequestMapping(method = RequestMethod.GET, path = "/search")
+    @RequestMapping(method = RequestMethod.POST, path = "/search")
     @RolesAllowed("product.read")
     public ResponseEntity<List<ProductView>> searchProducts(
             @ApiParam(value = "search options", required = true)
-            @Valid @RequestBody ProductSearchOptions searchOptions,
+            @RequestBody ProductSearchOptions searchOptions,
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI("search").build();
         HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, headers);
 
-        List<Product> products = this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductUtil.ProductListTypeRef).getBody();
+        List<Product> products = this.restTemplate.exchange(uri, HttpMethod.POST, body, ProductUtil.ProductListTypeRef).getBody();
         List<ProductView> productViews = ProductUtil.extendProducts(products, this.restTemplate, headers);
 
         return new ResponseEntity<>(productViews, HttpStatus.OK);

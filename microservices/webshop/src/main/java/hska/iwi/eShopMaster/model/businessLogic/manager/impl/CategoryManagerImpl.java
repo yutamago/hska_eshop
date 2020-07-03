@@ -5,6 +5,7 @@ import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.converters.CategoryRestModelConverter;
 import hska.iwi.eShopMaster.model.database.dataobjects.Category;
 import hska.iwi.eShopMaster.model.sessionFactory.util.PasswordOAuth2Manager;
+import hska.iwi.eShopMaster.model.sessionFactory.util.PropertiesLoader;
 import hska.iwi.eShopMaster.viewmodels.CategoryView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,7 +20,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CategoryManagerImpl implements CategoryManager{
-//	private CategoryDAO helper;
+
+	private String eshopApiEdgeUrl = PropertiesLoader.get("eshop-api.edge-url");
 
 	private static final ParameterizedTypeReference<List<CategoryView>> CategoryListTypeRef = new ParameterizedTypeReference<>() {};
 
@@ -35,7 +37,7 @@ public class CategoryManagerImpl implements CategoryManager{
 	@Override
 	public List<Category> getCategories() {
 		try {
-			ResponseEntity<List<CategoryView>> categories = this.restTemplate.exchange("http://eshop-api:8080/category", HttpMethod.GET, o2.getAuthBody(), CategoryListTypeRef);
+			ResponseEntity<List<CategoryView>> categories = this.restTemplate.exchange(eshopApiEdgeUrl + "/eshop-api/category", HttpMethod.GET, o2.getAuthBody(), CategoryListTypeRef);
 //			System.out.println("Kategorien STATUS::::::::: " + categories.getStatusCode().toString());
 //			System.out.println("Kategorien ::::::::: " + categories.getBody());
 			List<CategoryView> listOfRestCats = categories.getBody();
@@ -51,7 +53,7 @@ public class CategoryManagerImpl implements CategoryManager{
 	@Override
 	public Category getCategory(UUID id) {
 		try {
-			CategoryView categoryView = this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.GET, o2.getAuthBody(), CategoryView.class).getBody();
+			CategoryView categoryView = this.restTemplate.exchange(eshopApiEdgeUrl + "/eshop-api/category/" + id, HttpMethod.GET, o2.getAuthBody(), CategoryView.class).getBody();
 			Category category = CategoryRestModelConverter.ConvertFromRestView(categoryView);
 			return category;
 		} catch(Exception ex) {
@@ -73,7 +75,7 @@ public class CategoryManagerImpl implements CategoryManager{
 		HttpEntity<hska.iwi.eShopMaster.model.Category> body = new HttpEntity<>(CategoryRestModelConverter.ConvertToRestCore(cat), o2.getAuthHeader());
 
 		try {
-			this.restTemplate.postForEntity("http://eshop-api:8080/category/", body, CategoryView.class);
+			this.restTemplate.postForEntity(eshopApiEdgeUrl + "/eshop-api/category/", body, CategoryView.class);
 		} catch(Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
@@ -93,7 +95,7 @@ public class CategoryManagerImpl implements CategoryManager{
 	@Override
 	public ResponseEntity<String> delCategoryById(UUID id) throws HttpClientErrorException {
 		try {
-			ResponseEntity<String> ret = this.restTemplate.exchange("http://eshop-api:8080/category/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
+			ResponseEntity<String> ret = this.restTemplate.exchange(eshopApiEdgeUrl + "/eshop-api/category/" + id, HttpMethod.DELETE, o2.getAuthBody(), String.class);
 			if(ret.getStatusCode().isError())
 				throw new HttpClientErrorException(ret.getStatusCode());
 

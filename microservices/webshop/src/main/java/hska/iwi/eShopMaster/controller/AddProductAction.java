@@ -40,7 +40,7 @@ public class AddProductAction extends ActionSupport {
 		if(user != null && (user.getRole().getTyp().equals("admin"))) {
 
 			ProductManager productManager = new ProductManagerImpl(restTemplate);
-			UUID productId = productManager.addProduct(name, Double.parseDouble(price), UUID.fromString(categoryId),
+			UUID productId = productManager.addProduct(name, price, UUID.fromString(categoryId),
 					details);
 
 			if (productId != null) {

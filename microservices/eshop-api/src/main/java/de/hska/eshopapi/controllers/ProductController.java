@@ -117,20 +117,20 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.POST, path = "/search")
     public ResponseEntity<List<ProductView>> searchProducts(
             @ApiParam(value = "search options", required = true)
-            @Valid @RequestBody ProductSearchOptions searchOptions,
+            @RequestBody ProductSearchOptions searchOptions,
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI("search").build();
         HttpEntity<ProductSearchOptions> body = new HttpEntity<>(searchOptions, headers);
 
-        return this.restTemplate.exchange(uri, HttpMethod.GET, body, ProductListTypeRef);
+        return this.restTemplate.exchange(uri, HttpMethod.POST, body, ProductListTypeRef);
     }
 
     @HystrixCommand
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ProductView> addProduct(
             @ApiParam(value = "Product", required = true)
-            @RequestBody(required = true) Product product,
+            @RequestBody Product product,
             @RequestHeader HttpHeaders headers
     ) throws URISyntaxException {
         URI uri = makeURI().build();

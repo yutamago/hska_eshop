@@ -7,9 +7,13 @@
 
     <constant name="struts.enable.DynamicMethodInvocation" value="false" />
     <constant name="struts.devMode" value="true" />
-    <constant name="struts.custom.i18n.resources" value="ApplicationResources" /> 
+    <constant name="struts.custom.i18n.resources" value="ApplicationResources" />
 
-    
+    <constant name="eshop-api.edge-url" value="http://localhost:9001"/>
+    <constant name="eshop-api.edge.api-url" value="eshop-api"/>
+    <constant name="eshop-api.edge.auth-url" value="eshop-auth"/>
+
+
     <!-- Add packages here -->
     
         <package name="hska.iwi.eShopMaster" extends="struts-default">

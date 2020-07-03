@@ -17,7 +17,6 @@ public class Category {
     public static Category makeNew(Category category) {
         Category newCategory = new Category();
         newCategory.productIds = category.productIds == null ? new ArrayList<>() : new ArrayList<>(category.productIds);
-        newCategory.isDeleted = category.isDeleted;
         newCategory.name = category.name;
         return newCategory;
     }
@@ -35,9 +34,6 @@ public class Category {
     @Type(type="org.hibernate.type.UUIDCharType")
     @ElementCollection(fetch = FetchType.EAGER)
     private List<UUID> productIds = new ArrayList<>();
-
-    @Column(nullable = false)
-    @JsonProperty private boolean isDeleted = false;
 
     public UUID getCategoryId() {
         return categoryId;

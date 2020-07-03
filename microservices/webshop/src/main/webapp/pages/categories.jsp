@@ -89,7 +89,6 @@
 			</table>
 		</div>
 	</div>
-			<s:actionerror/>
 		
 		<s:actionmessage/>
 	

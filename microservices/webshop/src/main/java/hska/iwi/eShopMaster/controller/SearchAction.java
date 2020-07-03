@@ -8,6 +8,9 @@ import hska.iwi.eShopMaster.model.database.dataobjects.Category;
 import hska.iwi.eShopMaster.model.database.dataobjects.Product;
 import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -35,9 +38,6 @@ public class SearchAction extends ActionSupport {
     private String searchMinPrice;
     private String searchMaxPrice;
 
-    private Double sMinPrice = null;
-    private Double sMaxPrice = null;
-
     private User user;
     private List<Product> products;
     private List<Category> categories;
@@ -50,19 +50,18 @@ public class SearchAction extends ActionSupport {
         // Get user:
         Map<String, Object> session = ActionContext.getContext().getSession();
         user = (User) session.get("webshop_user");
-        ActionContext.getContext().setLocale(Locale.US);
+        ActionContext.getContext().setLocale(Locale.GERMAN);
 
         if (user != null) {
-            // Search products and show results:
-            ProductManager productManager = new ProductManagerImpl(restTemplate);
-//			this.products = productManager.getProductsForSearchValues(this.searchDescription, this.searchMinPrice, this.searchMaxPrice);
-            if (!searchMinPrice.isEmpty()) {
-                sMinPrice = Double.parseDouble(this.searchMinPrice);
+            cleanSearchOptions();
+
+            if (isSearchOptionsValid()){
+                // Search products and show results:
+                ProductManager productManager = new ProductManagerImpl(restTemplate);
+                this.products = productManager.getProductsForSearchValues(this.searchDescription, searchMinPrice, searchMaxPrice);
+            } else {
+                this.products = new ArrayList<>();
             }
-            if (!searchMaxPrice.isEmpty()) {
-                sMaxPrice = Double.parseDouble(this.searchMaxPrice);
-            }
-            this.products = productManager.getProductsForSearchValues(this.searchDescription, sMinPrice, sMaxPrice);
 
             // Show all categories:
             CategoryManager categoryManager = new CategoryManagerImpl(restTemplate);
@@ -71,6 +70,47 @@ public class SearchAction extends ActionSupport {
         }
 
         return result;
+    }
+
+    private boolean isSearchOptionsValid() {
+
+        if(searchMinPrice != null) {
+            try {
+                new BigDecimal(searchMinPrice);
+            } catch (Exception nfe) {
+                addActionError("Mindestpreis ist keine gültige Dezimal-Zahl!");
+                return false;
+            }
+        }
+        if(searchMaxPrice != null) {
+            try {
+                new BigDecimal(searchMaxPrice);
+            } catch (Exception nfe) {
+                addActionError("Maximalpreis ist keine gültige Dezimal-Zahl!");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void cleanSearchOptions() {
+        if (searchMinPrice != null) {
+            searchMinPrice = searchMinPrice.trim();
+            if(searchMinPrice.length() == 0)
+                searchMinPrice = null;
+        }
+        if(searchMaxPrice != null) {
+            searchMaxPrice = searchMaxPrice.trim();
+            if(searchMaxPrice.length() == 0)
+                searchMaxPrice = null;
+        }
+
+        if (searchDescription != null) {
+            searchDescription = searchDescription.trim();
+        } else {
+            searchDescription = "";
+        }
     }
 
 

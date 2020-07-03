@@ -14,7 +14,6 @@ public class Product {
         Product newProduct = new Product();
         newProduct.categoryId = product.categoryId;
         newProduct.details = product.details;
-        newProduct.isDeleted = product.isDeleted;
         newProduct.name = product.name;
         newProduct.price = product.price;
         return newProduct;
